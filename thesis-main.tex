@@ -7,30 +7,39 @@
 \usepackage{acronym}
 
 \school{\unibo}
-\programme{Corso di Laurea [Magistrale?] in Ingegneria e Scienze Informatiche}
-\title{Fancy Title}
-\author{Candidate Name}
+\programme{Corso di Laurea in Ingegneria e Scienze Informatiche}
+\title{B-Tree File System  per piattaforme IoT}
+\author{Leonardo Marcaccio}
 \date{\today}
+%TODO Vedi se toglier
 \subject{Supervisor's course name}
-\supervisor{Prof. Supervisor Here}
-\cosupervisor{Dott. CoSupervisor 1}
-\morecosupervisor{Dott. CoSupervisor 2}
+
+\supervisor{Marco Antonio Boschetti}
+
 \session{I}
-\academicyear{2022-2023}
+\academicyear{2023-2024}
 
 % Definition of acronyms
 \acrodef{IoT}{Internet of Thing}
 \acrodef{vm}[VM]{Virtual Machine}
+\acrodef{FS}{File System}
 
-
-\mainlinespacing{1.241} % line spacing in mainmatter, comment to default (1)
+\mainlinespacing{1.241}
 
 \begin{document}
 
 \frontmatter\frontispiece
 
-\begin{abstract}	
-Max 2000 characters, strict.
+\begin{abstract}
+    Questa Tesi esplora il processo di studio, progettazione e implementazione di un prototipo di File System basato sulla struttura dati B-Tree, sviluppato per la piattaforma IoT IOtto di Onit S.p.A.
+
+    L'obiettivo principale è migliorare l'efficienza nella gestione e nel recupero dei dati, affrontando le problematiche tipiche di un File System quali la scalabilità e l'ottimizzazione delle risorse.
+
+    Il lavoro comprende un'analisi dello stato dell'arte sui moderni File System, con particolare attenzione alla loro interazione con i sistemi IoT. Viene approfondito il principio di funzionamento del B-Tree, dimostrando come questa struttura dati possa essere sfruttata per realizzare una struttura performante e affidabile.
+
+    Inoltre, vengono descritte le fasi di progettazione e implementazione, evidenziando le soluzioni adottate per adattare il prototipo alle esigenze specifiche della piattaforma IOtto.
+
+    I risultati preliminari mostrano che il File System proposto garantisce significativi miglioramenti in termini di velocità di accesso ai dati e utilizzo delle risorse rispetto alle alternative tradizionali.
 \end{abstract}
 
 \begin{dedication} % this is optional
@@ -50,36 +59,104 @@ Optional. Max a few lines.
 \label{chap:introduction}
 %----------------------------------------------------------------------------------------
 
-Write your intro here.
-\sidenote{Add sidenotes in this way. They are named after the author of the thesis}
+    \section{Background}
 
-You can use acronyms that your defined previously,
-such as \ac{IoT}.
-%
-If you use acronyms twice,
-they will be written in full only once
-(indeed, you can mention the \ac{IoT} now without it being fully explained).
-%
-In some cases, you may need a plural form of the acronym.
-%
-For instance,
-that you are discussing \acp{vm},
-you may need both \ac{vm} and \acp{vm}.
+        \subsection{Onit}
+        \subsection{IOtto}
 
-\paragraph{Structure of the Thesis}
+        AGGIUNGI PRESENTAZIONE DELL'AZIENDA E DEL PRODOTTO
 
-\note{At the end, describe the structure of the paper}
+    \section{Descrizione del problema}
+
+        Questa Tesi si propone di affrontare un problema di ottimizzazzione legato alla gestione dei dati nella piattaforma \ac{IoT} IOtto.
+
+    \section{Obiettivi di Tesi}
+
+        L'obbiettivo della Tesi risulta essere quello di realizzare un prototipo di \ac{FS} che sia scalabile, in grado di effettuare rapide letture e scritture, strutturalmente solido e ottimizzato nell'allocazione di spazio.
+
+        In particolare, il lavoro si concentra sulla progettazione e realizzazione di un prototipo alternativo al sistema esistente, con l'intento non solo di mantenere le prestazioni attuali, ma, ove possibile, di migliorarle.
+
+        \subsection{Domande}
+
+            \begin{itemize}
+                \item Quali tipi di dati devono essere memorizzati e gestiti?
+                \item Qual è la quantità stimata di dati da gestire a regime?
+                \item Quali saranno le dimensioni massime dei file e la granularità delle operazioni sui dati?
+                \item Come garantire un basso consumo di risorse?
+                \item Qual è la struttura di archiviazione più adatta?
+                \item Il file system dovrà scalare per gestire un numero crescente di dispositivi IoT?
+                \item Qual è la strategia per l'espansione dello spazio di archiviazione?
+                \item Come gestire guasti hardware o interruzioni improvvise di alimentazione?
+                \item È necessario prevedere meccanismi di backup o snapshot per i dati?
+                \item Come si possono introdurre nuove funzionalità senza compromettere i dati esistenti?
+            \end{itemize}
+
+        \subsection{Scopo}
+
+            L’obiettivo finale è quello di apportare un significativo miglioramento al software esistente, sfruttando l’hardware già disponibile per ottenere prestazioni più elevate. Questo intervento mira a incrementare le capacità del prodotto, garantendo una maggiore efficienza e un’esperienza d’uso più soddisfacente per i clienti.
+
+            In particolare, il miglioramento si traduce nell’ottimizzazione delle funzionalità attuali e nell’ampliamento delle possibilità offerte dal sistema, senza la necessità di modificare o sostituire l’hardware esistente. Questo approccio consente di massimizzare il valore del prodotto, andando incontro alle crescenti aspettative degli utenti e mantenendo un vantaggio competitivo sul mercato.
+
+    In questo contesto, la struttura dati B-Tree rappresenta una soluzione promettente per migliorare le prestazioni dei \ac{FS}, grazie alla sua capacità di organizzare e recuperare i dati in modo efficiente.
+
+    Tuttavia, l’applicazione del B-Tree ai \ac{FS} per piattaforme \ac{IoT} rimane un campo relativamente poco esplorato e complesso nella sua realizzazione.
+    La presente Tesi si propone di colmare questa lacuna attraverso lo studio e la realizzazione di un prototipo di \ac{FS} basato sul B-Tree.
+
+    L’obiettivo è dimostrare come questa struttura dati possa essere utilizzata per ottimizzare le operazioni di memorizzazione e recupero dei dati, migliorando al contempo l’efficienza complessiva del sistema.
+
+    \section{Struttura della Tesi}
+
+        Questa Tesi è strutturata in tre capitoli principali.
+
+        Il primo capitolo fornisce le basi teoriche del lavoro, offrendo una panoramica sui moderni \ac{FS} e sulla loro connessione con il mondo dell’\ac{IoT}.
+        Viene inoltre approfondita la struttura dati B-Tree, evidenziandone le proprietà principali e la sua rilevanza rispetto al problema affrontato.
+
+        Il secondo capitolo si concentra sulla progettazione e sull’implementazione del prototipo di \ac{FS}.
+        Vengono descritte le scelte effettuate durante il processo di sviluppo e spiegato come il B-Tree sia stato utilizzato per soddisfare le esigenze specifiche della piattaforma IOtto.
+
+        Infine, il terzo capitolo discute i risultati ottenuti dalla valutazione del prototipo. Vengono inoltre presentate le conclusioni tratte dallo studio e delineate le possibili direzioni per future modifiche e sviluppi in questo campo.
 
 \chapter{State of the art}
 
 I suggest referencing stuff as follows: \cref{fig:random-image} or \Cref{fig:random-image}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=.8\linewidth]{figures/random-image.pdf}
-    \caption{Some random image}
-    \label{fig:random-image}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=.8\linewidth]{figures/random-image.pdf}
+%     \caption{Some random image}
+%     \label{fig:random-image}
+% \end{figure}
+
+\section{Onit e IOtto}
+
+\section{File System nell'IoT}
+
+    \begin{quote}
+        In genere, i dispositivi IoT hanno capacità di archiviazione dei dati limitate. Per questo motivo, la maggior parte dei dati acquisiti viene trasmessa utilizzando protocolli di comunicazione come MQTT o CoAP, per essere poi elaborata e archiviata. Ma non è questo il problema principale.
+
+        Quando si tratta dei dati dell’IoT, si parla della necessità di gestire dati eterogenei, di trasformarli, aggregarli, analizzarli e integrarli per renderli pronti alle fasi successive di analisi, mantenendone nel contempo integrità e riservatezza e senza compromettere né le prestazioni di sistema, né l’affidabilità, né la scalabilità, né la flessibilità e, ancor più, senza aggravi significativi sui costi.
+        \cite{sowa2014}
+    \end{quote}
+
+    \subsection{Eterogeneità}
+        L'ecosistema dell'\ac{IoT} è caratterizzato dalla presenza di numerosi organismi di standardizzazione, ciascuno dei quali contribuisce con un ampio ventaglio di norme e protocolli che spesso si sovrappongono o risultano in conflitto tra loro.
+
+        Questa diversità si riflette nei dati acquisiti dai dispositivi \ac{IoT}, che vengono prodotti in una combinazione di formati, inclusi dati strutturati, semi-strutturati e non strutturati, generando ulteriori complessità.
+
+        L'eterogeneità nei formati e nei protocolli non si limitano alla fase di acquisizione, ma hanno un impatto diretto anche nelle fasi di archiviazione, complicando la gestione dei dati nei sistemi di storage.
+
+        Così come non possiamo pensare di risolvere la gestione dei dati \ac{IoT} come avremmo fatto con un data warehouse negli anni '90, dobbiamo cercare nuove soluzioni per gestire i differenti tipi di dati e la mole di quest'ultimi.
+
+        In molti casi, è opportuno archiviare non il dato grezzo, bensì il dato già elaborato, soprattutto in tutti quegli scenari nei quali i dati stessi devono essere analizzati più di una volta.
+
+\section{B-Tree}
+
+    Citando
+    \begin{quote}
+        B-trees are balanced search trees designed to work well on disk drives or other direct-access secondary storage devices. B-trees are similar to red-black trees, but they are better at minimizing the number of operations that access disks.
+    \end{quote}
+
+\section{B-Tree nella realizzazione dei File System}
 
 \section{Some cool topic}
 
