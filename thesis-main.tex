@@ -8,7 +8,7 @@
 
 \school{\unibo}
 \programme{Corso di Laurea in Ingegneria e Scienze Informatiche}
-\title{B-Tree File System  per piattaforme IoT}
+\title{B-Tree File System per piattaforme IoT}
 \author{Leonardo Marcaccio}
 \date{\today}
 %TODO Vedi se toglier
@@ -31,15 +31,15 @@
 \frontmatter\frontispiece
 
 \begin{abstract}
-    Questa Tesi esplora il processo di studio, progettazione e implementazione di un prototipo di File System basato sulla struttura dati B-Tree, sviluppato per la piattaforma IoT IOtto di Onit S.p.A.
+    Questa Tesi esplora il processo di studio, progettazione e implementazione di un prototipo di \ac{FS} basato sulla struttura dati B-Tree, sviluppato per la piattaforma IoT IOtto di Onit S.p.A.
 
-    L'obiettivo principale è migliorare l'efficienza nella gestione e nel recupero dei dati, affrontando le problematiche tipiche di un File System quali la scalabilità e l'ottimizzazione delle risorse.
+    L'obiettivo principale è migliorare l'efficienza nella gestione e nel recupero dei dati, affrontando le problematiche tipiche di un \ac{FS} come la scalabilità e l'ottimizzazione delle risorse.
 
-    Il lavoro comprende un'analisi dello stato dell'arte sui moderni File System, con particolare attenzione alla loro interazione con i sistemi IoT. Viene approfondito il principio di funzionamento del B-Tree, dimostrando come questa struttura dati possa essere sfruttata per realizzare una struttura performante e affidabile.
+    Il lavoro comprende un'analisi dello stato dell'arte sui moderni \ac{FS}, con particolare attenzione alla loro interazione con i sistemi IoT. Viene approfondito il principio di funzionamento del B-Tree, dimostrando come questa struttura dati possa essere sfruttata per realizzare una struttura performante e affidabile.
 
     Inoltre, vengono descritte le fasi di progettazione e implementazione, evidenziando le soluzioni adottate per adattare il prototipo alle esigenze specifiche della piattaforma IOtto.
 
-    I risultati preliminari mostrano che il File System proposto garantisce significativi miglioramenti in termini di velocità di accesso ai dati e utilizzo delle risorse rispetto alle alternative tradizionali.
+    I risultati preliminari mostrano che il prototipo proposto garantisce significativi miglioramenti in termini di velocità di accesso ai dati e utilizzo delle risorse rispetto alle alternative tradizionali.
 \end{abstract}
 
 \begin{dedication} % this is optional
@@ -47,7 +47,7 @@ Optional. Max a few lines.
 \end{dedication}
 
 %----------------------------------------------------------------------------------------
-\tableofcontents   
+\tableofcontents
 \listoffigures     % (optional) comment if empty
 \lstlistoflistings % (optional) comment if empty
 %----------------------------------------------------------------------------------------
@@ -68,13 +68,14 @@ Optional. Max a few lines.
 
     \section{Descrizione del problema}
 
-        Questa Tesi si propone di affrontare un problema di ottimizzazzione legato alla gestione dei dati nella piattaforma \ac{IoT} IOtto.
+        L'attuale \ac{FS} utilizzato dall'applicativo risulta non essere più ottimale nel contesto attuale, data la crescita e la mole dei dati gestiti.
+        Risulta dunque necessario trovare un'alternativa che soddisfi le necessità attuali e future, in ambito di scalabilità e ottimizzazione.
 
     \section{Obiettivi di Tesi}
 
         L'obbiettivo della Tesi risulta essere quello di realizzare un prototipo di \ac{FS} che sia scalabile, in grado di effettuare rapide letture e scritture, strutturalmente solido e ottimizzato nell'allocazione di spazio.
 
-        In particolare, il lavoro si concentra sulla progettazione e realizzazione di un prototipo alternativo al sistema esistente, con l'intento non solo di mantenere le prestazioni attuali, ma, ove possibile, di migliorarle.
+        In particolare, il lavoro si concentra sulla progettazione e realizzazione di un prototipo alternativo al sistema preesistente, con l'intento non solo di mantenere le prestazioni attuali, ma, ove possibile, di migliorarle.
 
         \subsection{Domande}
 
@@ -84,7 +85,7 @@ Optional. Max a few lines.
                 \item Quali saranno le dimensioni massime dei file e la granularità delle operazioni sui dati?
                 \item Come garantire un basso consumo di risorse?
                 \item Qual è la struttura di archiviazione più adatta?
-                \item Il file system dovrà scalare per gestire un numero crescente di dispositivi IoT?
+                \item Il \ac{FS} dovrà scalare per gestire un numero crescente di dispositivi IoT?
                 \item Qual è la strategia per l'espansione dello spazio di archiviazione?
                 \item Come gestire guasti hardware o interruzioni improvvise di alimentazione?
                 \item È necessario prevedere meccanismi di backup o snapshot per i dati?
@@ -95,14 +96,7 @@ Optional. Max a few lines.
 
             L’obiettivo finale è quello di apportare un significativo miglioramento al software esistente, sfruttando l’hardware già disponibile per ottenere prestazioni più elevate. Questo intervento mira a incrementare le capacità del prodotto, garantendo una maggiore efficienza e un’esperienza d’uso più soddisfacente per i clienti.
 
-            In particolare, il miglioramento si traduce nell’ottimizzazione delle funzionalità attuali e nell’ampliamento delle possibilità offerte dal sistema, senza la necessità di modificare o sostituire l’hardware esistente. Questo approccio consente di massimizzare il valore del prodotto, andando incontro alle crescenti aspettative degli utenti e mantenendo un vantaggio competitivo sul mercato.
-
-    In questo contesto, la struttura dati B-Tree rappresenta una soluzione promettente per migliorare le prestazioni dei \ac{FS}, grazie alla sua capacità di organizzare e recuperare i dati in modo efficiente.
-
-    Tuttavia, l’applicazione del B-Tree ai \ac{FS} per piattaforme \ac{IoT} rimane un campo relativamente poco esplorato e complesso nella sua realizzazione.
-    La presente Tesi si propone di colmare questa lacuna attraverso lo studio e la realizzazione di un prototipo di \ac{FS} basato sul B-Tree.
-
-    L’obiettivo è dimostrare come questa struttura dati possa essere utilizzata per ottimizzare le operazioni di memorizzazione e recupero dei dati, migliorando al contempo l’efficienza complessiva del sistema.
+            In particolare, il miglioramento si traduce nell’ottimizzazione delle funzionalità attuali e nell’ampliamento delle possibilità offerte dal sistema, lavorando direttamente sul software. Questo approccio consente di massimizzare il valore del prodotto, andando incontro alle crescenti aspettative degli utenti e mantenendo un vantaggio competitivo sul mercato.
 
     \section{Struttura della Tesi}
 
@@ -114,7 +108,7 @@ Optional. Max a few lines.
         Il secondo capitolo si concentra sulla progettazione e sull’implementazione del prototipo di \ac{FS}.
         Vengono descritte le scelte effettuate durante il processo di sviluppo e spiegato come il B-Tree sia stato utilizzato per soddisfare le esigenze specifiche della piattaforma IOtto.
 
-        Infine, il terzo capitolo discute i risultati ottenuti dalla valutazione del prototipo. Vengono inoltre presentate le conclusioni tratte dallo studio e delineate le possibili direzioni per future modifiche e sviluppi in questo campo.
+        Infine, il terzo capitolo discute i risultati ottenuti dalla valutazione del prototipo. Vengono inoltre presentate le conclusioni tratte dallo studio e delineate le possibili direzioni per future modifiche e sviluppi relativi al prodotto.
 
 \chapter{State of the art}
 
@@ -127,38 +121,100 @@ I suggest referencing stuff as follows: \cref{fig:random-image} or \Cref{fig:ran
 %     \label{fig:random-image}
 % \end{figure}
 
-\section{Onit e IOtto}
+    \section{L'Internet of Things}
 
-\section{File System nell'IoT}
+        Il concetto di Internet of Things, o in italiano Internet delle Cose, rappresenta un'evoluzione nell'utilizzo della rete Internet, in cui gli oggetti, o "cose", diventano riconoscibili e acquisiscono la capacità di comunicare dati attraverso la rete e di accedere a informazioni aggregate da altre fonti.
 
-    \begin{quote}
-        In genere, i dispositivi IoT hanno capacità di archiviazione dei dati limitate. Per questo motivo, la maggior parte dei dati acquisiti viene trasmessa utilizzando protocolli di comunicazione come MQTT o CoAP, per essere poi elaborata e archiviata. Ma non è questo il problema principale.
+        Uno dei primi utilizzi di questo termine risale al 2001, in un documento del centro Auto-ID relativo alla creazione del network EPC, concepito per tracciare automaticamente il flusso di beni nella catena di fornitura.
 
-        Quando si tratta dei dati dell’IoT, si parla della necessità di gestire dati eterogenei, di trasformarli, aggregarli, analizzarli e integrarli per renderli pronti alle fasi successive di analisi, mantenendone nel contempo integrità e riservatezza e senza compromettere né le prestazioni di sistema, né l’affidabilità, né la scalabilità, né la flessibilità e, ancor più, senza aggravi significativi sui costi.
-        \cite{sowa2014}
-    \end{quote}
+        Tuttavia, non esiste un'origine univoca o un creatore effettivo del termine, poiché il concetto si è sviluppato progressivamente attraverso contributi di diversi ricercatori e innovatori nell'arco di tempo che va dai primi anni '90 fino al 2010.
 
-    \subsection{Eterogeneità}
-        L'ecosistema dell'\ac{IoT} è caratterizzato dalla presenza di numerosi organismi di standardizzazione, ciascuno dei quali contribuisce con un ampio ventaglio di norme e protocolli che spesso si sovrappongono o risultano in conflitto tra loro.
+        \subparagraph*{}
 
-        Questa diversità si riflette nei dati acquisiti dai dispositivi \ac{IoT}, che vengono prodotti in una combinazione di formati, inclusi dati strutturati, semi-strutturati e non strutturati, generando ulteriori complessità.
+        Gli oggetti connessi, che costituiscono il cuore pulsante dell’\ac{IoT}, sono definiti "oggetti intelligenti" (Smart Objects) e si caratterizzano per proprietà distintive come la capacità di identificarsi, connettersi, localizzarsi, elaborare dati e interagire con l'ambiente circostante.
 
-        L'eterogeneità nei formati e nei protocolli non si limitano alla fase di acquisizione, ma hanno un impatto diretto anche nelle fasi di archiviazione, complicando la gestione dei dati nei sistemi di storage.
+        Attraverso tecnologie come le etichette RFID (Identificazione a radiofrequenza) o i codici QR, questi oggetti e luoghi possono comunicare informazioni tramite la rete o dispositivi mobili.
 
-        Così come non possiamo pensare di risolvere la gestione dei dati \ac{IoT} come avremmo fatto con un data warehouse negli anni '90, dobbiamo cercare nuove soluzioni per gestire i differenti tipi di dati e la mole di quest'ultimi.
+        \subparagraph*{}
 
-        In molti casi, è opportuno archiviare non il dato grezzo, bensì il dato già elaborato, soprattutto in tutti quegli scenari nei quali i dati stessi devono essere analizzati più di una volta.
+        L'obiettivo principale dell’\ac{IoT} risulta essere dunque il tentativo di creare una mappatura elettronica del mondo fisico, attribuendo un’identità digitale agli oggetti e ai luoghi che lo compongono.
 
-\section{B-Tree}
+        \subparagraph*{}
 
-    Citando
-    \begin{quote}
-        B-trees are balanced search trees designed to work well on disk drives or other direct-access secondary storage devices. B-trees are similar to red-black trees, but they are better at minimizing the number of operations that access disks.
-    \end{quote}
+        Sono nati inoltre organizzazioni come EPCglobal e Open Geospatial Consortium (o OGC) che lavorano per creare standard globali per la visibilità dei dati e l’utilizzo di sensori connessi via Web.
 
-\section{B-Tree nella realizzazione dei File System}
+        \subparagraph*{}
 
-\section{Some cool topic}
+        In conclusione, le applicazioni dell’\ac{IoT} sono molteplici e variano dai processi industriali alla logistica, dalla logistica all’efficienza energetica, fino all’assistenza remota e alla salvaguardia ambientale.
+
+        \cite{uckelmann2011architecting}\cite{hersent2011internet}\cite{chaouchi2013internet}
+
+    \section{File System}
+
+        Tutti i processi e le applicazioni informatiche necessitano di archiviare e recuperare informazioni, ed è possibile, durante la loro esecuzione di memorizzare una quantità limitata di informazioni all'interno del proprio spazio di indirizzamento.
+
+        Questo metodo di gestione dei dati però non viene sprovvisto di problematiche:
+
+        \begin{itemize}
+            \item Capacità limitata, in quanto lo spazio di indirizzamento virtuale limita la quantità di dati archiviabili, rendendolo inadeguato per applicazioni che richiedono un'ampia archiviazione di dati, come sistemi bancari o database.
+            \item Le informazioni memorizzate nello spazio di indirizzamento di un processo sono altamente volatili e vengono perse al termine del processo stesso.
+            \item Non è permesso l'accesso concorrente. Spesso è necessario che più processi possano accedere contemporaneamente alle stesse informazioni, ma il confinamento dei dati all'interno di un unico processo lo impedisce.
+        \end{itemize}
+
+        Per rispondere a queste sfide, l'archiviazione a lungo termine richiede il rispetto di tre requisiti fondamentali:
+
+        \begin{itemize}
+            \item La possibilità di memorizzare grandi quantità di informazioni.
+            \item La persistenza delle informazioni, anche dopo la terminazione del processo.
+            \item L'accesso simultaneo ai dati da parte di più processi.
+        \end{itemize}
+
+        Per affrontare queste problematiche, è stato sviluppato il concetto di File System, una componente fondamentale dei sistemi informatici progettata per permettere la gestione completa dei dati, inclusa la loro creazione, modifica, archiviazione e recupero all'interno di un sistema.
+
+        Un file system, al suo livello più alto, fornisce dunque un modo organizzato per archiviare, recuperare e gestire informazioni su supporti di archiviazione permanenti come i dischi. Esistono diversi approcci alla gestione dell'archiviazione permanente, poiché il problema è ampio e offre numerose soluzioni possibili.
+
+    \section{Categorizzazione dei File System}
+
+        I file system possono essere suddivisi in diverse categorie in base a specifiche caratteristiche, tra cui il livello di organizzazione gerarchica. Di seguito, analizziamo due tipologie principali di file system in relazione alla loro struttura gerarchica.
+
+        \subsection{Single-Level Directory Systems}
+        Questo tipo di file system rappresenta la forma più basilare e semplice di organizzazione dei dati.
+
+        Consiste in una singola directory, spesso denominata root, che contiene tutti i file del sistema.
+
+        Non esistono ulteriori livelli o sottodirectory: tutti i file sono archiviati in un unico spazio condiviso.
+
+        L'approccio a livello unico offre alcuni vantaggi distinti. In primo luogo, la semplicità della struttura lo rende facile da implementare e utilizzare, poiché non sono necessari meccanismi complessi per navigare tra directory o sottodirectory. Inoltre, la localizzazione dei file è immediata, poiché tutto è contenuto all'interno di una singola cartella, rendendo inutile un sistema di ricerca avanzato.
+
+        Tuttavia, questo modello ha limitazioni significative, soprattutto per applicazioni più complesse o ambienti che richiedono la gestione di un gran numero di file.
+
+        Per questo motivo, i sistemi a directory singola sono utilizzati principalmente in dispositivi embedded o sistemi con esigenze limitate, come fotocamere digitali, lettori MP3 o dispositivi elettronici di consumo di base. In tali contesti, la semplicità e la leggerezza dell'architettura superano le necessità di una maggiore organizzazione.
+
+        \subsection{Hierarchical Directory Systems}
+        A differenza del modello a singolo livello, i sistemi a directory gerarchica sono progettati per rispondere alle esigenze dei moderni ambienti informatici, caratterizzati dalla gestione di grandi volumi di dati e file.
+
+        In questo tipo di file system, è possibile creare una struttura organizzata composta da directory e sottodirectory. Questa struttura consente di suddividere i file in categorie o gruppi logici, favorendo una gestione più efficiente e un accesso più rapido alle informazioni.
+
+        L'organizzazione gerarchica risulta particolarmente utile quando il sistema deve gestire elevate quantità di file. La possibilità di classificare i file in directory dedicate consente di mantenere ordine e chiarezza, riducendo la complessità che deriverebbe dall'avere tutto in un'unica directory.
+
+        Un ulteriore vantaggio di questo approccio emerge nei contesti multiutente, dove più utenti condividono lo stesso file server. In questi casi, ogni utente può disporre di una directory root personale, che funge da punto di partenza per una gerarchia dedicata. Questa configurazione garantisce non solo la separazione dei dati tra gli utenti, ma anche un livello di personalizzazione che si adatta alle esigenze individuali.
+
+    \paragraph*{}
+
+        In conclusione, mentre i sistemi a livello singolo sono ideali per applicazioni semplici e specifiche, i sistemi gerarchici rappresentano una soluzione robusta e scalabile per ambienti complessi e moderni.
+
+    \paragraph*{}
+
+        f
+
+    \section{B-Tree}
+
+        Citando
+        \begin{quote}
+            B-trees are balanced search trees designed to work well on disk drives or other direct-access secondary storage devices. B-trees are similar to red-black trees, but they are better at minimizing the number of operations that access disks.
+        \end{quote}
+
+    \section{B-Tree nella realizzazione dei File System}
 
 \chapter{Contribution}
 
