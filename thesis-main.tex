@@ -78,6 +78,7 @@ Optional. Max a few lines.
         In particolare, il lavoro si concentra sulla progettazione e realizzazione di un prototipo alternativo al sistema preesistente, con l'intento non solo di mantenere le prestazioni attuali, ma, ove possibile, di migliorarle.
 
         \subsection{Domande}
+        \label{subsec:Domande}
 
             \begin{itemize}
                 \item Quali tipi di dati devono essere memorizzati e gestiti?
@@ -111,15 +112,6 @@ Optional. Max a few lines.
         Infine, il terzo capitolo discute i risultati ottenuti dalla valutazione del prototipo. Vengono inoltre presentate le conclusioni tratte dallo studio e delineate le possibili direzioni per future modifiche e sviluppi relativi al prodotto.
 
 \chapter{State of the art}
-
-I suggest referencing stuff as follows: \cref{fig:random-image} or \Cref{fig:random-image}
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=.8\linewidth]{figures/random-image.pdf}
-%     \caption{Some random image}
-%     \label{fig:random-image}
-% \end{figure}
 
     \section{L'Internet of Things}
 
@@ -180,31 +172,49 @@ I suggest referencing stuff as follows: \cref{fig:random-image} or \Cref{fig:ran
 
         I file system possono essere suddivisi in diverse categorie in base a specifiche caratteristiche, tra cui il livello di organizzazione gerarchica. Di seguito, analizziamo due tipologie principali di file system in relazione alla loro struttura gerarchica.
 
+
         \subsection{Single-Level Directory Systems}
 
-            Questo tipo di file system rappresenta la forma più basilare e semplice di organizzazione dei dati.
-
-            Consiste in una singola directory, spesso denominata root, che contiene tutti i file del sistema.
+            Questo tipo di file system rappresenta la forma più basilare e semplice di organizzazione dei dati. Consiste in una singola directory, spesso denominata root, che contiene tutti i file del sistema.
 
             Non esistono ulteriori livelli o sottodirectory: tutti i file sono archiviati in un unico spazio condiviso.
 
+            \begin{figure}
+                \centering
+                \includegraphics[width=.3\linewidth]{figures/SingleDirSystem.png}
+                \caption{Esempio di Single Level Directory System}
+                \label{fig:random-image}
+            \end{figure}
+
+            \paragraph*{}
+
             L'approccio a livello unico offre alcuni vantaggi distinti. In primo luogo, la semplicità della struttura lo rende facile da implementare e utilizzare, poiché non sono necessari meccanismi complessi per navigare tra directory o sottodirectory. Inoltre, la localizzazione dei file è immediata, poiché tutto è contenuto all'interno di una singola cartella, rendendo inutile un sistema di ricerca avanzato.
 
-            Tuttavia, questo modello ha limitazioni significative, soprattutto per applicazioni più complesse o ambienti che richiedono la gestione di un gran numero di file.
+            Tuttavia, questo modello ha limitazioni significative, soprattutto per applicazioni più complesse o ambienti che richiedono la gestione di un elevato numero di file.
 
-            Per questo motivo, i sistemi a directory singola sono utilizzati principalmente in dispositivi embedded o sistemi con esigenze limitate, come fotocamere digitali, lettori MP3 o dispositivi elettronici di consumo di base. In tali contesti, la semplicità e la leggerezza dell'architettura superano le necessità di una maggiore organizzazione.
+            Per questo motivo, i sistemi a directory singola sono utilizzati principalmente in dispositivi embedded o sistemi con esigenze limitate, come fotocamere digitali o dispositivi elettronici di consumo basilari. In tali contesti, la semplicità e la leggerezza dell'architettura superano le necessità di una maggiore organizzazione.
 
         \subsection{Hierarchical Directory Systems}
 
             A differenza del modello a singolo livello, i sistemi a directory gerarchica sono progettati per rispondere alle esigenze dei moderni ambienti informatici, caratterizzati dalla gestione di grandi volumi di dati e file.
 
+            
             In questo tipo di file system, è possibile creare una struttura organizzata composta da directory e sottodirectory. Questa struttura consente di suddividere i file in categorie o gruppi logici, favorendo una gestione più efficiente e un accesso più rapido alle informazioni.
+            
+            \paragraph*{}
+            
+            \begin{figure}
+                \centering
+                \includegraphics[width=.5\linewidth]{figures/MultipleDirSystem.png}
+                \caption{Esempio di Hierarchical Directory System}
+                \label{fig:random-image}
+            \end{figure}
 
             L'organizzazione gerarchica risulta particolarmente utile quando il sistema deve gestire elevate quantità di file. La possibilità di classificare i file in directory dedicate consente di mantenere ordine e chiarezza, riducendo la complessità che deriverebbe dall'avere tutto in un'unica directory.
 
             Un ulteriore vantaggio di questo approccio emerge nei contesti multiutente, dove più utenti condividono lo stesso file server. In questi casi, ogni utente può disporre di una directory root personale, che funge da punto di partenza per una gerarchia dedicata. Questa configurazione garantisce non solo la separazione dei dati tra gli utenti, ma anche un livello di personalizzazione che si adatta alle esigenze individuali.
 
-        \paragraph*{}
+            \paragraph*{}
 
             In conclusione, mentre i sistemi a livello singolo sono ideali per applicazioni semplici e specifiche, i sistemi gerarchici rappresentano una soluzione robusta e scalabile per ambienti complessi e moderni.
 
@@ -224,21 +234,172 @@ I suggest referencing stuff as follows: \cref{fig:random-image} or \Cref{fig:ran
 
         \begin{itemize}
             \item Linked List: una sequenza di nodi collegati tra loro, in cui ogni nodo contiene un riferimento al nodo successivo.
+            \begin{figure} [h]
+                \centering
+                \includegraphics[width=.4\linewidth]{figures/LinkedList.png}
+                \caption{Esempio di Linked List}
+                \label{fig:linked-list}
+            \end{figure}
             \item Array: una collezione di elementi disposti in una sequenza lineare, in cui ogni elemento è accessibile tramite un indice numerico.
+            \begin{figure} [h]
+                \centering
+                \includegraphics[width=.3\linewidth]{figures/Array.png}
+                \caption{Esempio di Array}
+                \label{fig:array}
+            \end{figure}
             \item Tree: una struttura gerarchica composta da nodi collegati tra loro, in cui ogni nodo può avere uno o più nodi figli.
+            \begin{figure} [h]
+                \centering
+                \includegraphics[width=.2\linewidth]{figures/Tree.png}
+                \caption{Esempio di Tree}
+                \label{fig:generic-tree}
+            \end{figure}
             \item Hash Table: una struttura dati che associa chiavi a valori, consentendo un accesso rapido e diretto ai dati.
+            \begin{figure} [h]
+                \centering
+                \includegraphics[width=.15\linewidth]{figures/HashTable.png}
+                \caption{Esempio di Hash Table}
+                \label{fig:hash-table}
+            \end{figure}
         \end{itemize}
+
+        \cite{cormen2022introduction}
+
+    \section{Strutture Dati Basate sui Tree}
+
+        Le strutture dati come Linked List e Array sono strumenti potenti per rappresentare relazioni lineari, dove gli elementi sono disposti in una sequenza.Tuttavia, non tutte le relazioni nel mondo reale sono lineari.
+
+        Molti problemi richiedono la rappresentazione di relazioni gerarchiche o ramificate, dove un elemento può essere connesso a più elementi in modo non sequenziale.
+
+        \paragraph*{}
+
+        Un Tree è una struttura dati non lineare composta da nodi collegati tra loro in modo gerarchico.
+
+        Ogni albero ha un Nodo Radice denominato Root da cui partono uno o più Nodi denominati Figli, e ogni Figlio può a sua volta avere altri Figli, formando una struttura ramificata.
+
+        \paragraph*{}
+
+        In questo capitolo esploreremo le principali tipologie di alberi, le loro caratteristiche, i vantaggi e gli svantaggi.
+
+        \subsection{Binary Trees}
+
+            Un Binary Tree è la variante più basilare dei Tree in cui ogni nodo può avere al massimo due Figli, chiamati Figlio Sinistro e Figlio Destro, ed è rappresentato tramite tre attributi per nodo: `Key` (Il Valore), `Left` (Figlio Sinistro) e `Right` (Figlio Destro).
+
+            Questa struttura è semplice, versatile e ampiamente utilizzata per realizzare strutture dati più avanzate.
+
+            \paragraph*{}
+
+            Un Binary Tree risulta essere semplice, efficiente e flessibile, ma può risultare inefficiente in caso di sbilanciamento e non è adatto a rappresentare relazioni con più di due figli.
+
+        \subsection{Binary Search Trees}
+
+            Un Binary Search Tree è un tipo di Binary Tree in cui ogni nodo rispetta un ordine: il valore del nodo è maggiore di tutti i valori nel suo sottoalbero sinistro e minore di tutti quelli nel sottoalbero destro.
+
+            \paragraph*{}
+
+            Questa struttura è utile per operazioni efficienti di ricerca, inserimento e cancellazione, e mantiene i nodi ordinati, semplificando operazioni come la ricerca del minimo o del massimo.
+
+            \paragraph*{}
+
+            Tuttavia, se l'albero non è bilanciato, può degenerare in una lista collegata perdendo così tutti i suoi benefici.
+
+        \subsection{Balanced Trees}
+            I Balanced Trees, come AVL e Red-Black, sono Binary Search Trees che mantengono l'altezza logaritmica rispetto al numero di nodi per garantire efficienza.
+
+            \paragraph*{}
+
+            Sia gli AVL che i Red-Black Trees utilizzano algoritmi e regole specifiche per mantenere l'equilibrio.
+
+            \paragraph*{}
+
+            Entrambi offrono prestazioni garantite come ricerca, inserimento e cancellazione in tempi brevi, rendendoli ideali per applicazioni che richiedono velocità e prevedibilità.
+
+            Tuttavia, la gestione del bilanciamento richiede algoritmi più complessi rispetto ai BST standard, con un maggiore overhead computazionale dovuto alle operazioni di bilanciamento.
+
+        \subsection{N-ary Trees}
+
+            Un N-ary Tree è una generalizzazione dei Binary Trees in cui ogni nodo può avere fino a N Figli, con N come costante.
+
+            \paragraph*{}
+
+            Può essere rappresentato tramite array o liste di puntatori ai figli ed è utile per relazioni con un numero fisso di figli, come negli alberi di decisione nei giochi di scacchi.
+
+            \paragraph*{}
+
+            Il problema principale con gli N-ary Tree è la scelta del valore di N.
+
+            Se il valore è troppo piccolo, le operazioni risultano efficienti, ma può verificarsi uno spreco di memoria quando molti nodi hanno meno di N figli, e la struttura risulta rigida per relazioni con un numero variabile di figli.
+
+            Mentre se il valore è troppo grande, la struttura tende a diventare troppo simile ad una Linked List, con un aumento della complessità computazionale.
+
+        \cite{cormen2022introduction}
 
     \section{B-Tree}
 
-        Citando
-        \begin{quote}
-            B-trees are balanced search trees designed to work well on disk drives or other direct-access secondary storage devices. B-trees are similar to red-black trees, but they are better at minimizing the number of operations that access disks.
-        \end{quote}
+        Un B-Tree è un Balanced Search Tree progettato per mantenere i dati ordinati e permettere operazioni di ricerca, inserimento e cancellazione in tempo logaritmico.
 
-    \section{B-Tree nella realizzazione dei File System}
+        A differenza di altri Balanced Trees come i Red-Black Trees, i B-Tree sono ottimizzati per ridurre al minimo il numero di accessi al disco, rendendoli ideali per applicazioni che gestiscono grandi quantità di dati su dispositivi di memorizzazione secondaria.
 
-\chapter{Contribution}
+        \paragraph*{}
+
+        Indicando con \( n \) il numero massimo di Nodi Figli a cui un Nodo può puntare, un B-Tree ha le seguenti proprietà:
+
+        \begin{itemize}
+            \item Il numero massimo di Chiavi per Nodo è \( n - 1 \).
+            \item Il Nodo Root è o un Nodo Foglia o un Nodo Interno con un numero di Figli compreso tra \( 2 \) e \( n \) e un numero di chiavi compreso tra \( 1 \) e \( n - 1 \).
+            \item Tutti gli altri Nodi Interni hanno un numero di Figli compreso tra \( n / 2 \) e \( n \).
+            \item Tutte le Foglie si trovano alla stessa profondità.
+        \end{itemize}
+
+        Queste proprietà garantiscono che il B-Tree rimanga bilanciato, mantenendo un'altezza relativamente bassa anche con un grande numero di elementi.
+
+\chapter{Design and Implementation}
+
+    \section{Progettazione}
+
+        Riprendendo l'elenco di domande poste precedentemente in \cref{subsec:Domande} come base di partenza, la progettazione si è basata sul cercare di trovare una soluzione a tutte le domande elencate.
+
+        La prima domanda che ci siamo trovati ad affrontare è stata quella relativa ai tipi di dati da memorizzare e gestire, che ci ha portato davanti al problema dell'Eterogeneità dei Dati.
+
+        L'ecosistema dell'\ac{IoT} è caratterizzato dalla presenza di numerosi organismi di standardizzazione, ciascuno dei quali contribuisce con un ampio ventaglio di norme e protocolli che spesso si sovrappongono o risultano in conflitto tra loro.
+
+        Questa diversità si riflette nei dati acquisiti dai dispositivi \ac{IoT}, che vengono prodotti in una combinazione di formati, inclusi dati strutturati, semi-strutturati e non strutturati, generando ulteriori complessità.
+
+        L'eterogeneità nei formati e nei protocolli non si limitano alla fase di acquisizione, ma hanno un impatto diretto anche nelle fasi di archiviazione, complicando la gestione dei dati nei sistemi di storage.
+
+        Per ovviare a ciò nella piattaforma veniva usato un sistema di storage basato su file system tradizionali, che non era in grado di gestire in modo efficiente la varietà di dati prodotti dai dispositivi \ac{IoT}.
+
+        \subsection{Requisiti}
+
+            \begin{itemize}
+                \item Il \ac{FS} deve essere in grado di gestire grandi quantità di dati.
+                \item Il \ac{FS} deve garantire un accesso rapido ai dati.
+                \item Il \ac{FS} deve essere strutturalmente solido e affidabile.
+                \item Il \ac{FS} deve essere ottimizzato per l'allocazione spazio.
+                \item Il \ac{FS} deve essere scalabile per gestire un numero crescente di dispositivi IoT.
+                \item Il \ac{FS} deve prevedere meccanismi di backup e snapshot per i dati.
+                \item Il \ac{FS} deve garantire la coerenza dei dati in caso di guasti hardware o interruzioni di alimentazione.
+            \end{itemize}
+
+        \subsection{Architettura}
+
+            Il prototipo di \ac{FS} è basato sulla struttura dati B-Tree, progettato per garantire un'efficienza ottimale nella gestione dei dati.
+
+            La struttura del B-Tree consente di mantenere i dati ordinati e di effettuare operazioni di ricerca, inserimento e cancellazione in tempo logaritmico, garantendo prestazioni elevate e una gestione efficiente delle risorse.
+
+            \paragraph*{}
+
+            Il prototipo è composto da tre componenti principali:
+
+            \begin{itemize}
+                \item \textbf{B-Tree}: la struttura dati principale che gestisce l'organizzazione e la memorizzazione dei dati.
+                \item \textbf{File System Interface}: l'interfaccia che consente alle applicazioni di interagire con il \ac{FS} per accedere, modificare e gestire i dati.
+                \item \textbf{Storage Layer}: il livello di archiviazione che si occupa di memorizzare fisicamente i dati su disco.
+            \end{itemize}
+
+            \paragraph*{}
+
+            La progettazione del prototipo si basa su un approccio modulare e scalabile, che consente di estendere e adattare il sistema alle esigenze
 
 You may also put some code snippet (which is NOT float by default), eg: \cref{lst:random-code}.
 
