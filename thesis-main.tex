@@ -60,6 +60,7 @@ Optional. Max a few lines.
 %----------------------------------------------------------------------------------------
 
     \section{Background}
+    \label{sec:background}
 
         \subsection{Onit}
         \subsection{IOtto}
@@ -183,7 +184,7 @@ Optional. Max a few lines.
                 \centering
                 \includegraphics[width=.3\linewidth]{figures/SingleDirSystem.png}
                 \caption{Esempio di Single Level Directory System}
-                \label{fig:random-image}
+                \label{fig:single-level-directory}
             \end{figure}
 
             \paragraph*{}
@@ -207,7 +208,7 @@ Optional. Max a few lines.
                 \centering
                 \includegraphics[width=.5\linewidth]{figures/MultipleDirSystem.png}
                 \caption{Esempio di Hierarchical Directory System}
-                \label{fig:random-image}
+                \label{fig:hierarchical-directory}
             \end{figure}
 
             L'organizzazione gerarchica risulta particolarmente utile quando il sistema deve gestire elevate quantità di file. La possibilità di classificare i file in directory dedicate consente di mantenere ordine e chiarezza, riducendo la complessità che deriverebbe dall'avere tutto in un'unica directory.
@@ -355,19 +356,30 @@ Optional. Max a few lines.
 
 \chapter{Design and Implementation}
 
-    \section{Progettazione}
+    \section{Analisi}
 
-        Riprendendo l'elenco di domande poste precedentemente in \cref{subsec:Domande} come base di partenza, la progettazione si è basata sul cercare di trovare una soluzione a tutte le domande elencate.
+        Come precedentemente menzionato in \cref{sec:background}, la piattaforma IOtto rappresenta una soluzione IoT progettata per garantire il controllo completo degli impianti e dei macchinari ad essa connessi, ottimizzandone la manutenzione e la gestione energetica all'interno del contesto aziendale.
 
-        La prima domanda che ci siamo trovati ad affrontare è stata quella relativa ai tipi di dati da memorizzare e gestire, che ci ha portato davanti al problema dell'Eterogeneità dei Dati.
+        \paragraph*{}
 
-        L'ecosistema dell'\ac{IoT} è caratterizzato dalla presenza di numerosi organismi di standardizzazione, ciascuno dei quali contribuisce con un ampio ventaglio di norme e protocolli che spesso si sovrappongono o risultano in conflitto tra loro.
+        Tra le numerose funzionalità offerte dal sistema, spiccano quelle relative al monitoraggio e all'analisi dei dati raccolti, operazioni che richiedono un elevato numero di accessi alla memoria fisica del sistema stesso.
 
-        Questa diversità si riflette nei dati acquisiti dai dispositivi \ac{IoT}, che vengono prodotti in una combinazione di formati, inclusi dati strutturati, semi-strutturati e non strutturati, generando ulteriori complessità.
+        Queste funzionalità sono strettamente correlate alla scalabilità del sistema, che varia in base alle esigenze del cliente, con un numero di accessi alla memoria che può oscillare da poche centinaia a diverse decine di migliaia al giorno.
 
-        L'eterogeneità nei formati e nei protocolli non si limitano alla fase di acquisizione, ma hanno un impatto diretto anche nelle fasi di archiviazione, complicando la gestione dei dati nei sistemi di storage.
+        \paragraph*{}
 
-        Per ovviare a ciò nella piattaforma veniva usato un sistema di storage basato su file system tradizionali, che non era in grado di gestire in modo efficiente la varietà di dati prodotti dai dispositivi \ac{IoT}.
+        Il sistema attuale, sebbene sia in grado di gestire volumi elevati di operazioni di lettura e scrittura, non risulta ottimizzato sotto diversi aspetti. Ad esempio, il formato utilizzato per la storicizzazione dei dati, denominato MessagePack, si rivela inefficiente in termini di consumo di risorse, specialmente quando si tratta di memorizzare dati di piccole dimensioni.
+
+        \paragraph*{}
+
+        Un ulteriore punto critico è rappresentato dal sistema di storicizzazione dei dati, basato su una struttura gerarchica tradizionale composta da cartelle e file. Questo approccio comporta tempi di ricerca, inserimento e rimozione che crescono in modo lineare, una caratteristica che, sebbene accettabile per un file system generico, risulta inadeguata per gestire il volume elevato di dati che il sistema potrebbe essere chiamato a gestire.
+
+        \paragraph*{}
+
+        Il software da sviluppare consiste in un prototipo che rappresenta una versione migliorata e ottimizzata dell'attuale file system. L'obiettivo del prototipo è introdurre ottimizzazioni che non alterino la struttura esistente, con particolare attenzione ai processi di gestione e storicizzazione dei dati.
+
+        \subsection{Requisiti Funzionali}
+            
 
         \subsection{Requisiti}
 
@@ -403,7 +415,7 @@ Optional. Max a few lines.
 
 You may also put some code snippet (which is NOT float by default), eg: \cref{lst:random-code}.
 
-\lstinputlisting[float,language=Java,label={lst:random-code}]{listings/HelloWorld.java}
+%%%%% \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/HelloWorld.java}
 
 \section{Fancy formulas here}
 
