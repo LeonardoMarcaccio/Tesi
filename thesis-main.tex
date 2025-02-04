@@ -259,7 +259,7 @@ Optional. Max a few lines.
             \begin{figure} [h]
                 \centering
                 \includegraphics[width=.15\linewidth]{figures/HashTable.png}
-                \caption{Esempio di Hash Table}
+I              \caption{Esempio di Hash Table}
                 \label{fig:hash-table}
             \end{figure}
         \end{itemize}
@@ -379,45 +379,67 @@ Optional. Max a few lines.
         Il software da sviluppare consiste in un prototipo che rappresenta una versione migliorata e ottimizzata dell'attuale file system. L'obiettivo del prototipo è introdurre ottimizzazioni che non alterino la struttura esistente, con particolare attenzione ai processi di gestione e storicizzazione dei dati.
 
         \subsection{Requisiti Funzionali}
-            
-
-        \subsection{Requisiti}
 
             \begin{itemize}
-                \item Il \ac{FS} deve essere in grado di gestire grandi quantità di dati.
-                \item Il \ac{FS} deve garantire un accesso rapido ai dati.
-                \item Il \ac{FS} deve essere strutturalmente solido e affidabile.
-                \item Il \ac{FS} deve essere ottimizzato per l'allocazione spazio.
-                \item Il \ac{FS} deve essere scalabile per gestire un numero crescente di dispositivi IoT.
-                \item Il \ac{FS} deve prevedere meccanismi di backup e snapshot per i dati.
-                \item Il \ac{FS} deve garantire la coerenza dei dati in caso di guasti hardware o interruzioni di alimentazione.
+                \item Il sistema deve supportare un formato di serializzazione che, rispetto a soluzioni esistenti come MessagePack, sia ottimizzato per la gestione di dati di piccole dimensioni.
+                \item È prevista l’implementazione di un sistema di indicizzazione il cui obiettivo è ridurre la complessità computazionale delle varie operazioni, passando da un algoritmo con complessità lineare a uno con complessità logaritmica.
+                \item Il progetto prevede interventi strutturali finalizzati a migliore delle operazioni di ricerca, inserimento e rimozione, migliorando l’efficienza complessiva del sistema e riducendo i tempi di risposta alle richieste.
+                \item Il sistema deve essere progettato per gestire un carico variabile di operazioni. Tale requisito implica che il sistema debba garantire performance costanti, attraverso una scalabilità sia verticale che orizzontale.
+                \item Devono essere implementati meccanismi affidabili per il backup e il ripristino dei dati. Questi meccanismi devono assicurare l’integrità e la disponibilità delle informazioni, minimizzando il rischio di perdita di dati e garantendo un rapido recupero in caso di malfunzionamenti o incidenti.
+                \item Il prototipo sviluppato dovrà integrarsi la struttura attualmente in uso. Tale integrazione deve avvenire senza introdurre impatti negativi sull’architettura esistente, consentendo una transizione fluida e minimizzando eventuali disservizi.
             \end{itemize}
 
-        \subsection{Architettura}
-
-            Il prototipo di \ac{FS} è basato sulla struttura dati B-Tree, progettato per garantire un'efficienza ottimale nella gestione dei dati.
-
-            La struttura del B-Tree consente di mantenere i dati ordinati e di effettuare operazioni di ricerca, inserimento e cancellazione in tempo logaritmico, garantendo prestazioni elevate e una gestione efficiente delle risorse.
-
-            \paragraph*{}
-
-            Il prototipo è composto da tre componenti principali:
+        \subsection{Requisiti Non Funzionali}
 
             \begin{itemize}
-                \item \textbf{B-Tree}: la struttura dati principale che gestisce l'organizzazione e la memorizzazione dei dati.
-                \item \textbf{File System Interface}: l'interfaccia che consente alle applicazioni di interagire con il \ac{FS} per accedere, modificare e gestire i dati.
-                \item \textbf{Storage Layer}: il livello di archiviazione che si occupa di memorizzare fisicamente i dati su disco.
+                \item Per garantire una manutenzione efficace e una facile estendibilità del sistema, è necessario implementare una documentazione esaustiva.
+                \item Viene richiesta una struttura modulare dell’architettura, che consenta di aggiornare o sostituire singoli componenti senza dover riprogettare l’intero sistema.
+                \item L’interoperabilità tra diverse piattaforme è un requisito fondamentale per garantire un’ampia adozione del sistema. La compatibilità con ambienti Linux e Windows, unitamente al supporto per architetture hardware sia x86 che ARM, assicura che il software possa essere implementato in contesti eterogenei.
+                \item Una caratteristica essenziale dell’architettura è la capacità di integrare dinamicamente nuovi nodi di storage in un ambiente di produzione, senza interrompere il servizio.
+                \item Il sistema deve prevedere un livello di configurabilità dei vari parametri, permettendo agli amministratori di ottimizzare il comportamento in funzione delle specifiche esigenze applicative e dei requisiti di performance.
             \end{itemize}
 
-            \paragraph*{}
+    \section{Design}
 
-            La progettazione del prototipo si basa su un approccio modulare e scalabile, che consente di estendere e adattare il sistema alle esigenze
+        L'intera fase di design è avvenuta attraverso un processo iterativo, che ha coinvolto me e il team manager, con l'obiettivo di garantire che il prototipo rispondesse in modo efficace ai requisiti identificati.
 
-You may also put some code snippet (which is NOT float by default), eg: \cref{lst:random-code}.
+        \paragraph*{}
+
+        Dopo alcune ricerche preliminari, abbiamo deciso di utilizzare un B-Tree come struttura dati principale per il prototipo, poiché, sulla base di un'attenta valutazione delle prestazioni attese in scenari reali, esso si è dimostrato particolarmente adatto a gestire grandi volumi di dati garantendo elevate prestazioni.
+
+        Le caratteristiche che hanno reso questa struttura ottimale includono:
+
+        \begin{itemize}
+            \item \textbf{Bilanciamento Automatico}: garantisce complessità O(log n) per ricerche, inserimenti e cancellazioni, anche con dataset in crescita dinamica.
+            \item \textbf{Efficienza nell’I/O su disco}: la struttura ad albero, con nodi di grado elevato, riduce il numero di accessi al disco, cruciale per dataset di dimensioni superiori alla RAM disponibile.
+            \item \textbf{Scalabilità}: capacità di gestire milioni di record senza perdita prestazionale.
+        \end{itemize}
+
+        Un confronto con alternative come i Binary Trees (Soggetti al problema dello Sbilanciamento) o alle Hash Table (Inefficienti in operazioni di Range Query) ha confermato la superiorità del B-Tree nel contesto del progetto.
+
+        Inoltre, l’uso del B-Tree è supportato da letteratura consolidata in ambito di Database Systems, rafforzandone la validità come scelta progettuale, come ad esempio \cite{mostafa2020case}.
+
+        \paragraph*{}
+
+        Per ottimizzare l’uso della memoria e ridurre gli sprechi, è stato implementato un sistema customizzato di serializzazione/deserializzazione binaria, in sostituzione di MessagePack.
+
+        Le motivazioni includono:
+        \begin{itemize}
+            \item \textbf{Controllo Granulare}: la serializzazione manuale ha permesso di definire formati compatti per ogni dato, eliminando metadati superflui, come le Chiavi JSON, e utilizzando tipi a lunghezza fissa dove possibile, ad esempio interi a 32 bit invece di valori variabili.
+            \item \textbf{Riduzione dell’Overhead}: rispetto a MessagePack, il formato custom riduce la dimensione dei dati serializzati, soprattutto grazie all’assenza di header descrittivi.
+            \item \textbf{Flessibilità nelle modifiche}: la struttura binaria è progettata per essere estendibile senza impattare sulla backward compatibility, ad esempio riservando bit per flag futuri.
+        \end{itemize}
+
+
+
+
+        \subsection{Componenti}
+
+            \begin{itemize}
+                \item \textbf{Data Manager}: Questo componente si occupa della gestione dei dati, fornendo funzionalità di lettura, scrittura, ricerca e rimozione. Il Data Manager è progettato per garantire prestazioni elevate e un accesso efficiente ai dati, riducendo al minimo i tempi di ris
+            \end{itemize}
 
 %%%%% \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/HelloWorld.java}
-
-\section{Fancy formulas here}
 
 %----------------------------------------------------------------------------------------
 % BIBLIOGRAPHY
