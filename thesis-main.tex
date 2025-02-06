@@ -431,13 +431,67 @@ I              \caption{Esempio di Hash Table}
         \end{itemize}
 
 
+    \section{Architettura}
+        Il sistema proposto si basa sulla rappresentazione di un intero Dataset all’interno di un singolo file di storicizzazione, strutturato in pagine (page) logicamente organizzate in una gerarchia ad albero. Questo approccio mira a coniugare efficienza nell’accesso ai dati, scalabilità e persistenza, adottando una filosofia simile a quella dei B-tree, ma con ottimizzazioni specifiche per scenari di scrittura sequenziale e query complesse.
 
+        \begin{figure} [h]
+            \centering
+            \includegraphics[width=.5\linewidth]{figures/Prototipo.png}
+I              \caption{Rappresentazione schematica del prototipo}
+            \label{fig:prototipo}
+        \end{figure}
 
         \subsection{Componenti}
 
             \begin{itemize}
-                \item \textbf{Data Manager}: Questo componente si occupa della gestione dei dati, fornendo funzionalità di lettura, scrittura, ricerca e rimozione. Il Data Manager è progettato per garantire prestazioni elevate e un accesso efficiente ai dati, riducendo al minimo i tempi di ris
+                \item \textbf{Boot Page}
+
+                La Boot Page rappresenta il punto di partenza per qualsiasi operazione sul sistema. Contiene metadati critici come informazioni relative allo stato dell'albero e un puntatore alla Root di quest'ultimo.
+
+                \item \textbf{Node Page (e Root Page)}
+
+                Le Node Page incarnano i nodi interni dell’albero di indicizzazione. Ogni Node Page include:
+                \begin{itemize}
+                    \item Una lista ordinata di entry, dove ogni entry associa una chiave a un puntatore.
+                    \item Riferimenti a pagine figlie, permettendo la navigazione verso livelli inferiori.
+                    \item Diversi Metadati locali.
+                \end{itemize}
+
+                \item \textbf{Entry Page}
+
+                Le Entry Page contengono i dati effettivi associati alle chiavi. Ogni entry è strutturata come:
+                \begin{itemize}
+                    \item Identificatore univoco della Key.
+                    \item Riferimenti a le Entry correlate.
+                    \item Una lista dei dati corrispettivi alla specifica Key
+                \end{itemize}
+
             \end{itemize}
+
+    \section{Tecnologie utilizzate}
+
+        Segue ora una breve panoramica delle tecnologie utilizzate per lo sviluppo del prototipo.
+
+        \subsection{Linguaggio di Programmazione}
+
+            La scelta del linguaggio di programmazione è ricaduta su C\#, in quanto è il linguaggio che è già stato usato per il prodotto.
+
+            C\# è un linguaggio versatile e performante, con un'ampia base di utenti e una vasta libreria standard.
+
+            C\# è particolarmente adatto per applicazioni di sistema, grazie alla sua portabilità, alla gestione della memoria automatica e alla robustezza.
+
+        \subsection{Librerie}
+
+            In supporto al linguaggio di programmazione, sono state utilizzate diverse librerie per implementare funzionalità specifiche.
+
+            Oltre alle diverse presenti all'interno della libreria System, per la gestione e realizzazione dei test, è stata utilizzata la libreria BenchmarkDotNet, che offre funzionalità avanzate per la misurazione delle prestazioni e l'analisi dei risultati.
+
+
+
+
+
+
+
 
 %%%%% \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/HelloWorld.java}
 
