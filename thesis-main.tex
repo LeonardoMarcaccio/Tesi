@@ -468,7 +468,32 @@ I              \caption{Rappresentazione schematica del prototipo}
 
             \end{itemize}
 
-    \section{Tecnologie utilizzate}
+        \subsection{Schema UML}
+
+            Il sistema descritto precedentemente è stato modellato in un diagramma UML che ne riflette l’architettura logica e le relazioni tra componenti.
+
+            Un diagramma UML è un tipo di diagramma strutturale che rappresenta un sistema o un processo attraverso una serie di elementi grafici, come classi, interfacce e relazioni.
+
+            \begin{figure} [h]
+                \centering
+                \includegraphics[width=1\linewidth]{figures/UML.png}
+                \caption{Diagramma UML del prototipo}
+                \label{fig:uml}
+            \end{figure}
+
+            Nel nostro diagramma, la classe \textit{BTree} funge da mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
+
+            La classe \textit{BTree} è contiene inoltre riferimenti anche al file di Log il quale conterrà le modifiche di riferimento per i controlli di sicurezza.
+
+            È presente in'oltre una relazione di composiziqone tra la classe \textit{BTree} e la classe \textit{Boot}, che rappresenta la pagina iniziale all'interno del file di sotricizazione.
+
+            La classe \textit{Page} è una classe astratta che rappresenta una generica pagina all'interno del file di storicizzazione, e viene estesa dalle classi \textit{Boot}, \textit{Node} e \textit{Entry}.
+
+            Questa gerarchia favorisce il riuso del codice e l’isolamento delle responsabilità, riducendo l’accoppiamento tra logica di storage e operazioni sull’albero.
+
+            In conclusione, l’adozione del BTree come mediatore centralizza il flusso di controllo, semplificando l’aggiunta di nuove funzionalità, mentre la separazione tra Page e le sue implementazioni favorisce il riuso del codice e l’isolamento delle responsabilità, riducendo l’accoppiamento tra logica di storage e operazioni sull’albero.
+
+    \section{Sviluppo}
 
         Segue ora una breve panoramica delle tecnologie utilizzate per lo sviluppo del prototipo.
 
@@ -482,9 +507,75 @@ I              \caption{Rappresentazione schematica del prototipo}
 
         \subsection{Librerie}
 
-            In supporto al linguaggio di programmazione, sono state utilizzate diverse librerie per implementare funzionalità specifiche.
+            In supporto al linguaggio di programmazione è stato di notevolmente supporto l’impiego di diverse librerie, selezionate per implementare funzionalità specifiche e ottimizzare il flusso di lavoro.
 
-            Oltre alle diverse presenti all'interno della libreria System, per la gestione e realizzazione dei test, è stata utilizzata la libreria BenchmarkDotNet, che offre funzionalità avanzate per la misurazione delle prestazioni e l'analisi dei risultati.
+            In particolare, tra le librerie della famiglia \texttt{System} si evidenziano:
+
+            \begin{itemize}
+                \item \textbf{Gestione dei File Binari:} È stata impiegata la libreria \texttt{System.IO}, che fornisce un insieme di funzionalità avanzate per la lettura e la scrittura di file in formato binario.
+
+                Questo strumento si è rivelato fondamentale per operazioni che richiedono un elevato grado di precisione nella manipolazione dei dati non testuali, garantendo un accesso efficiente e sicuro alle informazioni archiviate.
+
+                \item \textbf{Gestione delle Strutture Dati:} La libreria \texttt{Collections.Generic} è stata utilizzata per sfruttare un’ampia gamma di strutture dati predefinite, quali liste, code e dizionari.
+
+                Queste strutture permettono una gestione dinamica e performante dei dati, facilitando l’implementazione di algoritmi complessi e contribuendo a mantenere l’ottimizzazione delle risorse di sistema.
+            \end{itemize}
+
+
+            Per la gestione e realizzazione dei test, invece si è fatto utilizzo della libreria \texttt{BenchmarkDotNet}.
+
+            Questa libreria è particolarmente apprezzata per le sue funzionalità avanzate nella misurazione delle performance del codice, offrendo strumenti di analisi dettagliata dei risultati.
+
+            Ciò ha permesso di identificare in maniera accurata eventuali colli di bottiglia e di ottimizzare ulteriormente l’efficienza computazionale dell’applicazione.
+
+        \subsection{Strumenti di Sviluppo}
+
+            Per la realizzazione del prototipo, è stato adottato un insieme di strumenti di sviluppo che hanno contribuito significativamente alla qualità e all’efficienza del processo di implementazione. In particolare, si evidenziano:
+
+            \begin{itemize}
+                \item \textbf{Visual Studio}: È stato scelto come ambiente di sviluppo integrato per C\#. Visual Studio offre un ambiente completo e funzionale, caratterizzato da potenti strumenti per il debugging, l’analisi del codice e la gestione dei progetti.
+
+                L’integrazione con altre tecnologie Microsoft ha permesso di accelerare le fasi di codifica e testing, contribuendo in modo determinante alla qualità del software prodotto.
+
+                \item \textbf{Git}: Per il controllo versione del codice, si è fatto ricorso a Git, un sistema distribuito che consente di tracciare tutte le modifiche apportate durante lo sviluppo.
+
+                Git ha facilitato la gestione della cronologia del progetto, permettendo di sperimentare modifiche in modo sicuro e coordinato, e di supportare un lavoro collaborativo efficace all'interno del team.
+
+                \item \textbf{GitHub}: Come piattaforma di hosting per progetti basati su Git, GitHub ha offerto un ambiente collaborativo per la condivisione del codice e la gestione delle versioni.
+            \end{itemize}
+
+            L'integrazione di questi strumenti ha permesso di adottare un approccio allo sviluppo più dinamico e assicurando una gestione ottimale del ciclo di vita del software.
+
+        \section{Sviluppo del Sistema di Serializzazione e Deserializzazione}
+
+            La prima fase dello sviluppo del prototipo ha riguardato la progettazione e l’implementazione di un sistema dedicato alla serializzazione e deserializzazione dei dati.
+
+            L’obiettivo era quello di sostituire il formato MessagePack, attualmente in uso, con un formato binario ottimizzato, capace di ridurre la dimensione dei dati e di semplificare le operazioni di lettura e scrittura.
+
+            In una fase preliminare era già stata affrontata la problematica dell’eterogeneità dei dati attraverso la definizione di un formato univoco per i dati da storicizzare.
+
+            Pertanto, il focus di questa fase si è concentrato sulla riduzione dell’overhead e sul perfezionamento del processo di serializzazione.
+
+            Per raggiungere questi obiettivi sono state adottate le seguenti strategie:
+            \begin{enumerate}
+                \item \textbf{Calcolo della Dimensione degli Elementi:} È stato effettuato un calcolo accurato della dimensione di ogni singolo elemento del pacchetto dati, in modo da poter dimensionare in modo preciso l’allocazione dello spazio su di uno Stream binario.
+                \item \textbf{Utilizzo di Tipi a Lunghezza Fissa:} Dove possibile, sono stati impiegati tipi a lunghezza fissa per rappresentare i dati, standardizzando la codifica e minimizzando l’impatto sullo spazio occupato.
+            \end{enumerate}
+
+            Il risultato di questo approccio è stato la definizione di un formato binario altamente efficiente, capace di ridurre la dimensione complessiva dei dati serializzati di circa il 60\% rispetto a MessagePack, pur mantenendo prestazioni comparabili in termini di tempistiche di lettura e scrittura.
+
+            A dimostrazione dell'efficienza di questo formato è stato condotto un test di benchmarking, che ha confermato la riduzione della dimensione dei dati serializzati e l'ottimizzazione delle prestazioni.
+
+            \begin{figure}
+                \centering
+                \includegraphics[width=1\linewidth]{figures/BenchmarkS-D.jpeg}
+                \caption{Risultati del Benchmarking}
+                \label{fig:serialization}
+            \end{figure}
+
+        
+
+
 
 
 
