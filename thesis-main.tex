@@ -566,23 +566,110 @@ I              \caption{Rappresentazione schematica del prototipo}
 
             A dimostrazione dell'efficienza di questo formato è stato condotto un test di benchmarking, che ha confermato la riduzione della dimensione dei dati serializzati e l'ottimizzazione delle prestazioni.
 
-            \begin{figure}
+            \begin{figure} [h]
                 \centering
                 \includegraphics[width=1\linewidth]{figures/BenchmarkS-D.jpeg}
                 \caption{Risultati del Benchmarking}
                 \label{fig:serialization}
             \end{figure}
 
-        
+        \clearpage
 
+        \section{Realizzazione del Btree}
 
+            La fase successiva dello sviluppo ha riguardato la progettazione e l’implementazione del B-Tree, che costituisce il cuore del prototipo.
 
+            Il primo passo per lo sviluppo è stato il recupero dello pseudocodice che descrive la struttura dati dal libro di testo "Introduction to Algorithms" \cite{rsdcastro_btree_dotnet}.
 
+            Da questa ricerca sono stati ricavati le classi e i metodi necessari per la realizzazione del B-Tree, definendo le interfacce e le relazioni tra i vari componenti.
 
+            Ricavati le caratteristiche principali del B-Tree, si è proceduto con l’implementazione delle classi e dei metodi necessari per la gestione delle operazioni principali, come ricerca, inserimento e cancellazione.
 
+            Come base di partenza per l’implementazione del B-Tree, è stato utilizzato il codice open-source di un B-Tree in C\# "btree-dotnet" \cite{rsdcastro_btree_dotnet}, la quale impleventava lo scheletro delle varie classi e operazioni.
 
+            Purtroppo tale libreria non era adatta alle versioni moderne del linguaggio e presentava degli errori nel sistema di bilanciamento dell'albero nelle fasi di rimozione.
 
+            Per ovviare a questi problemi, è stato necessario apportare delle modifiche significative al codice convalidate successivamente da test di controllo.
 
+            Successivamente sono state sviluppate le Page e le loro corrispettive specializzazioni, BootPage, NodePage e EntryPage.
+
+            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/Page.cs}
+
+            Ogni Page rappresenta nel dettaglio una pagina all'interno del file di storicizzazione, e quindi richiede una serie di caratteristiche specifiche che deve poter rispettare.
+
+            Attributi:
+            \begin{itemize}
+                \item \textbf{ID}: Un identificatore univoco che indica a quale page rappresentaa all'interno del file.
+                \item \textbf{Type}: Identificatore del tipo di Page.
+                \item \textbf{Buffer}: Trascrizione del contenuto della Page sotto froma di array di Byte.
+                \item \textbf{FreePageSize}: Indicatore dello spazio libero all'interno della Page.
+                \item \textbf{IsModified}: Flag di controllo utilizzata dalle funzini di storicizazione.
+            \end{itemize}
+
+            Metodi:
+            \begin{itemize}
+                \item \textbf{Read}: Metodo per la lettura dei dati all'interno del buffer della Page, aggiorna i vari campi della Page.
+                \item \textbf{Write}: Metodo per la scrittura dei dati all'interno della Page all'interno del suo buffer.
+            \end{itemize}
+
+            Successivamente sono state sviluppate le classi specializzate per ogni tipo di Page, ognuna con le proprie caratteristiche e metodi.
+
+            Per prima classe specializzata che è stata sviluppata è la BootPage, che rappresenta il punto di accesso al sistema di Page di un file e si occupa di gestire il riutilizzo degli spazi liberi all'interno del file.
+
+            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BootPage.cs}
+
+            Attributi:
+            \begin{itemize}
+                \item \textbf{LastPageID}: Un indice a qual'è l'ultima page aggiunta alla fine del file.
+                \item \textbf{LastLogVersionID}: Indice di riferimento alla versione del Log del Sistema.
+                \item \textbf{Buffer}: Trascrizione del contenuto della Page sotto froma di array di Byte.
+                \item \textbf{EmptyPageIndexes}: Lista degli indici delle Page vuote all'interno del file che devono essere riempite prima di aggiungere nuove Page al File.
+                \item \textbf{RootPageID}: Indice della Root del nostro albero all'interno del file.
+            \end{itemize}
+
+            Metodi:
+            \begin{itemize}
+                \item \textbf{AddID}: Metodo per l'aggiunta di ID alla lista EmptyPageIdexes.
+                \item \textbf{GetNewPageID}: Metodo per generazione o riutilizo di un PageID.
+                \item \textbf{GetNewLogID}: Metodo per generazione di un nuovo LogID.
+            \end{itemize}
+
+            Successivamente è stata riadattata la classe Node dell'albero sotto forma di Page nella classe NodePage modificandone i metodi e gli attributi.
+            Da questa modifica sono state create due sezioni di codice una dedita alla gestione dei nodi figli e una dedita alle entry contenute nel nodo.
+
+            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/NodePageChildSection.cs}
+
+            La sezione di codice precedente mostra uno scorcio della gestione dei nodi figli all'interno di una NodePage.
+
+            Oltre alle solite operazioni di aggiunta, rimozione e ricerca, è stata implementata una funzione di controllo validità chiamata CheckChildPage.
+
+            Tale funzione tramite controlli mirati permette di verificare la correttezza dei puntatori ai nodi figli, evitando così errori di accesso.
+
+            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/NodePageEntrySection.cs}
+
+            Quest'altra sezione invece mostra il sitema di gestione delle Entry all'interno di una NodePage.
+
+            Che, come nel caso precedente possiede al suo interno una funzione di controllo di validità chiamata CheckEntryPage.
+
+            Infine è stata sviluppata la EntryPage, unità di base dello storage del nostro sistema.
+
+            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/EntryPage.cs}
+
+            Gli elementi più di interesse di questa classe sono le 3 funzioni di gestione delle Data della EntryPage.
+
+            \begin{itemize}
+                \item \textbf{AddData}: Metodo per l'aggiunta di dati all'interno della EntryPage.
+                \item \textbf{SetData}: Metodo che preso una struttura enumerabile per la rimozione di dati all'interno della EntryPage.
+                \item \text{FindPositionToInsert}: Metodo per la ricerca della posizione in cui inserire un nuovo dato all'interno della EntryPage.
+            \end{itemize}
+
+            Come ultima classe del sistema è stata sviluppata la classe BTree, che rappresenta il mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
+
+            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BTreeElementsCreation.cs.cs}
+
+            Questa sezione di codice mostra la creazione degli elementi principali usati dal BTree, come la Root, i Nodi e le Entry dell'albero.
+
+            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BTreeInsert.cs}
 
 %%%%% \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/HelloWorld.java}
 
