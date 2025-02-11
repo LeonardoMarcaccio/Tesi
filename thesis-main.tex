@@ -11,7 +11,6 @@
 \title{B-Tree File System per piattaforme IoT}
 \author{Leonardo Marcaccio}
 \date{\today}
-%TODO Vedi se toglier
 \subject{Supervisor's course name}
 
 \supervisor{Marco Antonio Boschetti}
@@ -122,7 +121,7 @@ Optional. Max a few lines.
 
         Tuttavia, non esiste un'origine univoca o un creatore effettivo del termine, poiché il concetto si è sviluppato progressivamente attraverso contributi di diversi ricercatori e innovatori nell'arco di tempo che va dai primi anni '90 fino al 2010.
 
-        \subparagraph*{}
+        \paragraph*{}
 
         Gli oggetti connessi, che costituiscono il cuore pulsante dell’\ac{IoT}, sono definiti "oggetti intelligenti" (Smart Objects) e si caratterizzano per proprietà distintive come la capacità di identificarsi, connettersi, localizzarsi, elaborare dati e interagire con l'ambiente circostante.
 
@@ -259,7 +258,7 @@ Optional. Max a few lines.
             \begin{figure} [h]
                 \centering
                 \includegraphics[width=.15\linewidth]{figures/HashTable.png}
-I              \caption{Esempio di Hash Table}
+I               \caption{Esempio di Hash Table}
                 \label{fig:hash-table}
             \end{figure}
         \end{itemize}
@@ -430,7 +429,6 @@ I              \caption{Esempio di Hash Table}
             \item \textbf{Flessibilità nelle modifiche}: la struttura binaria è progettata per essere estendibile senza impattare sulla backward compatibility, ad esempio riservando bit per flag futuri.
         \end{itemize}
 
-
     \section{Architettura}
         Il sistema proposto si basa sulla rappresentazione di un intero Dataset all’interno di un singolo file di storicizzazione, strutturato in pagine (page) logicamente organizzate in una gerarchia ad albero. Questo approccio mira a coniugare efficienza nell’accesso ai dati, scalabilità e persistenza, adottando una filosofia simile a quella dei B-tree, ma con ottimizzazioni specifiche per scenari di scrittura sequenziale e query complesse.
 
@@ -522,9 +520,9 @@ I              \caption{Rappresentazione schematica del prototipo}
             \end{itemize}
 
 
-            Per la gestione e realizzazione dei test, invece si è fatto utilizzo della libreria \texttt{BenchmarkDotNet}.
+            Per la gestione e realizzazione dei test, invece si è fatto utilizzo della libreria \texttt{BenchmarkDotNet} e \texttt{XUnit}.
 
-            Questa libreria è particolarmente apprezzata per le sue funzionalità avanzate nella misurazione delle performance del codice, offrendo strumenti di analisi dettagliata dei risultati.
+            La libreria \texttt{BenchmarkDotNet} è particolarmente apprezzata per le sue funzionalità avanzate nella misurazione delle performance del codice, offrendo strumenti di analisi dettagliata dei risultati.
 
             Ciò ha permesso di identificare in maniera accurata eventuali colli di bottiglia e di ottimizzare ulteriormente l’efficienza computazionale dell’applicazione.
 
@@ -546,7 +544,7 @@ I              \caption{Rappresentazione schematica del prototipo}
 
             L'integrazione di questi strumenti ha permesso di adottare un approccio allo sviluppo più dinamico e assicurando una gestione ottimale del ciclo di vita del software.
 
-        \section{Sviluppo del Sistema di Serializzazione e Deserializzazione}
+        \subsection{Sviluppo del Sistema di Serializzazione e Deserializzazione}
 
             La prima fase dello sviluppo del prototipo ha riguardato la progettazione e l’implementazione di un sistema dedicato alla serializzazione e deserializzazione dei dati.
 
@@ -575,103 +573,208 @@ I              \caption{Rappresentazione schematica del prototipo}
 
         \clearpage
 
-        \section{Realizzazione del Btree}
+        \subsection{Realizzazione del Btree}
 
-            La fase successiva dello sviluppo ha riguardato la progettazione e l’implementazione del B-Tree, che costituisce il cuore del prototipo.
+            La fase successiva dello sviluppo ha riguardato la progettazione e la realizzazione del B-Tree, che ha rappresentaTo il nucleo centrale del prototipo sviluppato.
 
-            Il primo passo per lo sviluppo è stato il recupero dello pseudocodice che descrive la struttura dati dal libro di testo "Introduction to Algorithms" \cite{rsdcastro_btree_dotnet}.
+            Questo capitolo descrive le soluzioni implementate per garantire un bilanciamento efficiente tra prestazioni e persistenza dei dati.
 
-            Da questa ricerca sono stati ricavati le classi e i metodi necessari per la realizzazione del B-Tree, definendo le interfacce e le relazioni tra i vari componenti.
+            \subsection{Analisi Preliminare e Riferimenti Teorici}
+                Il processo di sviluppo è iniziato con un'analisi approfondita dello pseudocodice del B-Tree, tratto dal testo accademico *Introduction to Algorithms* \cite{cormen2009introduction}.
 
-            Ricavati le caratteristiche principali del B-Tree, si è proceduto con l’implementazione delle classi e dei metodi necessari per la gestione delle operazioni principali, come ricerca, inserimento e cancellazione.
+                Lo studio ha permesso di comprendere e integrare concetti fondamentali quali:
+                \begin{itemize}
+                    \item Le politiche di Suddivisione(o Splitting) e Fusione (o Merging) dei nodi.
+                    \item Le strategie di ricerca delle chiavi all'interno della struttura.
+                    \item I vincoli tecnici imposti dall'albero per garantire un bilanciamento efficiente.
+                \end{itemize}
 
-            Come base di partenza per l’implementazione del B-Tree, è stato utilizzato il codice open-source di un B-Tree in C\# "btree-dotnet" \cite{rsdcastro_btree_dotnet}, la quale impleventava lo scheletro delle varie classi e operazioni.
+                A partire da questa analisi, sono state identificate le classi e i metodi necessari per la realizzazione del B-Tree, delineando le interfacce e le relazioni tra i vari componenti del sistema.
 
-            Purtroppo tale libreria non era adatta alle versioni moderne del linguaggio e presentava degli errori nel sistema di bilanciamento dell'albero nelle fasi di rimozione.
+                Una volta definite le caratteristiche principali della struttura dati, si è passati alla fase di implementazione.
 
-            Per ovviare a questi problemi, è stato necessario apportare delle modifiche significative al codice convalidate successivamente da test di controllo.
+            \subsection{Implementazione e adattamento del codice}
 
-            Successivamente sono state sviluppate le Page e le loro corrispettive specializzazioni, BootPage, NodePage e EntryPage.
+                In questa fase sono state sviluppate le classi e i metodi necessari per la gestione delle operazioni fondamentali del B-Tree, tra cui ricerca, inserimento e cancellazione delle chiavi, assicurando il rispetto delle proprietà strutturali dell’albero.
 
-            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/Page.cs}
+                Come base per l’implementazione, è stato adottato il codice open-source btree-dotnet \cite{rsdcastro_btree_dotnet}, un’implementazione in C\# che forniva lo scheletro delle classi e delle operazioni principali.
 
-            Ogni Page rappresenta nel dettaglio una pagina all'interno del file di storicizzazione, e quindi richiede una serie di caratteristiche specifiche che deve poter rispettare.
+                Tuttavia, la libreria presentava alcune criticità: non era compatibile con le versioni più recenti del linguaggio e conteneva errori nel meccanismo di bilanciamento dell’albero durante la fase di rimozione.
 
-            Attributi:
-            \begin{itemize}
-                \item \textbf{ID}: Un identificatore univoco che indica a quale page rappresentaa all'interno del file.
-                \item \textbf{Type}: Identificatore del tipo di Page.
-                \item \textbf{Buffer}: Trascrizione del contenuto della Page sotto froma di array di Byte.
-                \item \textbf{FreePageSize}: Indicatore dello spazio libero all'interno della Page.
-                \item \textbf{IsModified}: Flag di controllo utilizzata dalle funzini di storicizazione.
-            \end{itemize}
+                Per superare queste problematiche, è stato necessario apportare modifiche significative al codice, convalidandole successivamente attraverso una serie di test di controllo per garantire la correttezza e la stabilità del sistema.
 
-            Metodi:
-            \begin{itemize}
-                \item \textbf{Read}: Metodo per la lettura dei dati all'interno del buffer della Page, aggiorna i vari campi della Page.
-                \item \textbf{Write}: Metodo per la scrittura dei dati all'interno della Page all'interno del suo buffer.
-            \end{itemize}
+                Per risolvere queste problematiche, è stato necessario intervenire con modifiche sostanziali al codice, verificandone l’affidabilità attraverso una serie di test mirati.
 
-            Successivamente sono state sviluppate le classi specializzate per ogni tipo di Page, ognuna con le proprie caratteristiche e metodi.
+                Questi test hanno garantito la correttezza delle operazioni e la stabilità complessiva del sistema.
 
-            Per prima classe specializzata che è stata sviluppata è la BootPage, che rappresenta il punto di accesso al sistema di Page di un file e si occupa di gestire il riutilizzo degli spazi liberi all'interno del file.
+            \subsection{Implementazione delle Page}
+                Successivamente, si è proceduto allo sviluppo delle Page e delle loro specifiche estensioni: BootPage, NodePage e EntryPage.
 
-            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BootPage.cs}
+                \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/Page.cs}
 
-            Attributi:
-            \begin{itemize}
-                \item \textbf{LastPageID}: Un indice a qual'è l'ultima page aggiunta alla fine del file.
-                \item \textbf{LastLogVersionID}: Indice di riferimento alla versione del Log del Sistema.
-                \item \textbf{Buffer}: Trascrizione del contenuto della Page sotto froma di array di Byte.
-                \item \textbf{EmptyPageIndexes}: Lista degli indici delle Page vuote all'interno del file che devono essere riempite prima di aggiungere nuove Page al File.
-                \item \textbf{RootPageID}: Indice della Root del nostro albero all'interno del file.
-            \end{itemize}
+                La classe Page rappresenta una pagina di memoria persistente, un elemento tipico dei sistemi di storage su file, come quelli utilizzati nei database. Questa classe è progettata per rispettare una serie di caratteristiche fondamentali, indispensabili per garantire la corretta gestione dei dati.
 
-            Metodi:
-            \begin{itemize}
-                \item \textbf{AddID}: Metodo per l'aggiunta di ID alla lista EmptyPageIdexes.
-                \item \textbf{GetNewPageID}: Metodo per generazione o riutilizo di un PageID.
-                \item \textbf{GetNewLogID}: Metodo per generazione di un nuovo LogID.
-            \end{itemize}
+                Attributi:
+                \begin{itemize}
+                    \item \textbf{ID}: Un identificatore univoco che indica a quale page rappresentaa all'interno del file.
+                    \item \textbf{Type}: Un codice identificativo che specifica il tipo della pagina, distinguendo le varie specializzazioni.
+                    \item \textbf{Buffer}: Un array di byte che contiene il contenuto memorizzato nella pagina.
+                    \item \textbf{FreePageSize}: Un indicatore della quantità di spazio libero disponibile all'interno della pagina.
+                    \item \textbf{IsModified}: Un flag di controllo che segnala eventuali modifiche apportate alla pagina, fondamentale per le operazioni di storicizzazione e sincronizzazione dei dati.
+                \end{itemize}
 
-            Successivamente è stata riadattata la classe Node dell'albero sotto forma di Page nella classe NodePage modificandone i metodi e gli attributi.
-            Da questa modifica sono state create due sezioni di codice una dedita alla gestione dei nodi figli e una dedita alle entry contenute nel nodo.
+                Metodi:
+                \begin{itemize}
+                    \item \textbf{Read}: Metodo per la lettura dei dati dal buffer della pagina, che aggiorna contestualmente i vari campi per garantire la coerenza delle informazioni.
+                    \item \textbf{Write}: Metodo responsabile della scrittura dei dati nel buffer, assicurando che le modifiche vengano correttamente registrate e mantenute.
+                \end{itemize}
 
-            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/NodePageChildSection.cs}
+            \subsection{Sviluppo della BootPage}
 
-            La sezione di codice precedente mostra uno scorcio della gestione dei nodi figli all'interno di una NodePage.
+                La classe \texttt{BootPage}, introdotta come primo componente specializzato del sistema, funge da interfaccia primaria per la gestione delle pagine all’interno di un file.
 
-            Oltre alle solite operazioni di aggiunta, rimozione e ricerca, è stata implementata una funzione di controllo validità chiamata CheckChildPage.
+                Tale Page inoltre si occupa in modo centrale di orchestrare il riutilizzo degli spazi liberi presenti all’interno del file, garantendo così una gestione efficiente della memoria e un’ottimizzazione delle operazioni di I/O.
 
-            Tale funzione tramite controlli mirati permette di verificare la correttezza dei puntatori ai nodi figli, evitando così errori di accesso.
+                \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BootPage.cs}
 
-            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/NodePageEntrySection.cs}
+                Attributi:
+                \begin{itemize}
+                    \item \textbf{LastPageID}: Un indice che indica l’ultima pagina aggiunta alla fine del file, fungendo da riferimento per l’espansione del file stesso.
+                    \item \textbf{LastLogVersionID}: Un Indice che rappresenta la versione corrente del log del sistema, fondamentale per il tracciamento delle operazioni eseguite.
+                    \item \textbf{Buffer}: Un array di byte che contiene la trascrizione del contenuto della pagina, utilizzato per la lettura e la scrittura dei dati.
+                    \item \textbf{EmptyPageIndexes}: Una lista degli indici relativi alle pagine vuote presenti nel file.
+                    Questi spazi vengono prioritariamente riutilizzati, evitando così la creazione non necessaria di nuove pagine.
+                    \item \textbf{RootPageID}: L'indice della radice del nostro albero, che rappresenta il punto iniziale di riferimento per l’organizzazione delle altre pagine.
+                \end{itemize}
 
-            Quest'altra sezione invece mostra il sitema di gestione delle Entry all'interno di una NodePage.
+                Metodi:
+                \begin{itemize}
+                    \item \textbf{AddID}: Metodo responsabile dell’aggiunta di un nuovo ID alla lista di indici liberi, aggiornando così il set di pagine disponibili per il riutilizzo.
+                    \item \textbf{GetNewPageID}: Metodo che gestisce la generazione di un nuovo PageID.
+                    Se sono presenti pagine vuote (già indicate in \texttt{EmptyPageIndexes}), il metodo ne effettua il riutilizzo.
+                    In assenza di queste, ne viene creato uno nuovo.
+                    \item \textbf{GetNewLogID}: Metodo dedicato alla generazione di un nuovo LogID, aggiornando la versione del log e contribuendo al mantenimento della consistenza del sistema.
+                \end{itemize}
 
-            Che, come nel caso precedente possiede al suo interno una funzione di controllo di validità chiamata CheckEntryPage.
+            \subsection{Sviluppo della NodePage}
 
-            Infine è stata sviluppata la EntryPage, unità di base dello storage del nostro sistema.
+                Successivamente, la classe \texttt{Node} dell'albero è stata riadattata nella forma di Page nella classe \texttt{NodePage}, apportando modifiche sia ai metodi che agli attributi per integrarsi al meglio nel nuovo sistema basato su pagine.
 
-            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/EntryPage.cs}
+                Questa trasformazione ha portato alla suddivisione del codice in due sezioni distinte:
 
-            Gli elementi più di interesse di questa classe sono le 3 funzioni di gestione delle Data della EntryPage.
+                \begin{itemize}
+                    \item \textbf{Gestione dei nodi figli}: La sezione mostrata nel listing \cref{lst:NodePageChildSection} illustra come vengono gestiti i nodi figli all'interno di una \texttt{NodePage}. Oltre alle operazioni classiche di aggiunta, rimozione e ricerca, è stata implementata la funzione di controllo validità \texttt{CheckChildPage}. Questo metodo esegue controlli specifici per verificare la correttezza dei puntatori ai nodi figli, prevenendo così errori di accesso e garantendo la coerenza strutturale.
 
-            \begin{itemize}
-                \item \textbf{AddData}: Metodo per l'aggiunta di dati all'interno della EntryPage.
-                \item \textbf{SetData}: Metodo che preso una struttura enumerabile per la rimozione di dati all'interno della EntryPage.
-                \item \text{FindPositionToInsert}: Metodo per la ricerca della posizione in cui inserire un nuovo dato all'interno della EntryPage.
-            \end{itemize}
+                    \item \textbf{Gestione delle entry}: La sezione rappresentata nel listing \cref{lst:NodePageEntrySection} descrive il sistema di gestione delle entry contenute nella \texttt{NodePage}. Analogamente a quanto avviene per i nodi figli, anche qui è stata integrata una funzione di controllo validità, \texttt{CheckEntryPage}, che verifica l'integrità delle entry e assicura la correttezza dei dati gestiti.
+                \end{itemize}
 
-            Come ultima classe del sistema è stata sviluppata la classe BTree, che rappresenta il mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
+            \lstinputlisting[float,language=csh,label={lst:NodePageChildSection}]{listings/NodePageChildSection.cs}
 
-            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BTreeElementsCreation.cs.cs}
+            \lstinputlisting[float,language=Java,label={lst:NodePageEntrySection}]{listings/NodePageEntrySection.cs}
 
-            Questa sezione di codice mostra la creazione degli elementi principali usati dal BTree, come la Root, i Nodi e le Entry dell'albero.
+            \subsection{Sviluppo della EntryPage}
 
-            \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BTreeInsert.cs}
+                Infine, è stata sviluppata la classe \texttt{EntryPage}, che rappresenta l'unità fondamentale dello storage del sistema.
 
-%%%%% \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/HelloWorld.java}
+                Questa classe è progettata per gestire in maniera efficiente la memorizzazione e la manipolazione dei dati, garantendo che ogni operazione sullo storage venga eseguita in modo ordinato e affidabile.
+
+                \lstinputlisting[float,language=csh,label={lst:random-code}]{listings/EntryPage.cs}
+
+                I principali elementi di interesse di questa classe sono le 3 funzioni di gestione dei dati all'interno della EntryPage.
+
+                \begin{itemize}
+                    \item \textbf{AddData}: Metodo dedicato all'aggiunta di nuovi dati nella \texttt{EntryPage}. Questo metodo assicura che i dati vengano inseriti correttamente all'interno della struttura, aggiornando opportunamente lo stato della pagina.
+                    \item \textbf{SetData}: Metodo che, a partire da una struttura enumerabile, consente la modifica dei dati presenti nella \texttt{EntryPage}.
+                    Questa funzione garantisce che le modifiche vengano applicate in modo coerente e affidabile, mantenendo la consistenza dei dati.
+                    \item \textbf{FindPositionToInsert}: Metodo incaricato di determinare la posizione ottimale in cui inserire un nuovo dato. Questo approccio garantisce una distribuzione equilibrata dei dati all'interno della pagina e contribuisce a ottimizzare l'utilizzo dello spazio disponibile.
+                \end{itemize}
+
+            \subsection{Sviluppo della classe BTree}
+
+                Come ultima classe del sistema è stata sviluppata la classe BTree, che rappresenta il mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
+
+                \paragraph{Creazione degli Elementi del BTree}
+
+                    \lstinputlisting[float,language=csh,label={lst:BTreeElementsCreation}]{listings/BTreeElementsCreation.cs}
+
+                    La precedente sezione di codice illustra come vengono creati gli elementi fondamentali del BTree: la radice, i nodi e le entry, che costituiscono la struttura portante del sistema.
+
+                    \begin{itemize}
+                        \item \textbf{CreateNewRoot}: Crea una nuova radice dell'albero generando una nuova istanza di \texttt{NodePage} con un ID univoco ottenuto dalla BootPage.
+                        Dopo la creazione, aggiorna l'ID della radice nel BootPage e aggiunge quest'ultimo alle collezioni di pagine loggate e bufferizzate.
+                        \item \textbf{CreateNewNode}: Genera un nuovo nodo non radice creando un'istanza di \texttt{NodePage} con un nuovo ID.
+                        Anche in questo caso, il BootPage viene registrato nelle collezioni di log e buffer prima della creazione del nodo.
+                        \item \textbf{CreateNewEntry}: Crea una nuova entry (istanza di \texttt{EntryPage}) per memorizzare una chiave specificata.
+                        Viene ottenuto un nuovo ID dalla BootPage, e il nuovo oggetto viene inizializzato con i parametri necessari, mentre alcuni valori sono impostati su \texttt{null}.
+                        Anche qui, la BootPage viene aggiunta alle strutture di log e buffer.
+                    \end{itemize}
+
+                    Questi metodi garantiscono la corretta generazione e registrazione di nuovi elementi (radice, nodi e entry) all'interno della struttura, mantenendo la coerenza delle collezioni di pagine loggate e bufferizzate.
+
+                \paragraph{Metodi per l'inserimento nel BTree}
+
+                    \lstinputlisting[float,language=csh,label={BTreeInsert}]{listings/BTreeInsert.cs}
+
+                    Questo frammento di codice mostra l'implementazione del metodo di inserimento di un nuovo elemento all'interno del BTree seguendo questi passaggi principali:
+
+                    \begin{itemize}
+                        \item \textbf{Inserimento nella radice non piena}: Se il nodo radice ha ancora spazio, la chiave e i dati vengono inseriti direttamente usando un metodo ricorsivo che, nel caso di nodo foglia, crea una nuova entry, oppure, se il nodo non è foglia, individua il figlio appropriato per continuare l'inserimento.
+                        \item \textbf{Gestione del nodo radice pieno}: Se la radice è piena, viene creata una nuova radice; il vecchio nodo radice viene aggiunto come figlio della nuova radice e suddiviso (split) per mantenere l'equilibrio dell'albero. Successivamente, si procede con l'inserimento ricorsivo nella nuova struttura.
+                        \item \textbf{Aggiornamenti e persistenza}: Dopo ogni inserimento, vengono aggiornati il log, la cache dei nodi modificati e viene eseguita la serializzazione dell'albero per garantire consistenza e persistenza dei dati.
+                    \end{itemize}
+
+                    Questo approccio assicura che l'albero rimanga bilanciato, consentendo operazioni di ricerca e inserimento efficienti.
+
+                \paragraph{Metodi per la rimozione nel BTree}
+
+                    Segue ora una descrizione dei metodi implementati per la rimozione degli elementi dal BTree.
+
+                    \lstinputlisting[float,language=csh,label={BTreeDelete}]{listings/BTreeDelete.cs}
+
+                    Il metodo Delete avvia il primo passo del processo di eliminazione a partire dalla radice dell'albero.
+
+                    Dopo aver eseguito l'eliminazione, verifica se la radice è diventata vuota e non è una foglia; in tal caso, la sostituisce con il suo primo figlio e decrementa l'altezza dell'albero.
+
+                    Successivamente, aggiorna il log, scrive i contenuti dei buffer e serializza la struttura per garantire la persistenza dei dati.
+
+                    \subparagraph*{}
+
+                    \lstinputlisting[float,language=csh,label={BTreeDeleteInternal}]{listings/BTreeDeleteInternal.cs}
+
+                    Il metodo DeleteInternal cerca la posizione della chiave da eliminare nel nodo corrente confrontandola con le chiavi presenti.
+
+                    Se la chiave viene trovata nel nodo, chiama il metodo DeleteKeyFromNode per gestire l'eliminazione.
+
+                    Se il nodo non è una foglia e la chiave non è presente, propaga l'eliminazione al sottoalbero appropriato, corrispondente all'intervallo di chiavi.
+
+                    \subparagraph*{}
+
+                    \lstinputlisting[float,language=csh,label={BTreeDeleteKeyFromNode}]{listings/BTreeDeleteKeyFromNode.cs}
+
+                    Infine, il metodo DeleteKeyFromNode gestisce diversi scenari.
+
+                    Se il nodo è una foglia, rimuove direttamente la chiave.
+
+                    Se è un nodo interno, tenta di sostituire la chiave con il predecessore, la chiave massima del sottoalbero sinistro, se il figlio sinistro ha un numero di elementi maggiore o uguale al grado dell'albero.
+
+                    Se ciò non è possibile, prova con il successore, la chiave minima del sottoalbero destro, se il figlio destro ha sufficienti elementi.
+
+                    Se entrambi i figli hanno meno di `Degree` elementi, fonde il nodo corrente con i suoi figli e propaga l'eliminazione nel nodo risultante, mantenendo così le proprietà del B-Tree.
+
+                \paragraph{Metodi per la ricerca e lo split nel BTree}
+
+                    Infine, il metodo di ricerca è stato implementato per consentire la ricerca di una chiave all'interno del BTree.
+
+                    \lstinputlisting[float,language=csh,label={BTreeSearch}]{listings/BTreeSearch.cs}
+
+                    Questo metodo inizia la ricerca dalla radice dell'albero, scendendo lungo i nodi interni fino a raggiungere una foglia.
+
+                    Se la chiave è presente in una foglia, restituisce i dati associati.
+
+                    Se la chiave non è presente, restituisce un valore nullo.
+
+                    Questo approccio garantisce una ricerca efficiente e una gestione ottimale delle operazioni di lettura.
+
 
 %----------------------------------------------------------------------------------------
 % BIBLIOGRAPHY
