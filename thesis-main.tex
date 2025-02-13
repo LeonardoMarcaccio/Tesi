@@ -11,11 +11,11 @@
 \title{B-Tree File System per piattaforme IoT}
 \author{Leonardo Marcaccio}
 \date{\today}
-\subject{Supervisor's course name}
+\subject{Ricerca Operativa}
 
 \supervisor{Marco Antonio Boschetti}
 
-\session{I}
+\session{III}
 \academicyear{2023-2024}
 
 % Definition of acronyms
@@ -30,7 +30,7 @@
 \frontmatter\frontispiece
 
 \begin{abstract}
-    Questa Tesi esplora il processo di studio, progettazione e implementazione di un prototipo di \ac{FS} basato sulla struttura dati B-Tree, sviluppato per la piattaforma IoT IOtto di Onit S.p.A.
+    Questa Tesi esplora il processo di studio, progettazione e implementazione di un prototipo di \textit{\ac{FS}} basato sulla struttura dati \textit{B-Tree}, sviluppato per la piattaforma \textit{\ac{IoT}} IOtto di Onit S.p.A.
 
     L'obiettivo principale è migliorare l'efficienza nella gestione e nel recupero dei dati, affrontando le problematiche tipiche di un \ac{FS} come la scalabilità e l'ottimizzazione delle risorse.
 
@@ -504,6 +504,7 @@ I              \caption{Rappresentazione schematica del prototipo}
             C\# è particolarmente adatto per applicazioni di sistema, grazie alla sua portabilità, alla gestione della memoria automatica e alla robustezza.
 
         \subsection{Librerie}
+        \label{subsec:Librerie}
 
             In supporto al linguaggio di programmazione è stato di notevolmente supporto l’impiego di diverse librerie, selezionate per implementare funzionalità specifiche e ottimizzare il flusso di lavoro.
 
@@ -579,8 +580,9 @@ I              \caption{Rappresentazione schematica del prototipo}
 
             Questo capitolo descrive le soluzioni implementate per garantire un bilanciamento efficiente tra prestazioni e persistenza dei dati.
 
-            \subsection{Analisi Preliminare e Riferimenti Teorici}
-                Il processo di sviluppo è iniziato con un'analisi approfondita dello pseudocodice del B-Tree, tratto dal testo accademico *Introduction to Algorithms* \cite{cormen2009introduction}.
+            \subsubsection{Analisi Preliminare e Riferimenti Teorici}
+
+                Il processo di sviluppo è iniziato con un'analisi approfondita dello pseudocodice del B-Tree, tratto dal testo accademico *Introduction to Algorithms* \cite{cormen2022introduction}.
 
                 Lo studio ha permesso di comprendere e integrare concetti fondamentali quali:
                 \begin{itemize}
@@ -593,7 +595,7 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                 Una volta definite le caratteristiche principali della struttura dati, si è passati alla fase di implementazione.
 
-            \subsection{Implementazione e adattamento del codice}
+            \subsubsection{Implementazione e adattamento del codice}
 
                 In questa fase sono state sviluppate le classi e i metodi necessari per la gestione delle operazioni fondamentali del B-Tree, tra cui ricerca, inserimento e cancellazione delle chiavi, assicurando il rispetto delle proprietà strutturali dell’albero.
 
@@ -607,10 +609,11 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                 Questi test hanno garantito la correttezza delle operazioni e la stabilità complessiva del sistema.
 
-            \subsection{Implementazione delle Page}
+            \subsubsection{Implementazione delle Page}
+
                 Successivamente, si è proceduto allo sviluppo delle Page e delle loro specifiche estensioni: BootPage, NodePage e EntryPage.
 
-                \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/Page.cs}
+                \lstinputlisting[float,language=csh,label={lst:Page}]{listings/BTree/Page.cs}
 
                 La classe Page rappresenta una pagina di memoria persistente, un elemento tipico dei sistemi di storage su file, come quelli utilizzati nei database. Questa classe è progettata per rispettare una serie di caratteristiche fondamentali, indispensabili per garantire la corretta gestione dei dati.
 
@@ -629,13 +632,13 @@ I              \caption{Rappresentazione schematica del prototipo}
                     \item \textbf{Write}: Metodo responsabile della scrittura dei dati nel buffer, assicurando che le modifiche vengano correttamente registrate e mantenute.
                 \end{itemize}
 
-            \subsection{Sviluppo della BootPage}
+            \subsubsection{Sviluppo della BootPage}
 
                 La classe \texttt{BootPage}, introdotta come primo componente specializzato del sistema, funge da interfaccia primaria per la gestione delle pagine all’interno di un file.
 
                 Tale Page inoltre si occupa in modo centrale di orchestrare il riutilizzo degli spazi liberi presenti all’interno del file, garantendo così una gestione efficiente della memoria e un’ottimizzazione delle operazioni di I/O.
 
-                \lstinputlisting[float,language=Java,label={lst:random-code}]{listings/BootPage.cs}
+                \lstinputlisting[float,language=csh,label={lst:BootPage}]{listings/BTree/BootPage.cs}
 
                 Attributi:
                 \begin{itemize}
@@ -656,7 +659,7 @@ I              \caption{Rappresentazione schematica del prototipo}
                     \item \textbf{GetNewLogID}: Metodo dedicato alla generazione di un nuovo LogID, aggiornando la versione del log e contribuendo al mantenimento della consistenza del sistema.
                 \end{itemize}
 
-            \subsection{Sviluppo della NodePage}
+            \subsubsection{Sviluppo della NodePage}
 
                 Successivamente, la classe \texttt{Node} dell'albero è stata riadattata nella forma di Page nella classe \texttt{NodePage}, apportando modifiche sia ai metodi che agli attributi per integrarsi al meglio nel nuovo sistema basato su pagine.
 
@@ -668,17 +671,17 @@ I              \caption{Rappresentazione schematica del prototipo}
                     \item \textbf{Gestione delle entry}: La sezione rappresentata nel listing \cref{lst:NodePageEntrySection} descrive il sistema di gestione delle entry contenute nella \texttt{NodePage}. Analogamente a quanto avviene per i nodi figli, anche qui è stata integrata una funzione di controllo validità, \texttt{CheckEntryPage}, che verifica l'integrità delle entry e assicura la correttezza dei dati gestiti.
                 \end{itemize}
 
-            \lstinputlisting[float,language=csh,label={lst:NodePageChildSection}]{listings/NodePageChildSection.cs}
+            \lstinputlisting[float,language=csh,label={lst:NodePageChildSection}]{listings/BTree/NodePageChildSection.cs}
 
-            \lstinputlisting[float,language=Java,label={lst:NodePageEntrySection}]{listings/NodePageEntrySection.cs}
+            \lstinputlisting[float,language=csh,label={lst:NodePageEntrySection}]{listings/BTree/NodePageEntrySection.cs}
 
-            \subsection{Sviluppo della EntryPage}
+            \subsubsection{Sviluppo della EntryPage}
 
                 Infine, è stata sviluppata la classe \texttt{EntryPage}, che rappresenta l'unità fondamentale dello storage del sistema.
 
                 Questa classe è progettata per gestire in maniera efficiente la memorizzazione e la manipolazione dei dati, garantendo che ogni operazione sullo storage venga eseguita in modo ordinato e affidabile.
 
-                \lstinputlisting[float,language=csh,label={lst:random-code}]{listings/EntryPage.cs}
+                \lstinputlisting[float,language=csh,label={lst:EntryPage}]{listings/BTree/EntryPage.cs}
 
                 I principali elementi di interesse di questa classe sono le 3 funzioni di gestione dei dati all'interno della EntryPage.
 
@@ -689,13 +692,13 @@ I              \caption{Rappresentazione schematica del prototipo}
                     \item \textbf{FindPositionToInsert}: Metodo incaricato di determinare la posizione ottimale in cui inserire un nuovo dato. Questo approccio garantisce una distribuzione equilibrata dei dati all'interno della pagina e contribuisce a ottimizzare l'utilizzo dello spazio disponibile.
                 \end{itemize}
 
-            \subsection{Sviluppo della classe BTree}
+            \subsubsection{Sviluppo della classe BTree}
 
                 Come ultima classe del sistema è stata sviluppata la classe BTree, che rappresenta il mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
 
                 \paragraph{Creazione degli Elementi del BTree}
 
-                    \lstinputlisting[float,language=csh,label={lst:BTreeElementsCreation}]{listings/BTreeElementsCreation.cs}
+                    \lstinputlisting[float,language=csh,label={lst:BTreeElementsCreation}]{listings/BTree/BTreeElementsCreation.cs}
 
                     La precedente sezione di codice illustra come vengono creati gli elementi fondamentali del BTree: la radice, i nodi e le entry, che costituiscono la struttura portante del sistema.
 
@@ -713,7 +716,7 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                 \paragraph{Metodi per l'inserimento nel BTree}
 
-                    \lstinputlisting[float,language=csh,label={BTreeInsert}]{listings/BTreeInsert.cs}
+                    \lstinputlisting[float,language=csh,label={BTreeInsert}]{listings/BTree/BTreeInsert.cs}
 
                     Questo frammento di codice mostra l'implementazione del metodo di inserimento di un nuovo elemento all'interno del BTree seguendo questi passaggi principali:
 
@@ -729,7 +732,7 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     Segue ora una descrizione dei metodi implementati per la rimozione degli elementi dal BTree.
 
-                    \lstinputlisting[float,language=csh,label={BTreeDelete}]{listings/BTreeDelete.cs}
+                    \lstinputlisting[float,language=csh,label={BTreeDelete}]{listings/BTree/BTreeDelete.cs}
 
                     Il metodo Delete avvia il primo passo del processo di eliminazione a partire dalla radice dell'albero.
 
@@ -739,7 +742,7 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     \subparagraph*{}
 
-                    \lstinputlisting[float,language=csh,label={BTreeDeleteInternal}]{listings/BTreeDeleteInternal.cs}
+                    \lstinputlisting[float,language=csh,label={BTreeDeleteInternal}]{listings/BTree/BTreeDeleteInternal.cs}
 
                     Il metodo DeleteInternal cerca la posizione della chiave da eliminare nel nodo corrente confrontandola con le chiavi presenti.
 
@@ -749,7 +752,7 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     \subparagraph*{}
 
-                    \lstinputlisting[float,language=csh,label={BTreeDeleteKeyFromNode}]{listings/BTreeDeleteKeyFromNode.cs}
+                    \lstinputlisting[float,language=csh,label={BTreeDeleteKeyFromNode}]{listings/BTree/BTreeDeleteKeyFromNode.cs}
 
                     Infine, il metodo DeleteKeyFromNode gestisce diversi scenari.
 
@@ -761,20 +764,212 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     Se entrambi i figli hanno meno di `Degree` elementi, fonde il nodo corrente con i suoi figli e propaga l'eliminazione nel nodo risultante, mantenendo così le proprietà del B-Tree.
 
-                \paragraph{Metodi per la ricerca e lo split nel BTree}
+                \paragraph{Metodi per la ricerca nel BTree}
 
-                    Infine, il metodo di ricerca è stato implementato per consentire la ricerca di una chiave all'interno del BTree.
+                    \lstinputlisting[float,language=csh,label={BTreeSearch}]{listings/BTree/BTreeSearch.cs}
 
-                    \lstinputlisting[float,language=csh,label={BTreeSearch}]{listings/BTreeSearch.cs}
+                    Il metodo di ricerca in un B-tree permette di localizzare un elemento specifico all'interno dell'albero attraverso la sua chiave identificativa.
 
-                    Questo metodo inizia la ricerca dalla radice dell'albero, scendendo lungo i nodi interni fino a raggiungere una foglia.
+                    Questo processo si basa su una strategia ricorsiva che sfrutta l'organizzazione ordinata delle chiavi presenti nella struttura.
 
-                    Se la chiave è presente in una foglia, restituisce i dati associati.
+                    L'implementazione di tale metodo è strutturata in due metodi distinti: uno pubblico, che funge da punto di accesso esterno e avvia la ricerca a partire dal nodo radice dell'albero, e uno ricorsivo interno, incaricato di gestire il traversamento dei nodi e il percorso gerarchico all'interno della struttura.
+                    
+                    La ricerca si articola in diverse fasi, ciascuna finalizzata a individuare la posizione corretta della chiave all'interno dell'albero.
 
-                    Se la chiave non è presente, restituisce un valore nullo.
+                    Inizialmente, viene effettuata un'analisi del nodo corrente, l'obiettivo è determinare quante di queste chiavi presenti nel nodo risultano essere inferiori rispetto alla chiave che si sta cercando.
 
-                    Questo approccio garantisce una ricerca efficiente e una gestione ottimale delle operazioni di lettura.
+                    Tale conteggio permette di identificare l'indice del sottoalbero in cui la ricerca dovrà proseguire.
+                    
+                    Contemporaneamente, si verifica se una delle chiavi presenti nel nodo corrente corrisponde esattamente alla chiave target. In caso affermativo, la ricerca si conclude con successo e l'elemento viene immediatamente restituito.
+                    
+                    Qualora il nodo in esame sia una foglia, ovvero un nodo terminale dell'albero privo di ulteriori diramazioni, e la chiave non vi sia presente, la ricerca termina con un esito negativo, segnalando l'assenza dell'elemento attraverso la restituzione di un valore nullo.
+                    
+                    Se, al contrario, il nodo non è una foglia, la ricerca prosegue in modo ricorsivo.
 
+                    Viene selezionato il figlio corrispondente all'indice precedentemente calcolato e la funzione di ricerca viene richiamata su tale figlio, ripetendo il processo.
+                    
+                    La natura ricorsiva dell'algoritmo garantisce una scansione completa dell'albero in profondità, fino a raggiungere un nodo foglia o a individuare una corrispondenza con la chiave cercata.
+                    
+                    L'efficienza di questa operazione è notevole: grazie alla struttura bilanciata del B-tree, la ricerca ha una complessità logaritmica, proporzionale al logaritmo del numero totale di elementi presenti nell'albero.
+
+                    La terminazione dell'algoritmo è sempre garantita: la ricerca raggiunge inevitabilmente un nodo foglia o identifica una corrispondenza, escludendo la possibilità di cicli infiniti.
+
+                \paragraph{Metodi di Utility del BTree}
+
+                    \lstinputlisting[float,language=csh,label={BTreeSplit}]{listings/BTree/BTreeSplit.cs}
+
+                    Lo split, e la sua controparte merge, sono operazioni critiche attive durante l'inserimento (o l'eliminazione) di nuove chiavi, quando un nodo supera la capacità massima (o minima) definita dal \textit{grado} dell'albero.
+
+                    Queste procedure preservano l'equilibrio strutturale del B-tree, condizione essenziale per le prestazioni logaritmiche.
+
+                    A differenza delle operazioni di merge, che sono state già integrate all'interno delle operazioni di eliminazione, lo split è stato implementato come metodo autonomo.
+
+                    Il processo si articola in cinque fasi:
+                    \begin{enumerate}
+                        \item \textbf{Creazione di un nuovo nodo}: Viene allocato un nodo ausiliario per ospitare una porzione delle chiavi.
+                        \item \textbf{Promozione della chiave mediana}: La chiave centrale del nodo saturo viene spostata nel nodo genitore, agendo da separatore.
+                        \item \textbf{Collegamento del nuovo nodo}: Il nodo creato viene associato al genitore come figlio destro della chiave promossa.
+                        \item \textbf{Ridistribuzione delle chiavi}: Le chiavi successive alla mediana vengono riposizionate all'interno del nuovo nodo, lasciando il nodo originale con \textit{grado - 1} elementi.
+                        \item \textbf{Gestione dei figli (per nodi non foglia)}: Se il nodo splitato non è una foglia, i puntatori ai figli vengono ripartiti tra nodo originale e nuovo nodo, mantenendo la corretta gerarchia.
+                    \end{enumerate}
+
+                    Al termine, i metadati dei nodi coinvolti (genitore, nuovo nodo e nodo originale) vengono aggiornati per riflettere la nuova configurazione.
+
+                    Lo split garantisce così una crescita controllata dell'albero, prevenendo sbilanciamenti e assicurando che tutte le operazioni mantengano una complessità logaritmica.
+
+                \paragraph{Metodi di Serializzazione e Deserializzazione del BTree}
+
+                    \lstinputlisting[float,language=csh,label={BTreeSerialize}]{listings/BTree/BTreeSerialize.cs}
+
+                    Il metodo Serialize ha lo scopo di rendere persistenti i dati, su un supporto di memorizzazione di massa (come un disco).
+
+                    Questo processo avviene attraverso due fasi distinte: la prima fase riguarda la scrittura di un log, mentre la seconda fase si concentra sul salvataggio effettivo dei dati.
+
+                    Nella fase iniziale, dedicata alla scrittura del log, il metodo itera sull'insieme delle Page contenute in una lista.
+
+                    Per ciascuna di queste Page, viene creato un array di byte di dimensione fissa.
+
+                    Successivamente, il viene chiamato il metodo Write della pagina che provvede a popolare questo array con i dati specifici della pagina.
+
+                    L'array così ottenuto viene poi scritto nel flusso di log.
+
+                    Qualora si verifichi un errore durante questa fase di scrittura, viene generata un'eccezione, accompagnata dal messaggio "Unable to create a new log".
+
+                    Una volta completata la scrittura di tutte le pagine di log, lo stream viene chiuso attraverso il metodo Dispose.
+
+                    Successivamente, il codice tenta di aprire un nuovo file di log, utilizzando un percorso che combina la cartella di destinazione con un identificativo di log univoco, ottenuto attraverso la BootPage.
+
+                    Dopo la scrittura e la riapertura del file di log, la lista di Page viene ricreata come una nuova istanza vuota.
+
+                    Questa operazione ha lo scopo di liberare la memoria precedentemente occupata dalle pagine di log che sono state salvate.
+
+                    \subparagraph*{}
+
+                    La seconda fase del processo di serializzazione prevede la scrittura effettiva dei dati.
+
+                    In questa fase, il metodo itera sull'insieme delle pagine presenti nella lista di Page da serializzare.
+
+                    Analogamente alla fase precedente, per ciascuna pagina viene creato un array di byte della dimensione predefinita, e la pagina stessa provvede a scrivere i propri dati all'interno di questo array.
+
+                    Prima che l'array venga scritto nel file, il flusso allineato ad un punto preciso del file e viene quindi scritto nel file.
+
+                    Qualora si verifichi un errore durante questa fase di scrittura, viene generata un'eccezione con il messaggio "Unable to create a new save".
+
+                    Una volta completato il salvataggio di tutte le pagine, anche la lista di Page da serializzare viene ricreata come una nuova istanza vuota, preparandolo per future operazioni di buffering.
+
+                    \subparagraph*{}
+
+                    \lstinputlisting[float,language=csh,label={BTreeDeserialize}]{listings/BTree/BTreeDeserialize.cs}
+
+                    Nel caso della deserializzazione poniamo particolare interessae sulla deserializzazione delle Entry.
+
+                    Il metodo DeserializeEntryFromID ha proprio questo specifico compito.
+
+                    In altre parole, trasforma una sequenza di byte letta dal disco in un oggetto EntryPage utilizzabile in memoria.
+
+                    Il processo inizia con il posizionamento del cursore di lettura all'interno del file.
+
+                    Il metodo riceve un ID come parametro e lo utilizza per calcolare l'offset, ovvero la posizione precisa nel file dove si trovano i dati della pagina desiderata.
+
+                    Una volta posizionati nel punto giusto del file, si procede con la lettura dei dati.
+
+                    Viene creato un array di byte, chiamato buffer, con una dimensione pari a quella di una pagina.
+
+                    Successivamente, il metodo legge esattamente un quantitativo di byte dal file pari alla dimensioni di una Page, a partire dalla posizione corrente del puntatore, e li memorizza all'interno del buffer.
+
+                    Dopo aver recuperato i dati dal file, è necessario verificarne il contenuto per assicurarsi che corrispondano al formato di una pagina di tipo "entry".
+
+                    Se la verifica ha successo, il metodo crea una nuova istanza dell'oggetto EntryPage.
+
+        \subsection{Sviluppo dei Test}
+
+            Come precedentemente accennato nella sezione \cref{subsec:Librerie}, per la gestione e realizzazione dei test si è fatto utilizzo della libreria \texttt{XUnit}.
+
+            Grazie a questa libreria è stato possibile sviluppare una serie di test mirati e automatizzati, che hanno permesso di verificare la correttezza e l'efficienza del sistema.
+
+            In particolare, sono stati sviluppati test per verificare il corretto funzionamento delle operazioni di inserimento, ricerca ed eliminazione delle chiavi all'interno del B-Tree.
+
+            Per validare tali risultati sono stati realizzati diversi metodi di test, ciascuno focalizzato su un aspetto specifico del sistema.
+
+            Esempio di questi controlli di validazione sono i test ValidateTree e ValidateSubtree.
+
+            \lstinputlisting[float,language=csh,label={lst:ValidateTree}]{listings/Test/ValidateTree.cs}
+
+            Il metodo ValidateTree avvia la validazione dall'albero, raccogliendo le chiavi presenti in un dizionario e verificando che coincidano con quelle attese, senza duplicati.
+
+            Mentre ValidateSubtree opera in modo ricorsivo, controllando che ogni nodo, eccetto la radice, abbia:
+
+            \begin{itemize}
+                \item Che il numero delle chiavi sia compreso nei limiti del BTree.
+                \item Che le chiavi siano ordinate correttamente entro intervalli specifici.
+                \item Che i nodi interni abbiano il numero minimo di figli richiesto.
+            \end{itemize}
+
+            In sostanza, il codice assicura che l'albero rispetti le proprietà strutturali e l'ordinamento tipico di un B-Tree.
+
+            \paragraph*{}
+
+            Inoltre, sono stati sviluppati test di stress per valutare le prestazioni del sistema in condizioni generiche, verificando la capacità del B-Tree di gestire qualsiasi combinazione di inserimenti e eliminazioni.
+
+            Il principale test per dimostrare ciò è il RunBruteForce.
+
+            \lstinputlisting[float,language=csh,label={lst:BruteForce}]{listings/Test/BruteForce.cs}
+
+            Il codice esegue un test brute force su un B-Tree del grado scelto.
+
+            Procede con l'eseguire, per 1000 iterazioni, operazioni casuali di inserimento o cancellazione.
+
+            Dopo ogni operazione, viene chiamato il metodo CheckNode, che attraversa ricorsivamente ogni nodo per controllare che, se ci sono figli, il loro numero sia esattamente quello atteso e che né il numero di chiavi né quello dei figli superino i limiti imposti dal grado.
+
+\chapter{Conclusioni}
+
+    \section{Risultati e Valutazioni}
+        Il prototipo sviluppato ha dimostrato di essere un sistema efficiente e scalabile per la gestione di grandi quantità di dati, garantendo prestazioni elevate e una gestione ottimale delle risorse.
+
+        A dimostrazione di ciò, sono stati realizzati diversi Benchmark di cui seguono i risultati.
+
+        \begin{figure} [h]
+            \centering
+            \includegraphics[width=1\linewidth]{figures/BenchmarkInsertion.png}
+            \caption{Risultati del Benchmarking dell'inserimento}
+            \label{fig:benchmark}
+        \end{figure}
+
+        \begin{figure} [h]
+            \centering
+            \includegraphics[width=1\linewidth]{figures/BenchmarkDelete.png}
+            \caption{Risultati del Benchmarking dell'eliminazione}
+            \label{fig:benchmark}
+        \end{figure}
+
+        \begin{figure} [h]
+            \centering
+            \includegraphics[width=1\linewidth]{figures/BenchmarkSearch.png}
+            \caption{Risultati del Benchmarking della ricerca}
+            \label{fig:benchmark}
+        \end{figure}
+
+        In particolare, il nuovo sistema di serializzazione e deserializzazione ha permesso di ridurre significativamente la dimensione dei dati, migliorando le prestazioni complessive del sistema.
+
+        L'implementazione del B-Tree ha dimostrato di essere robusta e affidabile, garantendo un bilanciamento ottimale tra prestazioni e persistenza dei dati.
+
+        I test sviluppati hanno confermato la correttezza e l'efficienza del sistema, dimostrando la capacità del B-Tree di gestire un elevato numero di operazioni in modo rapido e affidabile.
+
+        Inoltre, il prototipo ha dimostrato di essere altamente scalabile, consentendo di adattarsi facilmente a nuove esigenze e di gestire grandi quantità di dati in modo efficiente.
+
+        In conclusione, il prototipo sviluppato rappresenta una soluzione innovativa e affidabile per la gestione di dati complessi, garantendo prestazioni elevate e una gestione ottimale delle risorse.
+
+    \section{Sviluppi Futuri}
+
+        Il prototipo sviluppato rappresenta solo una prima fase di un progetto più ampio, che prevede lo sviluppo di nuove funzionalità e l'integrazione con altri sistemi.
+
+        Alcuni possibili sviluppi futuri includono:
+
+        \begin{itemize}
+            \item \textbf{Ottimizzazione delle Prestazioni}: Migliorare ulteriormente le prestazioni del sistema attraverso l'ottimizzazione del codice e l'introduzione di nuove tecniche di caching e buffering.
+            \item \textbf{Implementazione di Nuove Funzionalità}: Aggiungere nuove funzionalità, come la gestione di transazioni, la replicazione dei dati e la gestione degli indici.
+            \item \textbf{Realizzazione di Pagine più specializzate}: Sviluppare nuove tipologie di pagine specializzate per gestire dati specifici, come ad esempio pagine per la gestione di indici.
+        \end{itemize}
 
 %----------------------------------------------------------------------------------------
 % BIBLIOGRAPHY
