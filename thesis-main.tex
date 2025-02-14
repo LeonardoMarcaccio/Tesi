@@ -18,11 +18,6 @@
 \session{III}
 \academicyear{2023-2024}
 
-% Definition of acronyms
-\acrodef{IoT}{Internet of Thing}
-\acrodef{vm}[VM]{Virtual Machine}
-\acrodef{FS}{File System}
-
 \mainlinespacing{1.241}
 
 \begin{document}
@@ -30,25 +25,25 @@
 \frontmatter\frontispiece
 
 \begin{abstract}
-    Questa Tesi esplora il processo di studio, progettazione e implementazione di un prototipo di \textit{\ac{FS}} basato sulla struttura dati \textit{B-Tree}, sviluppato per la piattaforma \textit{\ac{IoT}} IOtto di Onit S.p.A.
+    Questa Tesi esplora il processo di studio, progettazione e implementazione di un prototipo di \textit{File System} basato sulla struttura dati \textit{B-Tree}, sviluppato per la piattaforma \textit{Internet of Things} (\textit{IoT}) IOtto di Onit S.p.A.
 
-    L'obiettivo principale è migliorare l'efficienza nella gestione e nel recupero dei dati, affrontando le problematiche tipiche di un \ac{FS} come la scalabilità e l'ottimizzazione delle risorse.
+    L'obiettivo principale è migliorare l'efficienza nella gestione e nel recupero dei dati, affrontando le problematiche tipiche di un \textit{File System} come la scalabilità e l'ottimizzazione delle risorse.
 
-    Il lavoro comprende un'analisi dello stato dell'arte sui moderni \ac{FS}, con particolare attenzione alla loro interazione con i sistemi IoT. Viene approfondito il principio di funzionamento del B-Tree, dimostrando come questa struttura dati possa essere sfruttata per realizzare una struttura performante e affidabile.
+    Il lavoro comprende un'analisi dello stato dell'arte sui moderni \textit{File System}, con particolare attenzione alla loro interazione con i sistemi \textit{IoT}. Viene approfondito il principio di funzionamento del \textit{B-Tree}, dimostrando come questa struttura dati possa essere sfruttata per realizzare una struttura performante e affidabile.
 
     Inoltre, vengono descritte le fasi di progettazione e implementazione, evidenziando le soluzioni adottate per adattare il prototipo alle esigenze specifiche della piattaforma IOtto.
 
     I risultati preliminari mostrano che il prototipo proposto garantisce significativi miglioramenti in termini di velocità di accesso ai dati e utilizzo delle risorse rispetto alle alternative tradizionali.
 \end{abstract}
 
-\begin{dedication} % this is optional
-Optional. Max a few lines.
+\begin{dedication}
+    Alla mia famiglia, per il loro costante supporto e incoraggiamento.
 \end{dedication}
 
 %----------------------------------------------------------------------------------------
 \tableofcontents
-\listoffigures     % (optional) comment if empty
-\lstlistoflistings % (optional) comment if empty
+\listoffigures
+\lstlistoflistings
 %----------------------------------------------------------------------------------------
 
 \mainmatter
@@ -62,23 +57,43 @@ Optional. Max a few lines.
     \label{sec:background}
 
         \subsection{Onit}
+
+            Onit S.p.A. è un’azienda italiana all’avanguardia nel settore delle soluzioni IT e della consulenza, dedicata al miglioramento del management e dell’organizzazione aziendale.
+
+            L'azienda offre un portafoglio diversificato di soluzioni software che spaziano da \textit{Operations \& Supply Chain} a \textit{Healthcare}, \textit{Business Analytics}, \textit{Web \& Mobile} e \textit{ICT System Integration}.
+
+            Si caratterizza per la sua capacità di integrare sistemi eterogenei e di supportare la trasformazione digitale nelle imprese, promuovendo innovazione, efficienza operativa e competitività nel mercato moderno.
+
         \subsection{IOtto}
 
-        AGGIUNGI PRESENTAZIONE DELL'AZIENDA E DEL PRODOTTO
+            \textit{IOtto} rappresenta la soluzione \textit{IoT} sviluppata da Onit per favorire la connettività tra macchinari, servizi e persone, realizzando così l’ideale di Industria 4.0.
+
+            \pagebreak
+
+            La piattaforma offre un controllo completo e in tempo reale degli impianti e dei macchinari, grazie a una serie di funzionalità integrate, tra cui:
+            \begin{itemize}
+                \item \textbf{IOtto Platform}: consente il monitoraggio e il controllo centralizzato degli impianti, supportando una completa digitalizzazione delle attività produttive.
+                \item \textbf{IOtto Edge}: permette l’elaborazione e l’analisi dei dati direttamente “al margine” della rete, riducendo la latenza e ottimizzando il traffico informativo.
+                \item \textbf{Asset Management System (AMS)}: facilita la gestione strategica della manutenzione, anticipando possibili anomalie e riducendo i tempi di intervento.
+            \end{itemize}.
+
+            Questa soluzione consente di ottimizzare i processi produttivi, ridurre i costi operativi, offrendo alle aziende il controllo totale sui propri impianti e una gestione predittiva degli asset.
 
     \section{Descrizione del problema}
 
-        L'attuale \ac{FS} utilizzato dall'applicativo risulta non essere più ottimale nel contesto attuale, data la crescita e la mole dei dati gestiti.
+        L'attuale \textit{File System} utilizzato dall'applicativo risulta non essere più ottimale nel contesto attuale, data la crescita e la mole dei dati gestiti.
         Risulta dunque necessario trovare un'alternativa che soddisfi le necessità attuali e future, in ambito di scalabilità e ottimizzazione.
 
     \section{Obiettivi di Tesi}
 
-        L'obbiettivo della Tesi risulta essere quello di realizzare un prototipo di \ac{FS} che sia scalabile, in grado di effettuare rapide letture e scritture, strutturalmente solido e ottimizzato nell'allocazione di spazio.
+        L'obbiettivo della Tesi risulta essere quello di realizzare un prototipo di \textit{File System} che sia scalabile, in grado di effettuare rapide letture e scritture, strutturalmente solido e ottimizzato nell'allocazione di spazio.
 
         In particolare, il lavoro si concentra sulla progettazione e realizzazione di un prototipo alternativo al sistema preesistente, con l'intento non solo di mantenere le prestazioni attuali, ma, ove possibile, di migliorarle.
 
         \subsection{Domande}
         \label{subsec:Domande}
+
+            Segue ora un elenco di domande che sono state poste durante le prime fasi del progetto, al fine di identificare le esigenze e le aspettative del cliente.
 
             \begin{itemize}
                 \item Quali tipi di dati devono essere memorizzati e gestiti?
@@ -86,7 +101,7 @@ Optional. Max a few lines.
                 \item Quali saranno le dimensioni massime dei file e la granularità delle operazioni sui dati?
                 \item Come garantire un basso consumo di risorse?
                 \item Qual è la struttura di archiviazione più adatta?
-                \item Il \ac{FS} dovrà scalare per gestire un numero crescente di dispositivi IoT?
+                \item Il File System dovrà scalare per gestire un numero crescente di dispositivi IoT?
                 \item Qual è la strategia per l'espansione dello spazio di archiviazione?
                 \item Come gestire guasti hardware o interruzioni improvvise di alimentazione?
                 \item È necessario prevedere meccanismi di backup o snapshot per i dati?
@@ -95,27 +110,35 @@ Optional. Max a few lines.
 
         \subsection{Scopo}
 
-            L’obiettivo finale è quello di apportare un significativo miglioramento al software esistente, sfruttando l’hardware già disponibile per ottenere prestazioni più elevate. Questo intervento mira a incrementare le capacità del prodotto, garantendo una maggiore efficienza e un’esperienza d’uso più soddisfacente per i clienti.
+            L’obiettivo finale è quello di apportare un significativo miglioramento al software esistente, sfruttando l’hardware già disponibile per ottenere prestazioni più elevate.
 
-            In particolare, il miglioramento si traduce nell’ottimizzazione delle funzionalità attuali e nell’ampliamento delle possibilità offerte dal sistema, lavorando direttamente sul software. Questo approccio consente di massimizzare il valore del prodotto, andando incontro alle crescenti aspettative degli utenti e mantenendo un vantaggio competitivo sul mercato.
+            Questo intervento mira a incrementare le capacità del prodotto, garantendo una maggiore efficienza e un’esperienza d’uso più soddisfacente per i clienti.
+
+            In particolare, il miglioramento si traduce nell’ottimizzazione delle funzionalità attuali e nell’ampliamento delle possibilità offerte dal sistema, lavorando direttamente sul software.
+
+            Questo approccio consente di massimizzare il valore del prodotto, andando incontro alle crescenti aspettative degli utenti e mantenendo un vantaggio competitivo sul mercato.
 
     \section{Struttura della Tesi}
 
         Questa Tesi è strutturata in tre capitoli principali.
 
-        Il primo capitolo fornisce le basi teoriche del lavoro, offrendo una panoramica sui moderni \ac{FS} e sulla loro connessione con il mondo dell’\ac{IoT}.
-        Viene inoltre approfondita la struttura dati B-Tree, evidenziandone le proprietà principali e la sua rilevanza rispetto al problema affrontato.
+        Il primo capitolo fornisce le basi teoriche del lavoro, offrendo una panoramica sui moderni \textit{File System} e sulla loro connessione con il mondo dell’\textit{IoT}.
 
-        Il secondo capitolo si concentra sulla progettazione e sull’implementazione del prototipo di \ac{FS}.
-        Vengono descritte le scelte effettuate durante il processo di sviluppo e spiegato come il B-Tree sia stato utilizzato per soddisfare le esigenze specifiche della piattaforma IOtto.
+        Viene inoltre approfondita la struttura dati \textit{B-Tree}, evidenziandone le proprietà principali e la sua rilevanza rispetto al problema affrontato.
 
-        Infine, il terzo capitolo discute i risultati ottenuti dalla valutazione del prototipo. Vengono inoltre presentate le conclusioni tratte dallo studio e delineate le possibili direzioni per future modifiche e sviluppi relativi al prodotto.
+        Il secondo capitolo si concentra sulla progettazione e sull’implementazione del prototipo di \textit{File System}.
+
+        Vengono descritte le scelte effettuate durante il processo di sviluppo e spiegato come il \textit{B-Tree} sia stato utilizzato per soddisfare le esigenze specifiche della piattaforma IOtto.
+
+        Infine, il terzo capitolo discute i risultati ottenuti dalla valutazione del prototipo
+
+        Vengono inoltre presentate le conclusioni tratte dallo studio e delineate le possibili direzioni per future modifiche e sviluppi relativi al prodotto.
 
 \chapter{State of the art}
 
     \section{L'Internet of Things}
 
-        Il concetto di Internet of Things, o in italiano Internet delle Cose, rappresenta un'evoluzione nell'utilizzo della rete Internet, in cui gli oggetti, o "cose", diventano riconoscibili e acquisiscono la capacità di comunicare dati attraverso la rete e di accedere a informazioni aggregate da altre fonti.
+        Il concetto di \textit{Internet of Things}, o in italiano \textit{Internet delle Cose}, rappresenta un'evoluzione nell'utilizzo della rete Internet, in cui gli oggetti, o "cose", diventano riconoscibili e acquisiscono la capacità di comunicare dati attraverso la rete e di accedere a informazioni aggregate da altre fonti.
 
         Uno dei primi utilizzi di questo termine risale al 2001, in un documento del centro Auto-ID relativo alla creazione del network EPC, concepito per tracciare automaticamente il flusso di beni nella catena di fornitura.
 
@@ -123,13 +146,13 @@ Optional. Max a few lines.
 
         \paragraph*{}
 
-        Gli oggetti connessi, che costituiscono il cuore pulsante dell’\ac{IoT}, sono definiti "oggetti intelligenti" (Smart Objects) e si caratterizzano per proprietà distintive come la capacità di identificarsi, connettersi, localizzarsi, elaborare dati e interagire con l'ambiente circostante.
+        Gli oggetti connessi, che costituiscono il cuore pulsante dell’\textit{IoT}, sono definiti "\textit{Oggetti Intelligenti}" (\textit{Smart Objects}) e si caratterizzano per proprietà distintive come la capacità di identificarsi, connettersi, localizzarsi, elaborare dati e interagire con l'ambiente circostante.
 
-        Attraverso tecnologie come le etichette RFID (Identificazione a radiofrequenza) o i codici QR, questi oggetti e luoghi possono comunicare informazioni tramite la rete o dispositivi mobili.
+        Attraverso tecnologie come le \textit{Etichette RFID} (Identificatori a Radiofrequenza) o i \textit{Codici QR}, questi oggetti e luoghi possono comunicare informazioni tramite la rete o dispositivi mobili.
 
         \subparagraph*{}
 
-        L'obiettivo principale dell’\ac{IoT} risulta essere dunque il tentativo di creare una mappatura elettronica del mondo fisico, attribuendo un’identità digitale agli oggetti e ai luoghi che lo compongono.
+        L'obiettivo principale dell’\textit{IoT} risulta essere dunque il tentativo di creare una mappatura elettronica del mondo fisico, attribuendo un’identità digitale agli oggetti e ai luoghi che lo compongono.
 
         \subparagraph*{}
 
@@ -137,7 +160,7 @@ Optional. Max a few lines.
 
         \subparagraph*{}
 
-        In conclusione, le applicazioni dell’\ac{IoT} sono molteplici e variano dai processi industriali alla logistica, dalla logistica all’efficienza energetica, fino all’assistenza remota e alla salvaguardia ambientale.
+        In conclusione, le applicazioni dell’\textit{IoT} sono molteplici e variano dai processi industriali alla logistica, dalla logistica all’efficienza energetica, fino all’assistenza remota e alla salvaguardia ambientale.
 
         \cite{uckelmann2011architecting}\cite{hersent2011internet}\cite{chaouchi2013internet}
 
@@ -153,6 +176,8 @@ Optional. Max a few lines.
             \item Non è permesso l'accesso concorrente. Spesso è necessario che più processi possano accedere contemporaneamente alle stesse informazioni, ma il confinamento dei dati all'interno di un unico processo lo impedisce.
         \end{itemize}
 
+        \pagebreak
+
         Per rispondere a queste sfide, l'archiviazione a lungo termine richiede il rispetto di tre requisiti fondamentali:
 
         \begin{itemize}
@@ -161,45 +186,57 @@ Optional. Max a few lines.
             \item L'accesso simultaneo ai dati da parte di più processi.
         \end{itemize}
 
-        Per affrontare queste problematiche, è stato sviluppato il concetto di File System, una componente fondamentale dei sistemi informatici progettata per permettere la gestione completa dei dati, inclusa la loro creazione, modifica, archiviazione e recupero all'interno di un sistema.
+        Per affrontare queste problematiche, è stato sviluppato il concetto di \textit{File System}, una componente fondamentale dei sistemi informatici progettata per permettere la gestione completa dei dati, inclusa la loro creazione, modifica, archiviazione e recupero all'interno di un sistema.
 
-        Un file system, al suo livello più alto, fornisce dunque un modo organizzato per archiviare, recuperare e gestire informazioni su supporti di archiviazione permanenti come i dischi.
+        \paragraph*{}
+
+        Un \textit{File System}, al suo livello più alto, fornisce dunque un modo organizzato per archiviare, recuperare e gestire informazioni su supporti di archiviazione permanenti come i dischi.
 
         Esistono diversi approcci alla gestione dell'archiviazione permanente, poiché il problema è ampio e offre numerose soluzioni possibili.
+
         \cite{giampaolo1998practical}\cite{tanenbaum2015modern}
 
     \section{Categorizzazione dei File System}
 
-        I file system possono essere suddivisi in diverse categorie in base a specifiche caratteristiche, tra cui il livello di organizzazione gerarchica. Di seguito, analizziamo due tipologie principali di file system in relazione alla loro struttura gerarchica.
+        I \textit{File System} possono essere suddivisi in diverse categorie in base a specifiche caratteristiche, tra cui il livello di organizzazione gerarchica.
+
+        Di seguito, analizziamo due tipologie principali di \textit{File System} in relazione alla loro struttura gerarchica.
 
 
         \subsection{Single-Level Directory Systems}
 
-            Questo tipo di file system rappresenta la forma più basilare e semplice di organizzazione dei dati. Consiste in una singola directory, spesso denominata root, che contiene tutti i file del sistema.
+            Questo tipo di \textit{File System} rappresenta la forma più basilare e semplice di organizzazione dei dati. Consiste in una singola \textit{Directory}, spesso denominata \texttt{root}, che contiene tutti i file del sistema.
 
-            Non esistono ulteriori livelli o sottodirectory: tutti i file sono archiviati in un unico spazio condiviso.
+            Non esistono ulteriori livelli o \textit{Sottodirectory}: tutti i file sono archiviati in un unico spazio condiviso.
 
             \begin{figure}
                 \centering
-                \includegraphics[width=.3\linewidth]{figures/SingleDirSystem.png}
+                \includegraphics[width=.4\linewidth]{figures/SingleDirSystem.png}
                 \caption{Esempio di Single Level Directory System}
                 \label{fig:single-level-directory}
             \end{figure}
 
             \paragraph*{}
 
-            L'approccio a livello unico offre alcuni vantaggi distinti. In primo luogo, la semplicità della struttura lo rende facile da implementare e utilizzare, poiché non sono necessari meccanismi complessi per navigare tra directory o sottodirectory. Inoltre, la localizzazione dei file è immediata, poiché tutto è contenuto all'interno di una singola cartella, rendendo inutile un sistema di ricerca avanzato.
+            L'approccio a livello unico offre alcuni vantaggi distinti.In primo luogo, la semplicità della struttura lo rende facile da implementare e utilizzare, poiché non sono necessari meccanismi complessi per navigare tra \textit{Directory} o \textit{Sottodirectory}.
+
+            Inoltre, la localizzazione dei file è immediata, poiché tutto ciò che è presente all'interno del sistema è contenuto in una singola cartella, rendendo inutile un sistema di ricerca avanzato.
+
+            \paragraph*{}
 
             Tuttavia, questo modello ha limitazioni significative, soprattutto per applicazioni più complesse o ambienti che richiedono la gestione di un elevato numero di file.
 
-            Per questo motivo, i sistemi a directory singola sono utilizzati principalmente in dispositivi embedded o sistemi con esigenze limitate, come fotocamere digitali o dispositivi elettronici di consumo basilari. In tali contesti, la semplicità e la leggerezza dell'architettura superano le necessità di una maggiore organizzazione.
+            \paragraph*{}
+
+            Per questo motivo, i sistemi a directory singola sono utilizzati principalmente in dispositivi \textit{Embedded} o sistemi con esigenze limitate, come fotocamere digitali o dispositivi elettronici di consumo basilari. In tali contesti, la semplicità e la leggerezza dell'architettura superano le necessità di una maggiore organizzazione.
 
         \subsection{Hierarchical Directory Systems}
 
-            A differenza del modello a singolo livello, i sistemi a directory gerarchica sono progettati per rispondere alle esigenze dei moderni ambienti informatici, caratterizzati dalla gestione di grandi volumi di dati e file.
+            A differenza del modello a singolo livello, i sistemi a \textit{Directory Gerarchica} sono progettati per rispondere alle esigenze dei moderni ambienti informatici, caratterizzati dalla gestione di grandi volumi di dati e file.
 
+            \paragraph*{}
             
-            In questo tipo di file system, è possibile creare una struttura organizzata composta da directory e sottodirectory. Questa struttura consente di suddividere i file in categorie o gruppi logici, favorendo una gestione più efficiente e un accesso più rapido alle informazioni.
+            In questo tipo di \textit{File System}, è possibile creare una struttura organizzata composta da \textit{Directory} e \textit{Sottodirectory}. Questa struttura consente di suddividere i file in categorie o gruppi logici, favorendo una gestione più efficiente e un accesso più rapido alle informazioni.
             
             \paragraph*{}
             
@@ -210,51 +247,60 @@ Optional. Max a few lines.
                 \label{fig:hierarchical-directory}
             \end{figure}
 
-            L'organizzazione gerarchica risulta particolarmente utile quando il sistema deve gestire elevate quantità di file. La possibilità di classificare i file in directory dedicate consente di mantenere ordine e chiarezza, riducendo la complessità che deriverebbe dall'avere tutto in un'unica directory.
-
-            Un ulteriore vantaggio di questo approccio emerge nei contesti multiutente, dove più utenti condividono lo stesso file server. In questi casi, ogni utente può disporre di una directory root personale, che funge da punto di partenza per una gerarchia dedicata. Questa configurazione garantisce non solo la separazione dei dati tra gli utenti, ma anche un livello di personalizzazione che si adatta alle esigenze individuali.
+            L'organizzazione gerarchica risulta particolarmente utile quando il sistema deve gestire elevate quantità di file. La possibilità di classificare i file in \textit{Directory} dedicate consente di mantenere ordine e chiarezza, riducendo la complessità che deriverebbe dall'avere tutto in un'unica directory.
 
             \paragraph*{}
 
-            In conclusione, mentre i sistemi a livello singolo sono ideali per applicazioni semplici e specifiche, i sistemi gerarchici rappresentano una soluzione robusta e scalabile per ambienti complessi e moderni.
+            Un ulteriore vantaggio di questo approccio emerge nei contesti multiutente, dove più utenti condividono lo stesso \textit{File Server}. In questi casi, ogni utente può disporre di una \textit{Directory} \texttt{root} personale, che funge da punto di partenza per una gerarchia dedicata.
 
-        \cite{tanenbaum2015modern}
+            Questa configurazione garantisce non solo la separazione dei dati tra gli utenti, ma anche un livello di personalizzazione che si adatta alle esigenze individuali.
+
+        In conclusione, mentre i sistemi a livello singolo sono ideali per applicazioni semplici e specifiche, i sistemi gerarchici rappresentano una soluzione robusta e scalabile per ambienti complessi e moderni. \cite{tanenbaum2015modern}
 
     \section{Data Structures}
 
         Una struttura dati è un modo per memorizzare e organizzare i dati al fine di facilitare l'accesso e le modifiche.
 
-        Sono elementi fondamentali nella progettazione e nell'implementazione dei file system, poiché determinano come i dati vengono organizzati, memorizzati e recuperati, influenzando direttamente l'efficienza e le prestazioni delle operazioni sui dati.
+        Sono elementi fondamentali nella progettazione e nell'implementazione dei \textit{File System}, poiché determinano come i dati vengono organizzati, memorizzati e recuperati, influenzando direttamente l'efficienza e le prestazioni delle operazioni sui dati.
+
+        \paragraph*{}
 
         Nessuna struttura dati singola è ottimale per tutti gli scopi, quindi è importante conoscere i punti di forza e le limitazioni delle diverse strutture.
 
+        \paragraph*{}
+
         La scelta della struttura dati appropriata dipende da vari fattori, tra cui le esigenze specifiche del sistema, le prestazioni richieste e le limitazioni hardware.
 
-        Tra le strutture dati più comuni utilizzate nei file system, si possono citare:
+        Tra le strutture dati più comuni utilizzate nei \textit{File System}, si possono citare:
 
         \begin{itemize}
-            \item Linked List: una sequenza di nodi collegati tra loro, in cui ogni nodo contiene un riferimento al nodo successivo.
+            \item \textit{\textbf{Linked List}}: Una sequenza di nodi collegati tra loro, in cui ogni nodo contiene un riferimento al nodo successivo.
             \begin{figure} [h]
                 \centering
                 \includegraphics[width=.4\linewidth]{figures/LinkedList.png}
                 \caption{Esempio di Linked List}
                 \label{fig:linked-list}
             \end{figure}
-            \item Array: una collezione di elementi disposti in una sequenza lineare, in cui ogni elemento è accessibile tramite un indice numerico.
+
+            \item \textit{\textbf{Array}}: Una collezione di elementi disposti in una sequenza lineare, in cui ogni elemento è accessibile tramite un indice numerico.
             \begin{figure} [h]
                 \centering
                 \includegraphics[width=.3\linewidth]{figures/Array.png}
                 \caption{Esempio di Array}
                 \label{fig:array}
             \end{figure}
-            \item Tree: una struttura gerarchica composta da nodi collegati tra loro, in cui ogni nodo può avere uno o più nodi figli.
+
+            \pagebreak
+
+            \item \textit{\textbf{Tree}}: Una struttura gerarchica composta da nodi collegati tra loro, in cui ogni nodo può avere uno o più nodi figli.
             \begin{figure} [h]
                 \centering
-                \includegraphics[width=.2\linewidth]{figures/Tree.png}
+                \includegraphics[width=.25\linewidth]{figures/Tree.png}
                 \caption{Esempio di Tree}
                 \label{fig:generic-tree}
             \end{figure}
-            \item Hash Table: una struttura dati che associa chiavi a valori, consentendo un accesso rapido e diretto ai dati.
+
+            \item \textit{\textbf{Hash Table}}: Una struttura dati che associa chiavi a valori, consentendo un accesso rapido e diretto ai dati.
             \begin{figure} [h]
                 \centering
                 \includegraphics[width=.15\linewidth]{figures/HashTable.png}
@@ -267,15 +313,13 @@ I               \caption{Esempio di Hash Table}
 
     \section{Strutture Dati Basate sui Tree}
 
-        Le strutture dati come Linked List e Array sono strumenti potenti per rappresentare relazioni lineari, dove gli elementi sono disposti in una sequenza.Tuttavia, non tutte le relazioni nel mondo reale sono lineari.
+        Le strutture dati come \textit{Linked List} e \textit{Array} sono strumenti potenti per rappresentare relazioni lineari, dove gli elementi sono disposti in una sequenza. Tuttavia, non tutte le relazioni nel mondo reale sono lineari.
 
         Molti problemi richiedono la rappresentazione di relazioni gerarchiche o ramificate, dove un elemento può essere connesso a più elementi in modo non sequenziale.
 
         \paragraph*{}
 
-        Un Tree è una struttura dati non lineare composta da nodi collegati tra loro in modo gerarchico.
-
-        Ogni albero ha un Nodo Radice denominato Root da cui partono uno o più Nodi denominati Figli, e ogni Figlio può a sua volta avere altri Figli, formando una struttura ramificata.
+        Un \textit{Tree} è una struttura dati non lineare composta da nodi collegati tra loro in modo gerarchico. Ogni albero ha un \textit{Nodo Radice} denominato \texttt{Root} da cui partono uno o più \textit{Nodi} denominati \textit{Figli}, e ogni \textit{Figlio} può a sua volta avere altri \textit{Figli}, formando una struttura ramificata.
 
         \paragraph*{}
 
@@ -283,19 +327,21 @@ I               \caption{Esempio di Hash Table}
 
         \subsection{Binary Trees}
 
-            Un Binary Tree è la variante più basilare dei Tree in cui ogni nodo può avere al massimo due Figli, chiamati Figlio Sinistro e Figlio Destro, ed è rappresentato tramite tre attributi per nodo: `Key` (Il Valore), `Left` (Figlio Sinistro) e `Right` (Figlio Destro).
+            Un \textit{Binary Tree} è la variante più basilare dei \textit{Tree} in cui ogni nodo può avere al massimo due figli, chiamati \textit{Figlio Sinistro} e \textit{Figlio Destro}, ed è rappresentato tramite tre attributi per nodo: \texttt{Key} (Il Valore), \texttt{Left} (Figlio Sinistro) e \texttt{Right} (Figlio Destro).
+
+            \paragraph*{}
 
             Questa struttura è semplice, versatile e ampiamente utilizzata per realizzare strutture dati più avanzate.
 
             \paragraph*{}
 
-            Un Binary Tree risulta essere semplice, efficiente e flessibile, ma può risultare inefficiente in caso di sbilanciamento e non è adatto a rappresentare relazioni con più di due figli.
+            Un \textit{Binary Tree} risulta essere semplice, efficiente e flessibile, ma può risultare inefficiente in caso di sbilanciamento e non è adatto a rappresentare relazioni con più di due figli.
 
         \subsection{Binary Search Trees}
 
-            Un Binary Search Tree è un tipo di Binary Tree in cui ogni nodo rispetta un ordine: il valore del nodo è maggiore di tutti i valori nel suo sottoalbero sinistro e minore di tutti quelli nel sottoalbero destro.
+            Un \textit{Binary Search Tree} è un tipo di \textit{Binary Tree} in cui ogni nodo rispetta un ordine: il valore del nodo è maggiore di tutti i valori nel suo sottoalbero sinistro e minore di tutti quelli nel sottoalbero destro.
 
-            \paragraph*{}
+            \pagebreak
 
             Questa struttura è utile per operazioni efficienti di ricerca, inserimento e cancellazione, e mantiene i nodi ordinati, semplificando operazioni come la ricerca del minimo o del massimo.
 
@@ -304,60 +350,58 @@ I               \caption{Esempio di Hash Table}
             Tuttavia, se l'albero non è bilanciato, può degenerare in una lista collegata perdendo così tutti i suoi benefici.
 
         \subsection{Balanced Trees}
-            I Balanced Trees, come AVL e Red-Black, sono Binary Search Trees che mantengono l'altezza logaritmica rispetto al numero di nodi per garantire efficienza.
+            I \textit{Balanced Trees}, come \textit{AVL} e \textit{Red-Black}, sono \textit{Binary Search Trees} che mantengono l'altezza logaritmica rispetto al numero di nodi per garantire efficienza.
 
             \paragraph*{}
 
-            Sia gli AVL che i Red-Black Trees utilizzano algoritmi e regole specifiche per mantenere l'equilibrio.
+            Sia gli \textit{AVL} che i \textit{Red-Black Trees} utilizzano algoritmi e regole specifiche per mantenere l'equilibrio.
 
             \paragraph*{}
 
             Entrambi offrono prestazioni garantite come ricerca, inserimento e cancellazione in tempi brevi, rendendoli ideali per applicazioni che richiedono velocità e prevedibilità.
 
-            Tuttavia, la gestione del bilanciamento richiede algoritmi più complessi rispetto ai BST standard, con un maggiore overhead computazionale dovuto alle operazioni di bilanciamento.
+            Tuttavia, la gestione del bilanciamento richiede algoritmi più complessi rispetto ai \textit{BST} standard, con un maggiore overhead computazionale dovuto alle operazioni di bilanciamento.
 
         \subsection{N-ary Trees}
 
-            Un N-ary Tree è una generalizzazione dei Binary Trees in cui ogni nodo può avere fino a N Figli, con N come costante.
+            Un \textit{n-ary Tree} è una generalizzazione dei \textit{Binary Trees} in cui ogni nodo può avere fino a \textit{n} figli, con \textit{n} come costante.
 
-            \paragraph*{}
+            Può essere rappresentato tramite \textit{Array} o \textit{Liste di Puntatori} ai figli ed è utile per relazioni con un numero fisso di figli, come negli alberi di decisione nei giochi di scacchi.
 
-            Può essere rappresentato tramite array o liste di puntatori ai figli ed è utile per relazioni con un numero fisso di figli, come negli alberi di decisione nei giochi di scacchi.
+            \pagebreak
 
-            \paragraph*{}
+            Il problema principale con gli \textit{n-ary Tree} è la scelta del valore di \textit{n}.
 
-            Il problema principale con gli N-ary Tree è la scelta del valore di N.
+            Se il valore è troppo piccolo, le operazioni risultano efficienti, ma può verificarsi uno spreco di memoria quando molti nodi hanno meno di \textit{n} figli, e la struttura risulta rigida per relazioni con un numero variabile di figli.
 
-            Se il valore è troppo piccolo, le operazioni risultano efficienti, ma può verificarsi uno spreco di memoria quando molti nodi hanno meno di N figli, e la struttura risulta rigida per relazioni con un numero variabile di figli.
-
-            Mentre se il valore è troppo grande, la struttura tende a diventare troppo simile ad una Linked List, con un aumento della complessità computazionale.
+            Mentre se il valore è troppo grande, la struttura tende a diventare troppo simile ad una \textit{Linked List}, con un aumento della complessità computazionale.
 
         \cite{cormen2022introduction}
 
     \section{B-Tree}
 
-        Un B-Tree è un Balanced Search Tree progettato per mantenere i dati ordinati e permettere operazioni di ricerca, inserimento e cancellazione in tempo logaritmico.
+        Un \textit{B-Tree} è un \textit{Balanced Search Tree} progettato per mantenere i dati ordinati e permettere operazioni di ricerca, inserimento e cancellazione in tempo logaritmico.
 
-        A differenza di altri Balanced Trees come i Red-Black Trees, i B-Tree sono ottimizzati per ridurre al minimo il numero di accessi al disco, rendendoli ideali per applicazioni che gestiscono grandi quantità di dati su dispositivi di memorizzazione secondaria.
+        A differenza di altri \textit{Balanced Trees} come i \textit{Red-Black Trees}, i \textit{B-Tree} sono ottimizzati per ridurre al minimo il numero di accessi al disco, rendendoli ideali per applicazioni che gestiscono grandi quantità di dati su dispositivi di memorizzazione secondaria.
 
         \paragraph*{}
 
-        Indicando con \( n \) il numero massimo di Nodi Figli a cui un Nodo può puntare, un B-Tree ha le seguenti proprietà:
+        Indicando con \( n \) il numero massimo di nodi figli a cui un nodo può puntare, un \textit{B-Tree} ha le seguenti proprietà:
 
         \begin{itemize}
-            \item Il numero massimo di Chiavi per Nodo è \( n - 1 \).
-            \item Il Nodo Root è o un Nodo Foglia o un Nodo Interno con un numero di Figli compreso tra \( 2 \) e \( n \) e un numero di chiavi compreso tra \( 1 \) e \( n - 1 \).
-            \item Tutti gli altri Nodi Interni hanno un numero di Figli compreso tra \( n / 2 \) e \( n \).
-            \item Tutte le Foglie si trovano alla stessa profondità.
+            \item Il numero massimo di \textit{Chiavi} per nodo è \( n - 1 \).
+            \item Il \textit{Nodo Root} è o un \textit{Nodo Foglia} o un \textit{Nodo Interno} con un numero di figli compreso tra \( 2 \) e \( n \) e un numero di hiavi compreso tra \( 1 \) e \( n - 1 \).
+            \item Tutti gli altri \textit{Nodi Interni} hanno un numero di figli compreso tra \( n / 2 \) e \( n \).
+            \item Tutte le \textit{Foglie} si trovano alla stessa profondità.
         \end{itemize}
 
-        Queste proprietà garantiscono che il B-Tree rimanga bilanciato, mantenendo un'altezza relativamente bassa anche con un grande numero di elementi.
+        Queste proprietà garantiscono che il \textit{B-Tree} rimanga bilanciato, mantenendo un'altezza relativamente bassa anche con un grande numero di elementi.
 
 \chapter{Design and Implementation}
 
     \section{Analisi}
 
-        Come precedentemente menzionato in \cref{sec:background}, la piattaforma IOtto rappresenta una soluzione IoT progettata per garantire il controllo completo degli impianti e dei macchinari ad essa connessi, ottimizzandone la manutenzione e la gestione energetica all'interno del contesto aziendale.
+        Come precedentemente menzionato in \cref{sec:background}, la piattaforma IOtto rappresenta una soluzione \textit{IoT} progettata per garantire il controllo completo degli impianti e dei macchinari ad essa connessi, ottimizzandone la manutenzione e la gestione energetica all'interno del contesto aziendale.
 
         \paragraph*{}
 
@@ -367,20 +411,20 @@ I               \caption{Esempio di Hash Table}
 
         \paragraph*{}
 
-        Il sistema attuale, sebbene sia in grado di gestire volumi elevati di operazioni di lettura e scrittura, non risulta ottimizzato sotto diversi aspetti. Ad esempio, il formato utilizzato per la storicizzazione dei dati, denominato MessagePack, si rivela inefficiente in termini di consumo di risorse, specialmente quando si tratta di memorizzare dati di piccole dimensioni.
+        Il sistema attuale, sebbene sia in grado di gestire volumi elevati di operazioni di lettura e scrittura, non risulta ottimizzato sotto diversi aspetti. Ad esempio, il formato utilizzato per la storicizzazione dei dati, denominato \textit{MessagePack}, si rivela inefficiente in termini di consumo di risorse, specialmente quando si tratta di memorizzare dati di piccole dimensioni.
 
         \paragraph*{}
 
-        Un ulteriore punto critico è rappresentato dal sistema di storicizzazione dei dati, basato su una struttura gerarchica tradizionale composta da cartelle e file. Questo approccio comporta tempi di ricerca, inserimento e rimozione che crescono in modo lineare, una caratteristica che, sebbene accettabile per un file system generico, risulta inadeguata per gestire il volume elevato di dati che il sistema potrebbe essere chiamato a gestire.
+        Un ulteriore punto critico è rappresentato dal sistema di storicizzazione dei dati, basato su una struttura gerarchica tradizionale composta da cartelle e file. Questo approccio comporta tempi di ricerca, inserimento e rimozione che crescono in modo lineare, una caratteristica che, sebbene accettabile per un \textit{File System} generico, risulta inadeguata per gestire il volume elevato di dati che il sistema potrebbe essere chiamato a gestire.
 
         \paragraph*{}
 
-        Il software da sviluppare consiste in un prototipo che rappresenta una versione migliorata e ottimizzata dell'attuale file system. L'obiettivo del prototipo è introdurre ottimizzazioni che non alterino la struttura esistente, con particolare attenzione ai processi di gestione e storicizzazione dei dati.
+        Il software da sviluppare consiste in un prototipo che rappresenta una versione migliorata e ottimizzata dell'attuale \textit{File System}. L'obiettivo del prototipo è introdurre ottimizzazioni che non alterino la struttura esistente, con particolare attenzione ai processi di gestione e storicizzazione dei dati.
 
         \subsection{Requisiti Funzionali}
 
             \begin{itemize}
-                \item Il sistema deve supportare un formato di serializzazione che, rispetto a soluzioni esistenti come MessagePack, sia ottimizzato per la gestione di dati di piccole dimensioni.
+                \item Il sistema deve supportare un formato di serializzazione che, rispetto a soluzioni esistenti come \textit{MessagePack}, sia ottimizzato per la gestione di dati di piccole dimensioni.
                 \item È prevista l’implementazione di un sistema di indicizzazione il cui obiettivo è ridurre la complessità computazionale delle varie operazioni, passando da un algoritmo con complessità lineare a uno con complessità logaritmica.
                 \item Il progetto prevede interventi strutturali finalizzati a migliore delle operazioni di ricerca, inserimento e rimozione, migliorando l’efficienza complessiva del sistema e riducendo i tempi di risposta alle richieste.
                 \item Il sistema deve essere progettato per gestire un carico variabile di operazioni. Tale requisito implica che il sistema debba garantire performance costanti, attraverso una scalabilità sia verticale che orizzontale.
@@ -393,18 +437,19 @@ I               \caption{Esempio di Hash Table}
             \begin{itemize}
                 \item Per garantire una manutenzione efficace e una facile estendibilità del sistema, è necessario implementare una documentazione esaustiva.
                 \item Viene richiesta una struttura modulare dell’architettura, che consenta di aggiornare o sostituire singoli componenti senza dover riprogettare l’intero sistema.
-                \item L’interoperabilità tra diverse piattaforme è un requisito fondamentale per garantire un’ampia adozione del sistema. La compatibilità con ambienti Linux e Windows, unitamente al supporto per architetture hardware sia x86 che ARM, assicura che il software possa essere implementato in contesti eterogenei.
+                \item L’interoperabilità tra diverse piattaforme è un requisito fondamentale per garantire un’ampia adozione del sistema. La compatibilità con ambienti \textit{Linux} e \textit{Windows}, unitamente al supporto per architetture hardware sia \textit{x86} che \textit{ARM}, assicura che il software possa essere implementato in contesti eterogenei.
                 \item Una caratteristica essenziale dell’architettura è la capacità di integrare dinamicamente nuovi nodi di storage in un ambiente di produzione, senza interrompere il servizio.
                 \item Il sistema deve prevedere un livello di configurabilità dei vari parametri, permettendo agli amministratori di ottimizzare il comportamento in funzione delle specifiche esigenze applicative e dei requisiti di performance.
             \end{itemize}
 
+    \pagebreak
     \section{Design}
 
         L'intera fase di design è avvenuta attraverso un processo iterativo, che ha coinvolto me e il team manager, con l'obiettivo di garantire che il prototipo rispondesse in modo efficace ai requisiti identificati.
 
         \paragraph*{}
 
-        Dopo alcune ricerche preliminari, abbiamo deciso di utilizzare un B-Tree come struttura dati principale per il prototipo, poiché, sulla base di un'attenta valutazione delle prestazioni attese in scenari reali, esso si è dimostrato particolarmente adatto a gestire grandi volumi di dati garantendo elevate prestazioni.
+        Dopo alcune ricerche preliminari, abbiamo deciso di utilizzare un \textit{B-Tree} come struttura dati principale per il prototipo, poiché, sulla base di un'attenta valutazione delle prestazioni attese in scenari reali, esso si è dimostrato particolarmente adatto a gestire grandi volumi di dati garantendo elevate prestazioni.
 
         Le caratteristiche che hanno reso questa struttura ottimale includono:
 
@@ -414,57 +459,62 @@ I               \caption{Esempio di Hash Table}
             \item \textbf{Scalabilità}: capacità di gestire milioni di record senza perdita prestazionale.
         \end{itemize}
 
-        Un confronto con alternative come i Binary Trees (Soggetti al problema dello Sbilanciamento) o alle Hash Table (Inefficienti in operazioni di Range Query) ha confermato la superiorità del B-Tree nel contesto del progetto.
+        Un confronto con alternative come i \textit{Binary Trees} (Soggetti al problema dello Sbilanciamento) o alle \textit{Hash Table} (Inefficienti in operazioni di Range Query) ha confermato la superiorità del \textit{B-Tree} nel contesto del progetto.
 
-        Inoltre, l’uso del B-Tree è supportato da letteratura consolidata in ambito di Database Systems, rafforzandone la validità come scelta progettuale, come ad esempio \cite{mostafa2020case}.
+        Inoltre, l’uso del \textit{B-Tree} è supportato da letteratura consolidata in ambito di \textit{Database Systems}, rafforzandone la validità come scelta progettuale, come ad esempio \cite{mostafa2020case}.
 
         \paragraph*{}
 
-        Per ottimizzare l’uso della memoria e ridurre gli sprechi, è stato implementato un sistema customizzato di serializzazione/deserializzazione binaria, in sostituzione di MessagePack.
+        Per ottimizzare l’uso della memoria e ridurre gli sprechi, è stato implementato un sistema customizzato di serializzazione/deserializzazione binaria, in sostituzione di \textit{MessagePack}.
+
+        \pagebreak
 
         Le motivazioni includono:
         \begin{itemize}
-            \item \textbf{Controllo Granulare}: la serializzazione manuale ha permesso di definire formati compatti per ogni dato, eliminando metadati superflui, come le Chiavi JSON, e utilizzando tipi a lunghezza fissa dove possibile, ad esempio interi a 32 bit invece di valori variabili.
+            \item \textbf{Controllo Granulare}: la serializzazione binaria ha permesso di definire formati compatti per ogni dato, eliminando metadati superflui, come le \textit{Chiavi JSON}, e utilizzando tipi a lunghezza fissa dove possibile, ad esempio interi a 32 bit invece di valori variabili.
             \item \textbf{Riduzione dell’Overhead}: rispetto a MessagePack, il formato custom riduce la dimensione dei dati serializzati, soprattutto grazie all’assenza di header descrittivi.
             \item \textbf{Flessibilità nelle modifiche}: la struttura binaria è progettata per essere estendibile senza impattare sulla backward compatibility, ad esempio riservando bit per flag futuri.
         \end{itemize}
 
     \section{Architettura}
-        Il sistema proposto si basa sulla rappresentazione di un intero Dataset all’interno di un singolo file di storicizzazione, strutturato in pagine (page) logicamente organizzate in una gerarchia ad albero. Questo approccio mira a coniugare efficienza nell’accesso ai dati, scalabilità e persistenza, adottando una filosofia simile a quella dei B-tree, ma con ottimizzazioni specifiche per scenari di scrittura sequenziale e query complesse.
 
-        \begin{figure} [h]
-            \centering
-            \includegraphics[width=.5\linewidth]{figures/Prototipo.png}
-I              \caption{Rappresentazione schematica del prototipo}
-            \label{fig:prototipo}
-        \end{figure}
+        Il sistema proposto si basa sulla rappresentazione di un intero \textit{Dataset} all’interno di un singolo \textit{File di Storicizzazione}, strutturato in pagine, denominate \textit{Page}, logicamente organizzate in una gerarchia ad albero. Questo approccio mira a coniugare efficienza nell’accesso ai dati, scalabilità e persistenza, adottando una filosofia simile a quella dei \textit{B-tree}, ma con ottimizzazioni specifiche per scenari di scrittura sequenziale e query complesse.
 
         \subsection{Componenti}
 
             \begin{itemize}
                 \item \textbf{Boot Page}
 
-                La Boot Page rappresenta il punto di partenza per qualsiasi operazione sul sistema. Contiene metadati critici come informazioni relative allo stato dell'albero e un puntatore alla Root di quest'ultimo.
+                La \textit{Boot Page} rappresenta il punto di partenza per qualsiasi operazione sul sistema. Contiene metadati critici come informazioni relative allo stato dell'albero e un puntatore alla \textit{Root} di quest'ultimo.
+
+                \pagebreak
 
                 \item \textbf{Node Page (e Root Page)}
 
-                Le Node Page incarnano i nodi interni dell’albero di indicizzazione. Ogni Node Page include:
+                Le \textit{Node Page} incarnano i nodi interni dell’albero di indicizzazione.
+                Ogni \textit{Node Page} include:
                 \begin{itemize}
-                    \item Una lista ordinata di entry, dove ogni entry associa una chiave a un puntatore.
+                    \item Una lista ordinata di \textit{Entry}, dove ogni \textit{Entry} associa una chiave a un puntatore.
                     \item Riferimenti a pagine figlie, permettendo la navigazione verso livelli inferiori.
                     \item Diversi Metadati locali.
                 \end{itemize}
 
                 \item \textbf{Entry Page}
 
-                Le Entry Page contengono i dati effettivi associati alle chiavi. Ogni entry è strutturata come:
+                Le \textit{Entry Page} contengono i dati effettivi associati alle chiavi. Ogni \textit{Entry} è strutturata come:
                 \begin{itemize}
-                    \item Identificatore univoco della Key.
-                    \item Riferimenti a le Entry correlate.
-                    \item Una lista dei dati corrispettivi alla specifica Key
+                    \item Identificatore univoco della \textit{Key}.
+                    \item Riferimenti a le \textit{Entry} correlate.
+                    \item Una lista dei dati corrispettivi alla specifica \textit{Key}
                 \end{itemize}
-
             \end{itemize}
+
+            \begin{figure} [h]
+                \centering
+                \includegraphics[width=.45\linewidth]{figures/Prototipo.png}
+                \caption{Rappresentazione schematica del prototipo}
+                \label{fig:prototipo}
+            \end{figure}
 
         \subsection{Schema UML}
 
@@ -479,17 +529,17 @@ I              \caption{Rappresentazione schematica del prototipo}
                 \label{fig:uml}
             \end{figure}
 
-            Nel nostro diagramma, la classe \textit{BTree} funge da mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
+            Nel nostro diagramma, la classe \texttt{BTree} funge da mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
 
-            La classe \textit{BTree} è contiene inoltre riferimenti anche al file di Log il quale conterrà le modifiche di riferimento per i controlli di sicurezza.
+            La classe \texttt{BTree} è contiene inoltre riferimenti anche al file di Log il quale conterrà le modifiche di riferimento per i controlli di sicurezza.
 
-            È presente in'oltre una relazione di composiziqone tra la classe \textit{BTree} e la classe \textit{Boot}, che rappresenta la pagina iniziale all'interno del file di sotricizazione.
+            È presente in'oltre una relazione di composiziqone tra la classe \texttt{BTree} e la classe \texttt{Boot}, che rappresenta la pagina iniziale all'interno del file di sotricizazione.
 
-            La classe \textit{Page} è una classe astratta che rappresenta una generica pagina all'interno del file di storicizzazione, e viene estesa dalle classi \textit{Boot}, \textit{Node} e \textit{Entry}.
+            La classe \texttt{Page} è una classe astratta che rappresenta una generica pagina all'interno del file di storicizzazione, e viene estesa dalle classi \texttt{Boot}, \texttt{Node} e \texttt{Entry}.
 
             Questa gerarchia favorisce il riuso del codice e l’isolamento delle responsabilità, riducendo l’accoppiamento tra logica di storage e operazioni sull’albero.
 
-            In conclusione, l’adozione del BTree come mediatore centralizza il flusso di controllo, semplificando l’aggiunta di nuove funzionalità, mentre la separazione tra Page e le sue implementazioni favorisce il riuso del codice e l’isolamento delle responsabilità, riducendo l’accoppiamento tra logica di storage e operazioni sull’albero.
+            In conclusione, l’adozione del \textit{BTree} come mediatore centralizza il flusso di controllo, semplificando l’aggiunta di nuove funzionalità, mentre la separazione tra Page e le sue implementazioni favorisce il riuso del codice e l’isolamento delle responsabilità, riducendo l’accoppiamento tra logica di storage e operazioni sull’albero.
 
     \section{Sviluppo}
 
@@ -497,11 +547,11 @@ I              \caption{Rappresentazione schematica del prototipo}
 
         \subsection{Linguaggio di Programmazione}
 
-            La scelta del linguaggio di programmazione è ricaduta su C\#, in quanto è il linguaggio che è già stato usato per il prodotto.
+            La scelta del linguaggio di programmazione è ricaduta su \texttt{C\#}, in quanto è il linguaggio che è già stato usato per il prodotto.
 
-            C\# è un linguaggio versatile e performante, con un'ampia base di utenti e una vasta libreria standard.
+            \texttt{C\#} è un linguaggio versatile e performante, con un'ampia base di utenti e una vasta libreria standard.
 
-            C\# è particolarmente adatto per applicazioni di sistema, grazie alla sua portabilità, alla gestione della memoria automatica e alla robustezza.
+            Inoltre, questo è particolarmente adatto per applicazioni di sistema, grazie alla sua portabilità, alla gestione della memoria automatica e alla robustezza.
 
         \subsection{Librerie}
         \label{subsec:Librerie}
@@ -520,7 +570,6 @@ I              \caption{Rappresentazione schematica del prototipo}
                 Queste strutture permettono una gestione dinamica e performante dei dati, facilitando l’implementazione di algoritmi complessi e contribuendo a mantenere l’ottimizzazione delle risorse di sistema.
             \end{itemize}
 
-
             Per la gestione e realizzazione dei test, invece si è fatto utilizzo della libreria \texttt{BenchmarkDotNet} e \texttt{XUnit}.
 
             La libreria \texttt{BenchmarkDotNet} è particolarmente apprezzata per le sue funzionalità avanzate nella misurazione delle performance del codice, offrendo strumenti di analisi dettagliata dei risultati.
@@ -532,15 +581,17 @@ I              \caption{Rappresentazione schematica del prototipo}
             Per la realizzazione del prototipo, è stato adottato un insieme di strumenti di sviluppo che hanno contribuito significativamente alla qualità e all’efficienza del processo di implementazione. In particolare, si evidenziano:
 
             \begin{itemize}
-                \item \textbf{Visual Studio}: È stato scelto come ambiente di sviluppo integrato per C\#. Visual Studio offre un ambiente completo e funzionale, caratterizzato da potenti strumenti per il debugging, l’analisi del codice e la gestione dei progetti.
+                \item \textbf{Visual Studio}: È stato scelto come ambiente di sviluppo integrato per \textit{C\#}. \textit{Visual Studio} offre un ambiente completo e funzionale, caratterizzato da potenti strumenti per il debugging, l’analisi del codice e la gestione dei progetti.
 
-                L’integrazione con altre tecnologie Microsoft ha permesso di accelerare le fasi di codifica e testing, contribuendo in modo determinante alla qualità del software prodotto.
+                L’integrazione con altre tecnologie \textit{Microsoft} ha permesso di accelerare le fasi di codifica e testing, contribuendo in modo determinante alla qualità del software prodotto.
 
-                \item \textbf{Git}: Per il controllo versione del codice, si è fatto ricorso a Git, un sistema distribuito che consente di tracciare tutte le modifiche apportate durante lo sviluppo.
+                \pagebreak
+
+                \item \textbf{Git}: Per il controllo versione del codice, si è fatto ricorso a \textit{Git}, un sistema distribuito che consente di tracciare tutte le modifiche apportate durante lo sviluppo.
 
                 Git ha facilitato la gestione della cronologia del progetto, permettendo di sperimentare modifiche in modo sicuro e coordinato, e di supportare un lavoro collaborativo efficace all'interno del team.
 
-                \item \textbf{GitHub}: Come piattaforma di hosting per progetti basati su Git, GitHub ha offerto un ambiente collaborativo per la condivisione del codice e la gestione delle versioni.
+                \item \textbf{GitHub}: Come piattaforma di hosting per progetti basati su \textit{Git}, \textit{GitHub} ha offerto un ambiente collaborativo per la condivisione del codice e la gestione delle versioni.
             \end{itemize}
 
             L'integrazione di questi strumenti ha permesso di adottare un approccio allo sviluppo più dinamico e assicurando una gestione ottimale del ciclo di vita del software.
@@ -549,7 +600,9 @@ I              \caption{Rappresentazione schematica del prototipo}
 
             La prima fase dello sviluppo del prototipo ha riguardato la progettazione e l’implementazione di un sistema dedicato alla serializzazione e deserializzazione dei dati.
 
-            L’obiettivo era quello di sostituire il formato MessagePack, attualmente in uso, con un formato binario ottimizzato, capace di ridurre la dimensione dei dati e di semplificare le operazioni di lettura e scrittura.
+            L’obiettivo era quello di sostituire il formato \textit{MessagePack}, attualmente in uso, con un formato binario ottimizzato, capace di ridurre la dimensione dei dati e di semplificare le operazioni di lettura e scrittura.
+
+            \paragraph*{}
 
             In una fase preliminare era già stata affrontata la problematica dell’eterogeneità dei dati attraverso la definizione di un formato univoco per i dati da storicizzare.
 
@@ -561,7 +614,7 @@ I              \caption{Rappresentazione schematica del prototipo}
                 \item \textbf{Utilizzo di Tipi a Lunghezza Fissa:} Dove possibile, sono stati impiegati tipi a lunghezza fissa per rappresentare i dati, standardizzando la codifica e minimizzando l’impatto sullo spazio occupato.
             \end{enumerate}
 
-            Il risultato di questo approccio è stato la definizione di un formato binario altamente efficiente, capace di ridurre la dimensione complessiva dei dati serializzati di circa il 60\% rispetto a MessagePack, pur mantenendo prestazioni comparabili in termini di tempistiche di lettura e scrittura.
+            Il risultato di questo approccio è stato la definizione di un formato binario altamente efficiente, capace di ridurre la dimensione complessiva dei dati serializzati di circa il 60\% rispetto a \textit{MessagePack}, pur mantenendo prestazioni comparabili in termini di tempistiche di lettura e scrittura.
 
             A dimostrazione dell'efficienza di questo formato è stato condotto un test di benchmarking, che ha confermato la riduzione della dimensione dei dati serializzati e l'ottimizzazione delle prestazioni.
 
@@ -576,87 +629,85 @@ I              \caption{Rappresentazione schematica del prototipo}
 
         \subsection{Realizzazione del Btree}
 
-            La fase successiva dello sviluppo ha riguardato la progettazione e la realizzazione del B-Tree, che ha rappresentaTo il nucleo centrale del prototipo sviluppato.
+            La fase successiva dello sviluppo ha riguardato la progettazione e la realizzazione del \textit{B-Tree}, che ha rappresentaTo il nucleo centrale del prototipo sviluppato.
 
             Questo capitolo descrive le soluzioni implementate per garantire un bilanciamento efficiente tra prestazioni e persistenza dei dati.
 
             \subsubsection{Analisi Preliminare e Riferimenti Teorici}
 
-                Il processo di sviluppo è iniziato con un'analisi approfondita dello pseudocodice del B-Tree, tratto dal testo accademico *Introduction to Algorithms* \cite{cormen2022introduction}.
+                Il processo di sviluppo è iniziato con un'analisi approfondita dello pseudocodice del \textit{B-Tree}, tratto dal testo accademico \textbf{Introduction to Algorithms} \cite{cormen2022introduction}.
 
                 Lo studio ha permesso di comprendere e integrare concetti fondamentali quali:
                 \begin{itemize}
-                    \item Le politiche di Suddivisione(o Splitting) e Fusione (o Merging) dei nodi.
+                    \item Le politiche di \textit{Suddivisione}(o \textit{Splitting}) e \textit{Fusione} (o \textit{Merging}) dei nodi.
                     \item Le strategie di ricerca delle chiavi all'interno della struttura.
                     \item I vincoli tecnici imposti dall'albero per garantire un bilanciamento efficiente.
                 \end{itemize}
 
-                A partire da questa analisi, sono state identificate le classi e i metodi necessari per la realizzazione del B-Tree, delineando le interfacce e le relazioni tra i vari componenti del sistema.
+                A partire da questa analisi, sono state identificate le classi e i metodi necessari per la realizzazione del \textit{B-Tree}, delineando le interfacce e le relazioni tra i vari componenti del sistema.
 
                 Una volta definite le caratteristiche principali della struttura dati, si è passati alla fase di implementazione.
 
             \subsubsection{Implementazione e adattamento del codice}
 
-                In questa fase sono state sviluppate le classi e i metodi necessari per la gestione delle operazioni fondamentali del B-Tree, tra cui ricerca, inserimento e cancellazione delle chiavi, assicurando il rispetto delle proprietà strutturali dell’albero.
+                In questa fase sono state sviluppate le classi e i metodi necessari per la gestione delle operazioni fondamentali del \textit{B-Tree}, tra cui ricerca, inserimento e cancellazione delle chiavi, assicurando il rispetto delle proprietà strutturali dell’albero.
 
-                Come base per l’implementazione, è stato adottato il codice open-source btree-dotnet \cite{rsdcastro_btree_dotnet}, un’implementazione in C\# che forniva lo scheletro delle classi e delle operazioni principali.
+                Come base per l’implementazione, è stato adottato il codice \textit{open-source} \texttt{btree dotnet} \cite{rsdcastro_btree_dotnet}, un’implementazione in \texttt{C\#} che forniva lo scheletro delle classi e delle operazioni principali.
 
                 Tuttavia, la libreria presentava alcune criticità: non era compatibile con le versioni più recenti del linguaggio e conteneva errori nel meccanismo di bilanciamento dell’albero durante la fase di rimozione.
 
                 Per superare queste problematiche, è stato necessario apportare modifiche significative al codice, convalidandole successivamente attraverso una serie di test di controllo per garantire la correttezza e la stabilità del sistema.
 
-                Per risolvere queste problematiche, è stato necessario intervenire con modifiche sostanziali al codice, verificandone l’affidabilità attraverso una serie di test mirati.
-
-                Questi test hanno garantito la correttezza delle operazioni e la stabilità complessiva del sistema.
-
             \subsubsection{Implementazione delle Page}
 
-                Successivamente, si è proceduto allo sviluppo delle Page e delle loro specifiche estensioni: BootPage, NodePage e EntryPage.
+                Successivamente, si è proceduto allo sviluppo delle \texttt{Page} e delle loro specifiche estensioni: \texttt{BootPage}, \texttt{NodePage} e \texttt{EntryPage}.
 
                 \lstinputlisting[float,language=csh,label={lst:Page}]{listings/BTree/Page.cs}
 
-                La classe Page rappresenta una pagina di memoria persistente, un elemento tipico dei sistemi di storage su file, come quelli utilizzati nei database. Questa classe è progettata per rispettare una serie di caratteristiche fondamentali, indispensabili per garantire la corretta gestione dei dati.
+                La classe \texttt{Page} rappresenta una pagina di memoria persistente, un elemento tipico dei sistemi di storage su file, come quelli utilizzati nei database.
+
+                Questa classe è progettata per rispettare una serie di caratteristiche fondamentali, indispensabili per garantire la corretta gestione dei dati.
 
                 Attributi:
                 \begin{itemize}
-                    \item \textbf{ID}: Un identificatore univoco che indica a quale page rappresentaa all'interno del file.
-                    \item \textbf{Type}: Un codice identificativo che specifica il tipo della pagina, distinguendo le varie specializzazioni.
-                    \item \textbf{Buffer}: Un array di byte che contiene il contenuto memorizzato nella pagina.
-                    \item \textbf{FreePageSize}: Un indicatore della quantità di spazio libero disponibile all'interno della pagina.
-                    \item \textbf{IsModified}: Un flag di controllo che segnala eventuali modifiche apportate alla pagina, fondamentale per le operazioni di storicizzazione e sincronizzazione dei dati.
+                    \item \textbf{\texttt{ID}}: Un identificatore univoco che indica a quale page rappresentaa all'interno del file.
+                    \item \textbf{\texttt{Type}}: Un codice identificativo che specifica il tipo della pagina, distinguendo le varie specializzazioni.
+                    \item \textbf{\texttt{Buffer}}: Un array di byte che contiene il contenuto memorizzato nella pagina.
+                    \item \textbf{\texttt{FreePageSize}}: Un indicatore della quantità di spazio libero disponibile all'interno della pagina.
+                    \item \textbf{\texttt{IsModified}}: Una flag di controllo che segnala eventuali modifiche apportate alla pagina, fondamentale per le operazioni di storicizzazione e sincronizzazione dei dati.
                 \end{itemize}
 
                 Metodi:
                 \begin{itemize}
-                    \item \textbf{Read}: Metodo per la lettura dei dati dal buffer della pagina, che aggiorna contestualmente i vari campi per garantire la coerenza delle informazioni.
-                    \item \textbf{Write}: Metodo responsabile della scrittura dei dati nel buffer, assicurando che le modifiche vengano correttamente registrate e mantenute.
+                    \item \textbf{\texttt{Read}}: Metodo per la lettura dei dati dal buffer della pagina, che aggiorna contestualmente i vari campi per garantire la coerenza delle informazioni.
+                    \item \textbf{\texttt{Write}}: Metodo responsabile della scrittura dei dati nel buffer, assicurando che le modifiche vengano correttamente registrate e mantenute.
                 \end{itemize}
 
             \subsubsection{Sviluppo della BootPage}
 
                 La classe \texttt{BootPage}, introdotta come primo componente specializzato del sistema, funge da interfaccia primaria per la gestione delle pagine all’interno di un file.
 
-                Tale Page inoltre si occupa in modo centrale di orchestrare il riutilizzo degli spazi liberi presenti all’interno del file, garantendo così una gestione efficiente della memoria e un’ottimizzazione delle operazioni di I/O.
+                Inoltre, tale pagina si occupa in modo centrale di orchestrare il riutilizzo degli spazi liberi presenti all’interno del file, garantendo così una gestione efficiente della memoria e un’ottimizzazione delle operazioni di I/O.
 
                 \lstinputlisting[float,language=csh,label={lst:BootPage}]{listings/BTree/BootPage.cs}
 
                 Attributi:
                 \begin{itemize}
-                    \item \textbf{LastPageID}: Un indice che indica l’ultima pagina aggiunta alla fine del file, fungendo da riferimento per l’espansione del file stesso.
-                    \item \textbf{LastLogVersionID}: Un Indice che rappresenta la versione corrente del log del sistema, fondamentale per il tracciamento delle operazioni eseguite.
-                    \item \textbf{Buffer}: Un array di byte che contiene la trascrizione del contenuto della pagina, utilizzato per la lettura e la scrittura dei dati.
-                    \item \textbf{EmptyPageIndexes}: Una lista degli indici relativi alle pagine vuote presenti nel file.
+                    \item \textbf{\texttt{LastPageID}}: Un indice che indica l’ultima pagina aggiunta alla fine del file, fungendo da riferimento per l’espansione del file stesso.
+                    \item \textbf{\texttt{LastLogVersionID}}: Un Indice che rappresenta la versione corrente del log del sistema, fondamentale per il tracciamento delle operazioni eseguite.
+                    \item \textbf{\texttt{Buffer}}: Un array di byte che contiene la trascrizione del contenuto della pagina, utilizzato per la lettura e la scrittura dei dati.
+                    \item \textbf{\texttt{EmptyPageIndexes}}: Una lista degli indici relativi alle pagine vuote presenti nel file.
                     Questi spazi vengono prioritariamente riutilizzati, evitando così la creazione non necessaria di nuove pagine.
-                    \item \textbf{RootPageID}: L'indice della radice del nostro albero, che rappresenta il punto iniziale di riferimento per l’organizzazione delle altre pagine.
+                    \item \textbf{\texttt{RootPageID}}: L'indice della radice del nostro albero, che rappresenta il punto iniziale di riferimento per l’organizzazione delle altre pagine.
                 \end{itemize}
 
                 Metodi:
                 \begin{itemize}
-                    \item \textbf{AddID}: Metodo responsabile dell’aggiunta di un nuovo ID alla lista di indici liberi, aggiornando così il set di pagine disponibili per il riutilizzo.
-                    \item \textbf{GetNewPageID}: Metodo che gestisce la generazione di un nuovo PageID.
+                    \item \textbf{\texttt{AddID}}: Metodo responsabile dell’aggiunta di un nuovo \texttt{ID} alla lista di indici liberi, aggiornando così il set di pagine disponibili per il riutilizzo.
+                    \item \textbf{\texttt{GetNewPageID}}: Metodo che gestisce la generazione di un nuovo \texttt{PageID}.
                     Se sono presenti pagine vuote (già indicate in \texttt{EmptyPageIndexes}), il metodo ne effettua il riutilizzo.
                     In assenza di queste, ne viene creato uno nuovo.
-                    \item \textbf{GetNewLogID}: Metodo dedicato alla generazione di un nuovo LogID, aggiornando la versione del log e contribuendo al mantenimento della consistenza del sistema.
+                    \item \textbf{\texttt{GetNewLogID}}: Metodo dedicato alla generazione di un nuovo \texttt{LogID}, aggiornando la versione del log e contribuendo al mantenimento della consistenza del sistema.
                 \end{itemize}
 
             \subsubsection{Sviluppo della NodePage}
@@ -666,14 +717,16 @@ I              \caption{Rappresentazione schematica del prototipo}
                 Questa trasformazione ha portato alla suddivisione del codice in due sezioni distinte:
 
                 \begin{itemize}
-                    \item \textbf{Gestione dei nodi figli}: La sezione mostrata nel listing \cref{lst:NodePageChildSection} illustra come vengono gestiti i nodi figli all'interno di una \texttt{NodePage}. Oltre alle operazioni classiche di aggiunta, rimozione e ricerca, è stata implementata la funzione di controllo validità \texttt{CheckChildPage}. Questo metodo esegue controlli specifici per verificare la correttezza dei puntatori ai nodi figli, prevenendo così errori di accesso e garantendo la coerenza strutturale.
+                    \item \textbf{\texttt{Gestione dei nodi figli}}: La sezione mostrata nel listing \cref{lst:NodePageChildSection} illustra come vengono gestiti i nodi figli all'interno di una \texttt{NodePage}. Oltre alle operazioni classiche di aggiunta, rimozione e ricerca, è stata implementata la funzione di controllo validità \texttt{CheckChildPage}. Questo metodo esegue controlli specifici per verificare la correttezza dei puntatori ai nodi figli, prevenendo così errori di accesso e garantendo la coerenza strutturale.
 
-                    \item \textbf{Gestione delle entry}: La sezione rappresentata nel listing \cref{lst:NodePageEntrySection} descrive il sistema di gestione delle entry contenute nella \texttt{NodePage}. Analogamente a quanto avviene per i nodi figli, anche qui è stata integrata una funzione di controllo validità, \texttt{CheckEntryPage}, che verifica l'integrità delle entry e assicura la correttezza dei dati gestiti.
+                    \item \textbf{\texttt{Gestione delle entry}}: La sezione rappresentata nel listing \cref{lst:NodePageEntrySection} descrive il sistema di gestione delle entry contenute nella \texttt{NodePage}. Analogamente a quanto avviene per i nodi figli, anche qui è stata integrata una funzione di controllo validità, \texttt{CheckEntryPage}, che verifica l'integrità delle entry e assicura la correttezza dei dati gestiti.
                 \end{itemize}
 
             \lstinputlisting[float,language=csh,label={lst:NodePageChildSection}]{listings/BTree/NodePageChildSection.cs}
 
             \lstinputlisting[float,language=csh,label={lst:NodePageEntrySection}]{listings/BTree/NodePageEntrySection.cs}
+
+            \clearpage
 
             \subsubsection{Sviluppo della EntryPage}
 
@@ -681,42 +734,45 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                 Questa classe è progettata per gestire in maniera efficiente la memorizzazione e la manipolazione dei dati, garantendo che ogni operazione sullo storage venga eseguita in modo ordinato e affidabile.
 
-                \lstinputlisting[float,language=csh,label={lst:EntryPage}]{listings/BTree/EntryPage.cs}
-
-                I principali elementi di interesse di questa classe sono le 3 funzioni di gestione dei dati all'interno della EntryPage.
+                I principali elementi di interesse di questa classe sono le 3 funzioni di gestione dei dati all'interno della \texttt{EntryPage}.
 
                 \begin{itemize}
-                    \item \textbf{AddData}: Metodo dedicato all'aggiunta di nuovi dati nella \texttt{EntryPage}. Questo metodo assicura che i dati vengano inseriti correttamente all'interno della struttura, aggiornando opportunamente lo stato della pagina.
-                    \item \textbf{SetData}: Metodo che, a partire da una struttura enumerabile, consente la modifica dei dati presenti nella \texttt{EntryPage}.
+                    \item \textbf{\texttt{AddData}}: Metodo dedicato all'aggiunta di nuovi dati nella \texttt{EntryPage}.
+                    Questo metodo assicura che i dati vengano inseriti correttamente all'interno della struttura, aggiornando opportunamente lo stato della pagina.
+                    \item \textbf{\texttt{SetData}}: Metodo che, a partire da una struttura enumerabile, consente la modifica dei dati presenti nella \texttt{EntryPage}.
                     Questa funzione garantisce che le modifiche vengano applicate in modo coerente e affidabile, mantenendo la consistenza dei dati.
-                    \item \textbf{FindPositionToInsert}: Metodo incaricato di determinare la posizione ottimale in cui inserire un nuovo dato. Questo approccio garantisce una distribuzione equilibrata dei dati all'interno della pagina e contribuisce a ottimizzare l'utilizzo dello spazio disponibile.
+                    \item \textbf{\texttt{FindPositionToInsert}}: Metodo incaricato di determinare la posizione ottimale in cui inserire un nuovo dato. Questo approccio garantisce una distribuzione equilibrata dei dati all'interno della pagina e contribuisce a ottimizzare l'utilizzo dello spazio disponibile.
                 \end{itemize}
+
+                \lstinputlisting[float,language=csh,label={lst:EntryPage}]{listings/BTree/EntryPage.cs}
+
+                \clearpage
 
             \subsubsection{Sviluppo della classe BTree}
 
-                Come ultima classe del sistema è stata sviluppata la classe BTree, che rappresenta il mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
+                Come ultima classe del sistema è stata sviluppata la classe \texttt{BTree}, che rappresenta il mediatore tra la logica ad albero e la storicizazione dei dati, gestendo le operazioni di ricerca, inserimento e cancellazione.
 
                 \paragraph{Creazione degli Elementi del BTree}
 
-                    \lstinputlisting[float,language=csh,label={lst:BTreeElementsCreation}]{listings/BTree/BTreeElementsCreation.cs}
-
-                    La precedente sezione di codice illustra come vengono creati gli elementi fondamentali del BTree: la radice, i nodi e le entry, che costituiscono la struttura portante del sistema.
+                    La successiva sezione di codice illustra come vengono creati gli elementi fondamentali del \texttt{BTree}: la radice, i nodi e le entry, che costituiscono la struttura portante del sistema.
 
                     \begin{itemize}
-                        \item \textbf{CreateNewRoot}: Crea una nuova radice dell'albero generando una nuova istanza di \texttt{NodePage} con un ID univoco ottenuto dalla BootPage.
-                        Dopo la creazione, aggiorna l'ID della radice nel BootPage e aggiunge quest'ultimo alle collezioni di pagine loggate e bufferizzate.
-                        \item \textbf{CreateNewNode}: Genera un nuovo nodo non radice creando un'istanza di \texttt{NodePage} con un nuovo ID.
-                        Anche in questo caso, il BootPage viene registrato nelle collezioni di log e buffer prima della creazione del nodo.
-                        \item \textbf{CreateNewEntry}: Crea una nuova entry (istanza di \texttt{EntryPage}) per memorizzare una chiave specificata.
-                        Viene ottenuto un nuovo ID dalla BootPage, e il nuovo oggetto viene inizializzato con i parametri necessari, mentre alcuni valori sono impostati su \texttt{null}.
-                        Anche qui, la BootPage viene aggiunta alle strutture di log e buffer.
+                        \item \textbf{\texttt{CreateNewRoot}}: Crea una nuova radice dell'albero generando una nuova istanza di \texttt{NodePage} con un ID univoco ottenuto dalla \texttt{BootPage}.
+                        Dopo la creazione, aggiorna l'ID della radice nel \texttt{BootPage} e aggiunge quest'ultimo alle collezioni di pagine loggate e bufferizzate.
+                        \item \textbf{\texttt{CreateNewNode}}: Genera un nuovo nodo non radice creando un'istanza di \texttt{NodePage} con un nuovo ID.
+                        Anche in questo caso, il \texttt{BootPage} viene registrato nelle collezioni di log e buffer prima della creazione del nodo.
+                        \item \textbf{\texttt{CreateNewEntry}}: Crea una nuova entry (istanza di \texttt{EntryPage}) per memorizzare una chiave specificata.
+                        Viene ottenuto un nuovo ID dalla \texttt{BootPage}, e il nuovo oggetto viene inizializzato con i parametri necessari, mentre alcuni valori sono impostati su \texttt{null}.
+                        Anche qui, la \texttt{BootPage} viene aggiunta alle strutture di log e buffer.
                     \end{itemize}
 
                     Questi metodi garantiscono la corretta generazione e registrazione di nuovi elementi (radice, nodi e entry) all'interno della struttura, mantenendo la coerenza delle collezioni di pagine loggate e bufferizzate.
 
-                \paragraph{Metodi per l'inserimento nel BTree}
+                    \lstinputlisting[float,language=csh,label={lst:BTreeElementsCreation}]{listings/BTree/BTreeElementsCreation.cs}
 
-                    \lstinputlisting[float,language=csh,label={BTreeInsert}]{listings/BTree/BTreeInsert.cs}
+                    \clearpage
+
+                \paragraph{Metodi per l'inserimento nel BTree}
 
                     Questo frammento di codice mostra l'implementazione del metodo di inserimento di un nuovo elemento all'interno del BTree seguendo questi passaggi principali:
 
@@ -728,33 +784,31 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     Questo approccio assicura che l'albero rimanga bilanciato, consentendo operazioni di ricerca e inserimento efficienti.
 
+                    \lstinputlisting[float,language=csh,label={BTreeInsert}]{listings/BTree/BTreeInsert.cs}
+
+                    \clearpage
+
                 \paragraph{Metodi per la rimozione nel BTree}
 
-                    Segue ora una descrizione dei metodi implementati per la rimozione degli elementi dal BTree.
+                    Segue ora una descrizione dei metodi implementati per la rimozione degli elementi dal \texttt{BTree}.
 
-                    \lstinputlisting[float,language=csh,label={BTreeDelete}]{listings/BTree/BTreeDelete.cs}
+                    Il metodo \texttt{Delete} avvia il primo passo del processo di eliminazione a partire dalla radice dell'albero.
 
-                    Il metodo Delete avvia il primo passo del processo di eliminazione a partire dalla radice dell'albero.
+                    Dopo aver eseguito l'eliminazione, verifica se la radice è diventata vuota e non è una foglia; in tal caso, la sostituisce con il suo primo figlio e decrementa l'altezza dell'albero. Successivamente, aggiorna il log, scrive i contenuti dei buffer e serializza la struttura per garantire la persistenza dei dati.
 
-                    Dopo aver eseguito l'eliminazione, verifica se la radice è diventata vuota e non è una foglia; in tal caso, la sostituisce con il suo primo figlio e decrementa l'altezza dell'albero.
+                    \lstinputlisting[float=h,language=csh,label={BTreeDelete}]{listings/BTree/BTreeDelete.cs}
 
-                    Successivamente, aggiorna il log, scrive i contenuti dei buffer e serializza la struttura per garantire la persistenza dei dati.
-
-                    \subparagraph*{}
-
-                    \lstinputlisting[float,language=csh,label={BTreeDeleteInternal}]{listings/BTree/BTreeDeleteInternal.cs}
-
-                    Il metodo DeleteInternal cerca la posizione della chiave da eliminare nel nodo corrente confrontandola con le chiavi presenti.
+                    Il metodo \texttt{DeleteInternal} cerca la posizione della chiave da eliminare nel nodo corrente confrontandola con le chiavi presenti.
 
                     Se la chiave viene trovata nel nodo, chiama il metodo DeleteKeyFromNode per gestire l'eliminazione.
 
                     Se il nodo non è una foglia e la chiave non è presente, propaga l'eliminazione al sottoalbero appropriato, corrispondente all'intervallo di chiavi.
 
-                    \subparagraph*{}
+                    \lstinputlisting[float=h,language=csh,label={BTreeDeleteInternal}]{listings/BTree/BTreeDeleteInternal.cs}
 
-                    \lstinputlisting[float,language=csh,label={BTreeDeleteKeyFromNode}]{listings/BTree/BTreeDeleteKeyFromNode.cs}
+                    \clearpage
 
-                    Infine, il metodo DeleteKeyFromNode gestisce diversi scenari.
+                    Infine, il metodo \texttt{DeleteKeyFromNode} gestisce diversi scenari.
 
                     Se il nodo è una foglia, rimuove direttamente la chiave.
 
@@ -762,72 +816,78 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     Se ciò non è possibile, prova con il successore, la chiave minima del sottoalbero destro, se il figlio destro ha sufficienti elementi.
 
-                    Se entrambi i figli hanno meno di `Degree` elementi, fonde il nodo corrente con i suoi figli e propaga l'eliminazione nel nodo risultante, mantenendo così le proprietà del B-Tree.
+                    Se entrambi i figli hanno meno di \texttt{Degree} elementi, fonde il nodo corrente con i suoi figli e propaga l'eliminazione nel nodo risultante, mantenendo così le proprietà del \texttt{B-Tree}.
+
+                    \lstinputlisting[float=h,language=csh,label={BTreeDeleteKeyFromNode}]{listings/BTree/BTreeDeleteKeyFromNode.cs}
+
+                \pagebreak
 
                 \paragraph{Metodi per la ricerca nel BTree}
 
-                    \lstinputlisting[float,language=csh,label={BTreeSearch}]{listings/BTree/BTreeSearch.cs}
-
-                    Il metodo di ricerca in un B-tree permette di localizzare un elemento specifico all'interno dell'albero attraverso la sua chiave identificativa.
+                    Il metodo di ricerca in un \texttt{B-tree} permette di localizzare un elemento specifico all'interno dell'albero attraverso la sua chiave identificativa.
 
                     Questo processo si basa su una strategia ricorsiva che sfrutta l'organizzazione ordinata delle chiavi presenti nella struttura.
 
                     L'implementazione di tale metodo è strutturata in due metodi distinti: uno pubblico, che funge da punto di accesso esterno e avvia la ricerca a partire dal nodo radice dell'albero, e uno ricorsivo interno, incaricato di gestire il traversamento dei nodi e il percorso gerarchico all'interno della struttura.
-                    
+
                     La ricerca si articola in diverse fasi, ciascuna finalizzata a individuare la posizione corretta della chiave all'interno dell'albero.
 
                     Inizialmente, viene effettuata un'analisi del nodo corrente, l'obiettivo è determinare quante di queste chiavi presenti nel nodo risultano essere inferiori rispetto alla chiave che si sta cercando.
 
                     Tale conteggio permette di identificare l'indice del sottoalbero in cui la ricerca dovrà proseguire.
-                    
+
                     Contemporaneamente, si verifica se una delle chiavi presenti nel nodo corrente corrisponde esattamente alla chiave target. In caso affermativo, la ricerca si conclude con successo e l'elemento viene immediatamente restituito.
-                    
+
                     Qualora il nodo in esame sia una foglia, ovvero un nodo terminale dell'albero privo di ulteriori diramazioni, e la chiave non vi sia presente, la ricerca termina con un esito negativo, segnalando l'assenza dell'elemento attraverso la restituzione di un valore nullo.
-                    
+
                     Se, al contrario, il nodo non è una foglia, la ricerca prosegue in modo ricorsivo.
 
                     Viene selezionato il figlio corrispondente all'indice precedentemente calcolato e la funzione di ricerca viene richiamata su tale figlio, ripetendo il processo.
-                    
+
                     La natura ricorsiva dell'algoritmo garantisce una scansione completa dell'albero in profondità, fino a raggiungere un nodo foglia o a individuare una corrispondenza con la chiave cercata.
-                    
+
                     L'efficienza di questa operazione è notevole: grazie alla struttura bilanciata del B-tree, la ricerca ha una complessità logaritmica, proporzionale al logaritmo del numero totale di elementi presenti nell'albero.
+
+                    \pagebreak
 
                     La terminazione dell'algoritmo è sempre garantita: la ricerca raggiunge inevitabilmente un nodo foglia o identifica una corrispondenza, escludendo la possibilità di cicli infiniti.
 
+                    \lstinputlisting[float=h,language=csh,label={BTreeSearch}]{listings/BTree/BTreeSearch.cs}
+
                 \paragraph{Metodi di Utility del BTree}
 
-                    \lstinputlisting[float,language=csh,label={BTreeSplit}]{listings/BTree/BTreeSplit.cs}
+                    Lo \texttt{Split}, e la sua controparte \texttt{Merge}, sono operazioni critiche attive durante l'inserimento (o l'eliminazione) di nuove chiavi, quando un nodo supera la capacità massima (o minima) definita dal \textit{Grado} dell'albero.
 
-                    Lo split, e la sua controparte merge, sono operazioni critiche attive durante l'inserimento (o l'eliminazione) di nuove chiavi, quando un nodo supera la capacità massima (o minima) definita dal \textit{grado} dell'albero.
+                    Queste procedure preservano l'equilibrio strutturale del \texttt{B-tree}, condizione essenziale per le prestazioni logaritmiche.
 
-                    Queste procedure preservano l'equilibrio strutturale del B-tree, condizione essenziale per le prestazioni logaritmiche.
+                    A differenza delle operazioni di \texttt{Merge}, che sono state già integrate all'interno delle operazioni di eliminazione, lo \texttt{Split} è stato implementato come metodo autonomo.
 
-                    A differenza delle operazioni di merge, che sono state già integrate all'interno delle operazioni di eliminazione, lo split è stato implementato come metodo autonomo.
+                    \clearpage
+
+                    \lstinputlisting[float=h,language=csh,label={BTreeSplit}]{listings/BTree/BTreeSplit.cs}
 
                     Il processo si articola in cinque fasi:
                     \begin{enumerate}
                         \item \textbf{Creazione di un nuovo nodo}: Viene allocato un nodo ausiliario per ospitare una porzione delle chiavi.
                         \item \textbf{Promozione della chiave mediana}: La chiave centrale del nodo saturo viene spostata nel nodo genitore, agendo da separatore.
                         \item \textbf{Collegamento del nuovo nodo}: Il nodo creato viene associato al genitore come figlio destro della chiave promossa.
-                        \item \textbf{Ridistribuzione delle chiavi}: Le chiavi successive alla mediana vengono riposizionate all'interno del nuovo nodo, lasciando il nodo originale con \textit{grado - 1} elementi.
+                        \item \textbf{Ridistribuzione delle chiavi}: Le chiavi successive alla mediana vengono riposizionate all'interno del nuovo nodo, lasciando il nodo originale con \textit{Grado - 1} elementi.
                         \item \textbf{Gestione dei figli (per nodi non foglia)}: Se il nodo splitato non è una foglia, i puntatori ai figli vengono ripartiti tra nodo originale e nuovo nodo, mantenendo la corretta gerarchia.
                     \end{enumerate}
 
                     Al termine, i metadati dei nodi coinvolti (genitore, nuovo nodo e nodo originale) vengono aggiornati per riflettere la nuova configurazione.
 
-                    Lo split garantisce così una crescita controllata dell'albero, prevenendo sbilanciamenti e assicurando che tutte le operazioni mantengano una complessità logaritmica.
+                    Lo \texttt{Split} garantisce così una crescita controllata dell'albero, prevenendo sbilanciamenti e assicurando che tutte le operazioni mantengano una complessità logaritmica.
 
                 \paragraph{Metodi di Serializzazione e Deserializzazione del BTree}
 
-                    \lstinputlisting[float,language=csh,label={BTreeSerialize}]{listings/BTree/BTreeSerialize.cs}
-
-                    Il metodo Serialize ha lo scopo di rendere persistenti i dati, su un supporto di memorizzazione di massa (come un disco).
+                  L'atto di seriallizare ha lo scopo di rendere persistenti i dati, su un supporto di memorizzazione di massa (come un disco).
 
                     Questo processo avviene attraverso due fasi distinte: la prima fase riguarda la scrittura di un log, mentre la seconda fase si concentra sul salvataggio effettivo dei dati.
 
-                    Nella fase iniziale, dedicata alla scrittura del log, il metodo itera sull'insieme delle Page contenute in una lista.
+                    Nella fase iniziale, dedicata alla scrittura del log, il metodo itera sull'insieme delle \texttt{Page} contenute in una lista.
 
-                    Per ciascuna di queste Page, viene creato un array di byte di dimensione fissa.
+                    Per ciascuna di queste \texttt{Page}, viene creato un array di byte di dimensione fissa.
 
                     Successivamente, il viene chiamato il metodo Write della pagina che provvede a popolare questo array con i dati specifici della pagina.
 
@@ -837,17 +897,17 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     Una volta completata la scrittura di tutte le pagine di log, lo stream viene chiuso attraverso il metodo Dispose.
 
-                    Successivamente, il codice tenta di aprire un nuovo file di log, utilizzando un percorso che combina la cartella di destinazione con un identificativo di log univoco, ottenuto attraverso la BootPage.
+                    Successivamente, il codice tenta di aprire un nuovo file di log, utilizzando un percorso che combina la cartella di destinazione con un identificativo di log univoco, ottenuto attraverso la \texttt{BootPage}.
 
-                    Dopo la scrittura e la riapertura del file di log, la lista di Page viene ricreata come una nuova istanza vuota.
+                    Dopo la scrittura e la riapertura del file di log, la lista di \texttt{Page} viene ricreata come una nuova istanza vuota.
 
                     Questa operazione ha lo scopo di liberare la memoria precedentemente occupata dalle pagine di log che sono state salvate.
 
-                    \subparagraph*{}
+                    \pagebreak
 
                     La seconda fase del processo di serializzazione prevede la scrittura effettiva dei dati.
 
-                    In questa fase, il metodo itera sull'insieme delle pagine presenti nella lista di Page da serializzare.
+                    In questa fase, il metodo itera sull'insieme delle pagine presenti nella lista di \texttt{Page} da serializzare.
 
                     Analogamente alla fase precedente, per ciascuna pagina viene creato un array di byte della dimensione predefinita, e la pagina stessa provvede a scrivere i propri dati all'interno di questo array.
 
@@ -855,17 +915,17 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     Qualora si verifichi un errore durante questa fase di scrittura, viene generata un'eccezione con il messaggio "Unable to create a new save".
 
-                    Una volta completato il salvataggio di tutte le pagine, anche la lista di Page da serializzare viene ricreata come una nuova istanza vuota, preparandolo per future operazioni di buffering.
+                    Una volta completato il salvataggio di tutte le pagine, anche la lista di \texttt{Page} da serializzare viene ricreata come una nuova istanza vuota, preparandolo per future operazioni di buffering.
 
-                    \subparagraph*{}
+                    \lstinputlisting[float=h,language=csh,label={BTreeSerialize}]{listings/BTree/BTreeSerialize.cs}
 
-                    \lstinputlisting[float,language=csh,label={BTreeDeserialize}]{listings/BTree/BTreeDeserialize.cs}
+                    \clearpage
 
-                    Nel caso della deserializzazione poniamo particolare interessae sulla deserializzazione delle Entry.
+                    Nel caso della deserializzazione poniamo particolare interessae sulla deserializzazione delle \texttt{Entry}.
 
-                    Il metodo DeserializeEntryFromID ha proprio questo specifico compito.
+                    Il metodo \texttt{DeserializeEntryFromID} ha proprio questo specifico compito.
 
-                    In altre parole, trasforma una sequenza di byte letta dal disco in un oggetto EntryPage utilizzabile in memoria.
+                    In altre parole, trasforma una sequenza di byte letta dal disco in un oggetto \texttt{EntryPage} utilizzabile in memoria.
 
                     Il processo inizia con il posizionamento del cursore di lettura all'interno del file.
 
@@ -875,11 +935,13 @@ I              \caption{Rappresentazione schematica del prototipo}
 
                     Viene creato un array di byte, chiamato buffer, con una dimensione pari a quella di una pagina.
 
-                    Successivamente, il metodo legge esattamente un quantitativo di byte dal file pari alla dimensioni di una Page, a partire dalla posizione corrente del puntatore, e li memorizza all'interno del buffer.
+                    Successivamente, il metodo legge esattamente un quantitativo di byte dal file pari alla dimensioni di una \texttt{Page}, a partire dalla posizione corrente del puntatore, e li memorizza all'interno del buffer.
 
-                    Dopo aver recuperato i dati dal file, è necessario verificarne il contenuto per assicurarsi che corrispondano al formato di una pagina di tipo "entry".
+                    Dopo aver recuperato i dati dal file, è necessario verificarne il contenuto per assicurarsi che corrispondano al formato di una pagina di tipo \texttt{Entry}. Se la verifica ha successo, il metodo crea una nuova istanza dell'oggetto \texttt{EntryPage}.
 
-                    Se la verifica ha successo, il metodo crea una nuova istanza dell'oggetto EntryPage.
+                    \lstinputlisting[float=h,language=csh,label={BTreeDeserialize}]{listings/BTree/BTreeDeserialize.cs}
+
+        \pagebreak
 
         \subsection{Sviluppo dei Test}
 
@@ -887,17 +949,13 @@ I              \caption{Rappresentazione schematica del prototipo}
 
             Grazie a questa libreria è stato possibile sviluppare una serie di test mirati e automatizzati, che hanno permesso di verificare la correttezza e l'efficienza del sistema.
 
-            In particolare, sono stati sviluppati test per verificare il corretto funzionamento delle operazioni di inserimento, ricerca ed eliminazione delle chiavi all'interno del B-Tree.
+            In particolare, sono stati sviluppati test per verificare il corretto funzionamento delle operazioni di inserimento, ricerca ed eliminazione delle chiavi all'interno del \texttt{B-Tree}.
 
-            Per validare tali risultati sono stati realizzati diversi metodi di test, ciascuno focalizzato su un aspetto specifico del sistema.
+            Per validare tali risultati sono stati realizzati diversi metodi di test, ciascuno focalizzato su un aspetto specifico del sistema Esempio di questi controlli di validazione sono i test \texttt{ValidateTree} e \texttt{ValidateSubtree}.
 
-            Esempio di questi controlli di validazione sono i test ValidateTree e ValidateSubtree.
+            Il metodo \texttt{ValidateTree} avvia la validazione dall'albero, raccogliendo le chiavi presenti in un dizionario e verificando che coincidano con quelle attese, senza duplicati.
 
-            \lstinputlisting[float,language=csh,label={lst:ValidateTree}]{listings/Test/ValidateTree.cs}
-
-            Il metodo ValidateTree avvia la validazione dall'albero, raccogliendo le chiavi presenti in un dizionario e verificando che coincidano con quelle attese, senza duplicati.
-
-            Mentre ValidateSubtree opera in modo ricorsivo, controllando che ogni nodo, eccetto la radice, abbia:
+            Mentre \texttt{ValidateSubtree} opera in modo ricorsivo, controllando che ogni nodo, eccetto la radice, abbia:
 
             \begin{itemize}
                 \item Che il numero delle chiavi sia compreso nei limiti del BTree.
@@ -905,59 +963,65 @@ I              \caption{Rappresentazione schematica del prototipo}
                 \item Che i nodi interni abbiano il numero minimo di figli richiesto.
             \end{itemize}
 
-            In sostanza, il codice assicura che l'albero rispetti le proprietà strutturali e l'ordinamento tipico di un B-Tree.
+            In sostanza, il codice assicura che l'albero rispetti le proprietà strutturali e l'ordinamento tipico di un \texttt{B-Tree}.
 
-            \paragraph*{}
+            \lstinputlisting[float=h,language=csh,label={lst:ValidateTree}]{listings/Test/ValidateTree.cs}
 
-            Inoltre, sono stati sviluppati test di stress per valutare le prestazioni del sistema in condizioni generiche, verificando la capacità del B-Tree di gestire qualsiasi combinazione di inserimenti e eliminazioni.
+            \clearpage
+
+            Inoltre, sono stati sviluppati test di stress per valutare le prestazioni del sistema in condizioni generiche, verificando la capacità del \texttt{B-Tree} di gestire qualsiasi combinazione di inserimenti e eliminazioni.
 
             Il principale test per dimostrare ciò è il RunBruteForce.
 
             \lstinputlisting[float,language=csh,label={lst:BruteForce}]{listings/Test/BruteForce.cs}
 
-            Il codice esegue un test brute force su un B-Tree del grado scelto.
+            Il codice esegue un test brute force su un \texttt{B-Tree} del grado scelto.
 
             Procede con l'eseguire, per 1000 iterazioni, operazioni casuali di inserimento o cancellazione.
 
-            Dopo ogni operazione, viene chiamato il metodo CheckNode, che attraversa ricorsivamente ogni nodo per controllare che, se ci sono figli, il loro numero sia esattamente quello atteso e che né il numero di chiavi né quello dei figli superino i limiti imposti dal grado.
+            Dopo ogni operazione, viene chiamato il metodo \texttt{CheckNode}, che attraversa ricorsivamente ogni nodo per controllare che, se ci sono figli, il loro numero sia esattamente quello atteso e che né il numero di chiavi né quello dei figli superino i limiti imposti dal grado.
 
 \chapter{Conclusioni}
 
     \section{Risultati e Valutazioni}
         Il prototipo sviluppato ha dimostrato di essere un sistema efficiente e scalabile per la gestione di grandi quantità di dati, garantendo prestazioni elevate e una gestione ottimale delle risorse.
 
-        A dimostrazione di ciò, sono stati realizzati diversi Benchmark di cui seguono i risultati.
+        A dimostrazione di ciò, sono stati realizzati diversi \texttt{Benchmark} di cui seguono i risultati.
 
         \begin{figure} [h]
             \centering
             \includegraphics[width=1\linewidth]{figures/BenchmarkInsertion.png}
             \caption{Risultati del Benchmarking dell'inserimento}
-            \label{fig:benchmark}
+            \label{fig:benchmarkA}
         \end{figure}
 
         \begin{figure} [h]
             \centering
             \includegraphics[width=1\linewidth]{figures/BenchmarkDelete.png}
             \caption{Risultati del Benchmarking dell'eliminazione}
-            \label{fig:benchmark}
+            \label{fig:benchmarkB}
         \end{figure}
 
         \begin{figure} [h]
             \centering
             \includegraphics[width=1\linewidth]{figures/BenchmarkSearch.png}
             \caption{Risultati del Benchmarking della ricerca}
-            \label{fig:benchmark}
+            \label{fig:benchmarkC}
         \end{figure}
+
+        \pagebreak
 
         In particolare, il nuovo sistema di serializzazione e deserializzazione ha permesso di ridurre significativamente la dimensione dei dati, migliorando le prestazioni complessive del sistema.
 
-        L'implementazione del B-Tree ha dimostrato di essere robusta e affidabile, garantendo un bilanciamento ottimale tra prestazioni e persistenza dei dati.
+        L'implementazione del \texttt{B-Tree} ha dimostrato di essere robusta e affidabile, garantendo un bilanciamento ottimale tra prestazioni e persistenza dei dati.
 
         I test sviluppati hanno confermato la correttezza e l'efficienza del sistema, dimostrando la capacità del B-Tree di gestire un elevato numero di operazioni in modo rapido e affidabile.
 
         Inoltre, il prototipo ha dimostrato di essere altamente scalabile, consentendo di adattarsi facilmente a nuove esigenze e di gestire grandi quantità di dati in modo efficiente.
 
         In conclusione, il prototipo sviluppato rappresenta una soluzione innovativa e affidabile per la gestione di dati complessi, garantendo prestazioni elevate e una gestione ottimale delle risorse.
+
+        \pagebreak
 
     \section{Sviluppi Futuri}
 
@@ -982,8 +1046,9 @@ I              \caption{Rappresentazione schematica del prototipo}
 \bibliographystyle{alpha}
 \bibliography{bibliography}
 
-\begin{acknowledgements} % this is optional
-Optional. Max 1 page.
+\begin{acknowledgements}
+    Tengo a ringraziare per il supporto e l'assistenza ricevuti durante la stesura di questa tesi da parte del mio relatore, il Prof. Marco Antonio Boschetti, del mio team, il Gabriele Monti, dei miei colleghi.
+    Ringrazio inoltre Onit S.p.A. per avermi fornito la possibilità di lavorare a questo progetto.
 \end{acknowledgements}
 
 \end{document}
